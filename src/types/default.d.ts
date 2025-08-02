@@ -1,0 +1,26 @@
+export type UserRole = "super_admin" | "admin" | "member";
+export type UserPermission = "full_access" | "limited_access" | "view_only";
+export type UserStatus = "active" | "inactive";
+export type DepartmentType = "construction" | "sales" | "storage";
+export type Priority = "low" | "normal" | "high";
+export type MessageStatus = "read" | "unread";
+
+export type Status = "planning" | "in_progress" | "completed" | "on_hold";
+export type UnitType = "residential" | "administrative" | "commercial";
+export type SaleType = "sale" | "rent";
+export type UnitStatus = "available" | "reserved" | "sold" | "rented";
+export type PaymentMethod = "installments" | "cash";
+export type PaymentAction = "delivered" | "pending" | "overdue";
+export type PaymentStatus = "paid" | "pending" | "overdue";
+export type PaymentType = "payment" | "deduction" | "sundry";
+export type ContractorType = "contractor" | "supplier";
+export type ConstructionType = "excavation" | "concrete" | "finishing";
+export type ConstructionTaskFeedback = "accepted" | "refused";
+export type SalesView = "overview" | "members" | "incomes" | "units";
+export type ConstructionView =
+  | "overview"
+  | "members"
+  | "payments"
+  | "materials"
+  | "contractors"
+  | "items";
