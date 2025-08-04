@@ -15,7 +15,7 @@ const Alerts = () => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-2xl font-normal">
-          <AlertTriangle className="h-5 w-5 text-red-600" />
+          <AlertTriangle className="size-5 text-red-600" />
           Recent Alerts
         </CardTitle>
         <CardDescription>Important notifications and deadlines</CardDescription>

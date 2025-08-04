@@ -157,7 +157,7 @@ const FileUploadSection = () => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <Upload className="mx-auto mb-4 h-12 w-12 text-blue-500" />
+        <Upload className="mx-auto mb-4 size-12 text-blue-500" />
         <p className="mb-2 text-gray-600">
           <span className="font-medium">Drag & drop files here, or </span>
           <label className="cursor-pointer font-medium text-blue-600 underline hover:text-blue-700">
@@ -191,7 +191,7 @@ const FileUploadSection = () => {
                 className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
               >
                 <div className="flex items-center space-x-3">
-                  <FileText className="h-5 w-5 text-blue-500" />
+                  <FileText className="size-5 text-blue-500" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">
                       {uploadedFile.file.name}
@@ -205,7 +205,7 @@ const FileUploadSection = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => removeFile(uploadedFile.id)}
-                  className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                  className="size-8 p-0 hover:bg-red-100 hover:text-red-600"
                 >
                   <X className="size-4" />
                 </Button>

@@ -149,7 +149,7 @@ const UsersTab = ({
                 <TableRow key={user.id}>
                   <TableCell>
                     <div className="flex items-center space-x-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
+                      <div className="flex size-8 items-center justify-center rounded-full bg-blue-100">
                         <span className="text-sm font-medium text-blue-600">
                           {user.name
                             .split(" ")

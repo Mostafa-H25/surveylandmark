@@ -74,7 +74,7 @@ const SystemTab = ({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <SettingsIcon className="h-5 w-5 text-blue-600" />
+            <SettingsIcon className="size-5 text-blue-600" />
             System Settings
           </CardTitle>
           <CardDescription>

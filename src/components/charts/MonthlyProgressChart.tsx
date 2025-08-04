@@ -23,7 +23,7 @@ const MonthlyProgressChart = () => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-blue-600" />
+          <BarChart3 className="size-5 text-blue-600" />
           Monthly Progress
         </CardTitle>
         <CardDescription>

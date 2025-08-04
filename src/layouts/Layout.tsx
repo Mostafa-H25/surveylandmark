@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               size="sm"
               onClick={() => setSidebarOpen(false)}
             >
-              <X className="h-5 w-5" />
+              <X className="size-5" />
             </Button>
           </div>
           <nav className="flex-1 px-4 py-6 space-y-2">
@@ -47,7 +47,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }`}
                   onClick={() => setSidebarOpen(false)}
                 >
-                  <Icon className="mr-3 h-5 w-5" />
+                  <Icon className="mr-3 size-5" />
                   {item.name}
                 </Link>
               );
@@ -59,7 +59,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               className="w-full justify-start text-red-600 hover:bg-red-50"
               onClick={logout}
             >
-              <LogOut className="mr-3 h-5 w-5" />
+              <LogOut className="mr-3 size-5" />
               Logout
             </Button>
           </div>
@@ -79,7 +79,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               size="sm"
               onClick={() => setSidebarOpen(true)}
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="size-5" />
             </Button>
             <h1 className="text-lg font-semibold text-blue-600">
               Survey LANDMARK

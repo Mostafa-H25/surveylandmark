@@ -74,7 +74,7 @@ const MessagingTab = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Send className="h-5 w-5 text-blue-600" />
+            <Send className="size-5 text-blue-600" />
             Send New Message
           </CardTitle>
           <CardDescription>

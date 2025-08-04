@@ -8,12 +8,12 @@ import ProjectInformation from "@/components/pages/new-project/ProjectInformatio
 const NewProject = () => {
   const navigate = useNavigate();
   return (
-    <main className="flex-1 space-y-6 overflow-auto p-6">
-      <header className="border-b border-gray-200 bg-white px-6 py-4">
+    <main className="space-y-6">
+      <header className="rounded-md border border-gray-200 bg-white px-6 py-4">
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate("/dashboard")}
-            className="rounded p-1 hover:bg-gray-100"
+            className="rounded-md p-1 hover:bg-gray-100"
           >
             <ArrowLeft className="size-5 text-gray-600" />
           </button>

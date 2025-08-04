@@ -27,7 +27,7 @@ const SecurityTab = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-blue-600" />
+            <Shield className="size-5 text-blue-600" />
             Security
           </CardTitle>
           <CardDescription>Manage your account security</CardDescription>

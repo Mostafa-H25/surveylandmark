@@ -55,8 +55,8 @@ const Registration = () => {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 px-4">
       <Card className="w-full max-w-xl">
         <CardHeader className="space-y-4 px-8 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-600">
-            <Building2 className="h-8 w-8 text-white" />
+          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-600">
+            <Building2 className="size-8 text-white" />
           </div>
           <div>
             <CardTitle className="text-3xl text-gray-900">Welcome To</CardTitle>

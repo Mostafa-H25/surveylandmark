@@ -199,7 +199,7 @@ const UnitDetails = () => {
           </Button>
 
           <div className="mb-2 flex items-center gap-3">
-            <Building className="h-8 w-8 text-blue-600" />
+            <Building className="size-8 text-blue-600" />
             <h1 className="text-3xl font-bold text-gray-900">{unit.name}</h1>
           </div>
           <p className="text-lg text-gray-600">
@@ -214,7 +214,7 @@ const UnitDetails = () => {
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
-                  <Building className="h-5 w-5 text-gray-600" />
+                  <Building className="size-5 text-gray-600" />
                   Unit Information
                 </CardTitle>
               </CardHeader>
@@ -293,7 +293,7 @@ const UnitDetails = () => {
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-gray-600" />
+                  <User className="size-5 text-gray-600" />
                   Sales Team
                 </CardTitle>
               </CardHeader>
@@ -304,8 +304,8 @@ const UnitDetails = () => {
                       Sales Manager
                     </label>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-                        <User className="h-5 w-5 text-blue-600" />
+                      <div className="flex size-10 items-center justify-center rounded-full bg-blue-100">
+                        <User className="size-5 text-blue-600" />
                       </div>
                       <div>
                         <p className="font-semibold text-gray-900">
@@ -321,8 +321,8 @@ const UnitDetails = () => {
                       Sales Agent
                     </label>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                        <User className="h-5 w-5 text-green-600" />
+                      <div className="flex size-10 items-center justify-center rounded-full bg-green-100">
+                        <User className="size-5 text-green-600" />
                       </div>
                       <div>
                         <p className="font-semibold text-gray-900">
@@ -341,7 +341,7 @@ const UnitDetails = () => {
               <Card className="border-0 bg-white shadow-lg">
                 <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                   <CardTitle className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-gray-600" />
+                    <CreditCard className="size-5 text-gray-600" />
                     Payment Information
                   </CardTitle>
                 </CardHeader>
@@ -387,7 +387,7 @@ const UnitDetails = () => {
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-gray-600" />
+                  <TrendingUp className="size-5 text-gray-600" />
                   Quick Stats
                 </CardTitle>
               </CardHeader>
@@ -422,7 +422,7 @@ const UnitDetails = () => {
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-gray-600" />
+                  <MapPin className="size-5 text-gray-600" />
                   Location Details
                 </CardTitle>
               </CardHeader>
@@ -463,7 +463,7 @@ const UnitDetails = () => {
             <Card className="mt-6 border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-gray-600" />
+                  <FileText className="size-5 text-gray-600" />
                   Installment Schedule
                 </CardTitle>
               </CardHeader>

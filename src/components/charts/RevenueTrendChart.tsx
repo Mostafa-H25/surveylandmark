@@ -23,7 +23,7 @@ const RevenueTrendChart = () => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-blue-600" />
+          <TrendingUp className="size-5 text-blue-600" />
           Revenue Trend
         </CardTitle>
         <CardDescription>Monthly revenue growth</CardDescription>

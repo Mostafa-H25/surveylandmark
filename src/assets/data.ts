@@ -1453,3 +1453,116 @@ export const storageData = [
     recipient: "Malaverned Mostafa",
   },
 ];
+
+export const memberData = {
+  name: "John Smith",
+  position: "Project Manager",
+  email: "superadmin@jandmark.com",
+  phone: "+1 (555) 123-4567",
+  currentProject: {
+    title: "Skyline Tower Renovation",
+    location: "Downtown District",
+    duration: "Jan 1994 - Dec 2006",
+    description:
+      "Major overhaul of the Skyline Tower including facade and core systems upgrade.",
+  },
+  financialLimit: {
+    amount: "$250,000",
+    authorizedBy: "Owner",
+  },
+  responsibilities: [
+    "Full Project Access",
+    "Budget Allocation Approval",
+    "Staff Oversight",
+    "Quality & Safety Management",
+    "Reporting to Owner",
+  ],
+};
+
+export const contractorData = {
+  name: "John Smith",
+  role: "Contractor",
+  email: "superadmin@jandmark.com",
+  phone: "+1 (555) 123-4567",
+  rate: 4,
+  currentProject: {
+    title: "Skyline Tower Renovation",
+    location: "Downtown District",
+    duration: "Jan 1994 - Dec 2006",
+    description:
+      "Major overhaul of the Skyline Tower including facade and core systems upgrade.",
+  },
+  responsibilities: [
+    "Full Project Access",
+    "Budget Allocation Approval",
+    "Staff Oversight",
+    "Quality & Safety Management",
+    "Reporting to Owner",
+  ],
+  bio: [
+    {
+      position: "Construction Manager",
+      company: "Mérito Deveticiens",
+      duration: "2018 - 2024",
+      description:
+        "Led construction teams for multiple high-rise luxury apartment projects.",
+    },
+    {
+      position: "Site Engineer",
+      company: "Concrete Co.",
+      duration: "2015 - 2018",
+      description:
+        "Managed on-site engineering tasks and ensured safety compliance.",
+    },
+  ],
+  payments: [
+    {
+      id: 65,
+      paymentName: "January 2025",
+      type: "payment",
+      amount: 10000,
+      item: "Concrete Supply",
+      date: "2025-01-15",
+    },
+    {
+      id: 53,
+      paymentName: "February 2025",
+      type: "deduction",
+      amount: 800,
+      item: "Labor Payment",
+      date: "2025-02-10",
+    },
+    {
+      id: 90,
+      paymentName: "January 2025",
+      type: "payment",
+      amount: 10000,
+      item: "Concrete Supply",
+      date: "2025-01-15",
+    },
+    {
+      id: 65,
+      paymentName: "February 2025",
+      type: "payment",
+      amount: 8500,
+      item: "Labor Payment",
+      date: "2025-02-10",
+    },
+    {
+      id: 99,
+      paymentName: "January 2025",
+      type: "deduction",
+      amount: 100,
+      item: "Concrete Supply",
+      date: "2025-01-15",
+    },
+    {
+      id: 42,
+      paymentName: "February 2025",
+      type: "deduction",
+      amount: 90,
+      item: "Labor Payment",
+      date: "2025-02-10",
+    },
+  ],
+};

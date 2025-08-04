@@ -22,6 +22,8 @@ import UsersManagement from "./pages/UsersManagement";
 import { ProtectedRoute } from "./guards/ProtectedRoute";
 import ClientsManagement from "./pages/ClientsManagement";
 import Registration from "./pages/Registration";
+import MemberProfile from "./pages/MemberProfile";
+import ContractorProfile from "./pages/ContractorProfile";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +59,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ItemPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/members/:id"
+              element={
+                <ProtectedRoute>
+                  <MemberProfile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/contractors/:id"
+              element={
+                <ProtectedRoute>
+                  <ContractorProfile />
                 </ProtectedRoute>
               }
             />

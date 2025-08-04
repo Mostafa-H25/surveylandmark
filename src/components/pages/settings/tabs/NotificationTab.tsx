@@ -25,7 +25,7 @@ const NotificationTab = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Bell className="h-5 w-5 text-blue-600" />
+            <Bell className="size-5 text-blue-600" />
             Notification Preferences
           </CardTitle>
           <CardDescription>

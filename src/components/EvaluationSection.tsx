@@ -37,7 +37,7 @@ const EvaluationSection = ({ rating, contractor }: EvaluationSectionProps) => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Award className="h-5 w-5 text-yellow-500" />
+            <Award className="size-5 text-yellow-500" />
             Contractor Evaluation - {contractor}
           </CardTitle>
         </CardHeader>
@@ -55,17 +55,17 @@ const EvaluationSection = ({ rating, contractor }: EvaluationSectionProps) => {
             <div className="flex-1 space-y-4">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <ThumbsUp className="mx-auto mb-1 h-6 w-6 text-green-500" />
+                  <ThumbsUp className="mx-auto mb-1 size-6 text-green-500" />
                   <p className="text-lg font-semibold">92%</p>
                   <p className="text-xs text-gray-500">Satisfaction</p>
                 </div>
                 <div>
-                  <MessageSquare className="mx-auto mb-1 h-6 w-6 text-blue-500" />
+                  <MessageSquare className="mx-auto mb-1 size-6 text-blue-500" />
                   <p className="text-lg font-semibold">24</p>
                   <p className="text-xs text-gray-500">Reviews</p>
                 </div>
                 <div>
-                  <Award className="mx-auto mb-1 h-6 w-6 text-purple-500" />
+                  <Award className="mx-auto mb-1 size-6 text-purple-500" />
                   <p className="text-lg font-semibold">15</p>
                   <p className="text-xs text-gray-500">Projects</p>
                 </div>

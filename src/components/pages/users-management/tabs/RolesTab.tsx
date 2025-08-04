@@ -58,7 +58,7 @@ const RolesTab = ({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <UserPlus className="h-5 w-5 text-blue-600" />
+            <UserPlus className="size-5 text-blue-600" />
             Role & Project Assignment
           </CardTitle>
           <CardDescription>Assign roles and projects to users</CardDescription>

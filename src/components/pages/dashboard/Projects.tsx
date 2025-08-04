@@ -14,7 +14,7 @@ const Projects = () => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-2xl font-normal">
-          <TrendingUp className="h-5 w-5 text-blue-600" />
+          <TrendingUp className="size-5 text-blue-600" />
           Recent Projects
         </CardTitle>
         <CardDescription>Latest project activities and updates</CardDescription>

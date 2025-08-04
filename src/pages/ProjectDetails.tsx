@@ -339,7 +339,6 @@ const ProjectDetails = () => {
         </CardContent>
       </Card>
 
-      {/* Departments Section */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>

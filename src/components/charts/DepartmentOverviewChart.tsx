@@ -23,7 +23,7 @@ const DepartmentOverviewChart = () => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Building2 className="h-5 w-5 text-blue-600" />
+          <Building2 className="size-5 text-blue-600" />
           Department Overview
         </CardTitle>
         <CardDescription>Projects and budget by department</CardDescription>

@@ -34,7 +34,7 @@ const Sidebar = () => {
                 { "bg-blue-100 text-blue-700": isActive },
               )}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="size-5" />
               {item.name}
             </Link>
           );

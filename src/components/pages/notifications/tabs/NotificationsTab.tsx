@@ -40,7 +40,7 @@ const NotificationsTab = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-red-600" />
+            <AlertTriangle className="size-5 text-red-600" />
             System Alerts
           </CardTitle>
           <CardDescription>

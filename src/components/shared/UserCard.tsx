@@ -4,7 +4,7 @@ const UserCard = () => {
   const { user } = useAuth();
   return (
     <div className="flex h-auto w-full items-center justify-start space-x-3 p-2">
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
+      <div className="flex size-12 items-center justify-center rounded-full bg-blue-100">
         <span className="text-sm font-medium text-blue-600">
           {user?.name.charAt(0)}
         </span>

@@ -63,7 +63,7 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
             </div>
           ) : (
             <div className="py-8 text-center text-gray-500">
-              <Upload className="mx-auto mb-4 h-12 w-12 text-gray-300" />
+              <Upload className="mx-auto mb-4 size-12 text-gray-300" />
               <p>No images uploaded yet</p>
               <Button variant="outline" className="mt-4">
                 Upload First Image

@@ -160,8 +160,8 @@ const ClientsManagement = () => {
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex items-center space-x-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-                    <Building2 className="h-6 w-6 text-blue-600" />
+                  <div className="flex size-12 items-center justify-center rounded-full bg-blue-100">
+                    <Building2 className="size-6 text-blue-600" />
                   </div>
                   <div>
                     <CardTitle className="text-xl">{client.name}</CardTitle>
@@ -284,7 +284,7 @@ const ClientsManagement = () => {
                                   {React.createElement(
                                     getDepartmentIcon(department.name),
                                     {
-                                      className: "h-5 w-5 text-gray-600",
+                                      className: "size-5 text-gray-600",
                                     },
                                   )}
                                   <h6 className="font-medium text-gray-900">

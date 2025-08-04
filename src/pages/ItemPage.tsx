@@ -145,7 +145,7 @@ const ItemPage = () => {
                     {itemData.status}
                   </Badge>
                 </div>
-                <TrendingUp className="h-8 w-8 text-blue-600" />
+                <TrendingUp className="size-8 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -159,7 +159,7 @@ const ItemPage = () => {
                     {itemData.achievementPercentage}%
                   </p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-green-600" />
+                <CheckCircle className="size-8 text-green-600" />
               </div>
             </CardContent>
           </Card>
@@ -173,7 +173,7 @@ const ItemPage = () => {
                     ${itemData.payments.toLocaleString()}
                   </p>
                 </div>
-                <DollarSign className="h-8 w-8 text-green-600" />
+                <DollarSign className="size-8 text-green-600" />
               </div>
             </CardContent>
           </Card>
@@ -189,7 +189,7 @@ const ItemPage = () => {
                     {itemData.confirmations.length}
                   </p>
                 </div>
-                <Users className="h-8 w-8 text-blue-600" />
+                <Users className="size-8 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -211,7 +211,7 @@ const ItemPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Building className="h-5 w-5" />
+                    <Building className="size-5" />
                     Basic Information
                   </CardTitle>
                 </CardHeader>
@@ -261,7 +261,7 @@ const ItemPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Layers className="h-5 w-5" />
+                    <Layers className="size-5" />
                     Technical Specifications
                   </CardTitle>
                 </CardHeader>
@@ -287,7 +287,7 @@ const ItemPage = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
+                  <Users className="size-5" />
                   Project Confirmations ({itemData.confirmations.length})
                 </CardTitle>
               </CardHeader>
@@ -299,7 +299,7 @@ const ItemPage = () => {
                       className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 p-4"
                     >
                       <div className="flex items-center gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <CheckCircle className="size-5 text-green-600" />
                         <div>
                           <p className="font-semibold text-gray-900">
                             {confirmation.name}
@@ -344,14 +344,14 @@ const ItemPage = () => {
                   </div>
                   <div className="mt-6 grid grid-cols-2 gap-4">
                     <div className="rounded-lg bg-green-50 p-4 text-center">
-                      <CheckCircle className="mx-auto mb-2 h-8 w-8 text-green-600" />
+                      <CheckCircle className="mx-auto mb-2 size-8 text-green-600" />
                       <p className="text-lg font-semibold text-green-600">
                         {itemData.acceptedImages.length}
                       </p>
                       <p className="text-sm text-gray-600">Accepted Items</p>
                     </div>
                     <div className="rounded-lg bg-red-50 p-4 text-center">
-                      <XCircle className="mx-auto mb-2 h-8 w-8 text-red-600" />
+                      <XCircle className="mx-auto mb-2 size-8 text-red-600" />
                       <p className="text-lg font-semibold text-red-600">
                         {itemData.refusedItems}
                       </p>
