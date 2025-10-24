@@ -1,9 +1,10 @@
-import { Bell, Plus } from "lucide-react";
+import { Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import UserCard from "@/components/shared/UserCard";
+import { useAuthStore } from "@/lib/store/use-auth-store";
 import Projects from "@/components/pages/dashboard/Projects";
 import { roleHierarchy, UserRolesEnum } from "@/constants/defaults";
 import QuickActions from "@/components/pages/dashboard/QuickActions";
@@ -20,13 +21,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import { useAuth } from "../contexts/AuthContext";
+import AddUserDialog from "@/components/shared/dialogs/AddUserDialog";
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
@@ -71,13 +70,14 @@ const Dashboard = () => {
             <p className="text-gray-600">
               Start by inviting team members to collaborate on survey projects.
             </p>
-            <Button
+            <AddUserDialog />
+            {/* <Button
               onClick={() => navigate("/invite-team-members")}
               className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
             >
               <Plus className="size-5" />
               Invite Team Members
-            </Button>
+            </Button> */}
           </CardContent>
         )}
       </Card>

@@ -20,25 +20,43 @@ import type {
   ConstructionView,
 } from "./default";
 
-interface User {
-  id: string;
+export interface AuthUser {
   name: string;
   email: string;
   role: UserRole;
-  profile: Profile;
-  status: UserStatus;
-  permission: UserPermission;
-  twoFactorAuthentication: boolean;
-  createdAt: string;
 }
 
-interface Profile {
-  bio: string;
-  image: string;
-  company?: Company;
+export type UserProfile = AuthUser & {
+  phone: string;
+  bio?: string;
+  location?: string;
+  createdAt: string;
   lastLogin: string;
-  projects?: Project[];
-  notificationConfig: NotificationConfig;
+  department?: string;
+  profileImage?: File;
+  profileImageUrl?: string;
+};
+
+export type FormUser = Omit<
+  UserProfile,
+  | "email"
+  | "role"
+  | "profileImage"
+  | "profileImageUrl"
+  | "createdAt"
+  | "lastLogin"
+>;
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: UserRole;
+  permmisions: UserPermission;
+  status: UserStatus;
+  createdAt: string;
+  project: { id: string; name: string }[];
 }
 
 interface Company {
@@ -61,8 +79,8 @@ interface NotificationConfig {
 
 interface Message {
   id: string;
-  from: User;
-  to: User;
+  from: UserProfile;
+  to: UserProfile;
   subject: string;
   body: string;
   priority: Priority;

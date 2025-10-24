@@ -1,6 +1,14 @@
 import { type Dispatch, type SetStateAction, useState } from "react";
 
-import { Building2, Edit, Search, Trash2, Users } from "lucide-react";
+import {
+  Building2,
+  Edit,
+  EllipsisVertical,
+  Pencil,
+  Search,
+  Trash2,
+  Users,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -14,7 +22,6 @@ import {
   UserRolesEnum,
   UserStatusEnum,
 } from "@/constants/defaults";
-import { type UserRole, useAuth } from "@/contexts/AuthContext";
 import {
   Card,
   CardContent,
@@ -37,21 +44,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { UserRole, UserStatus } from "@/types/default";
+import { useAuthStore } from "@/lib/store/use-auth-store";
+import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface User {
   id: string;
   name: string;
   email: string;
+  phone: string;
   role: UserRole;
-  status: "active" | "inactive";
+  status: UserStatus;
   joinDate: string;
-  projects: string[];
-  financialLimit?: number;
+  project: { id: string; name: string }[];
 }
 
 type Props = {
   users: User[];
-  setSelectedUserId: Dispatch<SetStateAction<string>>;
   setIsAssignProjectOpen: Dispatch<SetStateAction<boolean>>;
   setIsDeleteUserOpen: Dispatch<SetStateAction<boolean>>;
   handleEditUser: (userId: string) => void;
@@ -59,12 +76,11 @@ type Props = {
 
 const UsersTab = ({
   users,
-  setSelectedUserId,
   setIsAssignProjectOpen,
   setIsDeleteUserOpen,
   handleEditUser,
 }: Props) => {
-  const { user: currentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("all");
 
@@ -77,15 +93,12 @@ const UsersTab = ({
   });
 
   const handleAssignProject = (userId: string) => {
-    setSelectedUserId(userId);
     setIsAssignProjectOpen(true);
   };
 
   const handleDeleteUser = (userId: string) => {
-    setSelectedUserId(userId);
     setIsDeleteUserOpen(true);
   };
-
   return (
     <TabsContent value={UserManagementTabsEnum.USERS} className="space-y-6">
       {/* Filters */}
@@ -136,10 +149,11 @@ const UsersTab = ({
             <TableHeader>
               <TableRow>
                 <TableHead>User</TableHead>
+                <TableHead>Phone</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Projects</TableHead>
-                <TableHead>Financial Limit</TableHead>
+                {/* <TableHead>Financial Limit</TableHead> */}
                 <TableHead>Join Date</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -167,6 +181,7 @@ const UsersTab = ({
                       </div>
                     </div>
                   </TableCell>
+                  <TableCell>{formatPhoneNumber(user.phone)}</TableCell>
                   <TableCell>
                     <Badge
                       className={cn(
@@ -191,56 +206,59 @@ const UsersTab = ({
                   </TableCell>
                   <TableCell>
                     <div className="max-w-xs">
-                      {user.projects.slice(0, 2).map((project, index) => (
+                      {user.project?.slice(0, 2)?.map((project) => (
                         <span
-                          key={index}
-                          className="mr-1 rounded bg-gray-100 px-2 py-1 text-xs text-gray-700"
+                          key={project.id}
+                          className="mr-1 rounded bg-gray-100 px-2 py-1 text-xs text-gray-700 capitalize"
                         >
-                          {project}
+                          {project.name}
                         </span>
                       ))}
-                      {user.projects.length > 2 && (
+                      {user.project?.length > 2 && (
                         <span className="text-xs text-gray-500">
-                          +{user.projects.length - 2} more
+                          +{user.project.length - 2} more
                         </span>
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     {user.financialLimit
                       ? `$${user.financialLimit.toLocaleString()}`
                       : "-"}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="text-sm text-gray-600">
                     {new Date(user.joinDate).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleAssignProject(user.id)}
-                      >
-                        <Building2 className="size-3" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditUser(user.id)}
-                      >
-                        <Edit className="size-3" />
-                      </Button>
-                      {currentUser?.role === UserRolesEnum.SUPER_ADMIN &&
-                        user.id !== currentUser.id && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDeleteUser(user.id)}
-                            className="text-red-600 hover:text-red-700"
+                    <div className="flex justify-center gap-1">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="cursor-pointer rounded-full p-2 hover:bg-gray-500/20">
+                          <EllipsisVertical />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem
+                            onClick={() => handleAssignProject(user.id)}
+                            className="hover:bg-gray-100"
                           >
-                            <Trash2 className="size-3" />
-                          </Button>
-                        )}
+                            <Building2 className="size-4" />
+                            Assign Projects
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="hover:bg-gray-100">
+                            <Pencil className="size-4" />
+                            Edit Role
+                          </DropdownMenuItem>
+                          {currentUser?.role === UserRolesEnum.SUPER_ADMIN &&
+                            user.id !== currentUser?.id && (
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteUser(user.id)}
+                                className="text-red-600 hover:bg-red-100 hover:text-red-700"
+                              >
+                                <Trash2 className="size-4 text-red-600 hover:text-red-700" />
+                                Delete
+                              </DropdownMenuItem>
+                            )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </TableCell>
                 </TableRow>

@@ -1,21 +1,29 @@
 import { Button } from "../ui/button";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import { navigation } from "@/constants/defaults";
 import { LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import UserCard from "./UserCard";
 import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
+import { useAuthStore } from "@/lib/store/use-auth-store";
+import { logoutApi } from "@/api/auth/logout.api";
 
 const Sidebar = () => {
-  const { user, logout } = useAuth();
   const location = useLocation();
+  const user = useAuthStore((state) => state.user);
+  const removeToken = useAuthStore((state) => state.removeToken);
 
   const filteredNavigation = navigation.filter((item) => {
     if (!item?.requiredRole) return true;
 
     return isRequiredRoleOrHigher(item.requiredRole, user?.role);
   });
+
+  const logout = async () => {
+    await logoutApi();
+    removeToken();
+  };
+
   return (
     <div className="hidden border-r border-gray-200 bg-white lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
       <div className="flex h-16 items-center border-b px-6">

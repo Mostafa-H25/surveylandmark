@@ -1,7 +1,7 @@
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuthStore } from "@/lib/store/use-auth-store";
 
 const UserCard = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   return (
     <div className="flex h-auto w-full items-center justify-start space-x-3 p-2">
       <div className="flex size-12 items-center justify-center rounded-full bg-blue-100">
@@ -14,7 +14,7 @@ const UserCard = () => {
           {user?.name}
         </p>
         <p className="text-xs text-gray-500 capitalize">
-          {user?.role.replaceAll("_", " ")}
+          {user?.role?.replaceAll("_", " ")}
         </p>
       </div>
     </div>

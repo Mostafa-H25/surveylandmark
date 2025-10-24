@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
 import {
   Card,
   CardContent,
@@ -25,9 +24,10 @@ import {
 import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
 import { ReportTypesEnum, UserRolesEnum } from "@/constants/defaults";
 import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
+import { useAuthStore } from "@/lib/store/use-auth-store";
 
 const QuickActions = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const { toast } = useToast();
   const isMember = user?.role === UserRolesEnum.MEMBER;

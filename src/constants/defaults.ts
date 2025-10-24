@@ -1,4 +1,9 @@
-import type { UserRole } from "@/contexts/AuthContext";
+import type {
+  Status,
+  UserPermission,
+  UserRole,
+  UserStatus,
+} from "@/types/default";
 import {
   LayoutDashboard,
   Users,
@@ -49,24 +54,20 @@ export const SeverityEnum = {
   },
 };
 
-type TUserPermissions = "full_access" | "limited_access" | "view_only";
-
-export const UserPermissionsEnum: Record<string, TUserPermissions> = {
-  FULL_ACCESS: "full_access",
-  LIMITED_ACCESS: "limited_access",
-  VIEW_ONLY: "view_only",
+export const UserPermissionsEnum: Record<string, UserPermission> = {
+  FULL_ACCESS: "fullAccess",
+  LIMITED_ACCESS: "limitedAccess",
+  VIEW_ONLY: "viewOnly",
 };
 export const userPermissions = Object.values(UserPermissionsEnum);
 
-type TUserStatus = "active" | "inactive";
-
-export const UserStatusEnum: Record<string, TUserStatus> = {
+export const UserStatusEnum: Record<string, UserStatus> = {
   ACTIVE: "active",
   INACTIVE: "inactive",
 };
 
 export const UserRolesEnum: Record<string, UserRole> = {
-  SUPER_ADMIN: "super_admin",
+  SUPER_ADMIN: "superAdmin",
   ADMIN: "admin",
   MEMBER: "member",
 };
@@ -118,12 +119,14 @@ export type TFileCategories =
   | "sales"
   | "storage"
   | "standards";
+
 export const CategoriesEnum: Record<string, TFileCategories> = {
   CONSTRUCTION: "construction",
   SALES: "sales",
   STORAGE: "storage",
   STANDARDS: "standards",
 };
+
 export const fileCategories = [
   {
     value: CategoriesEnum.CONSTRUCTION,
@@ -151,6 +154,7 @@ export const fileCategories = [
 ];
 
 export type TFileExtensions = "excel" | "csv" | "pdf" | "doc";
+
 export const FileExtensionEnum: Record<string, TFileExtensions> = {
   EXCEL: "excel",
   CSV: "csv",
@@ -164,17 +168,13 @@ export const fileExtensions = [
   { value: FileExtensionEnum.DOC, label: "Word (.docx)" },
 ];
 
-export type ProjectStatus =
-  | "planning"
-  | "in-progress"
-  | "completed"
-  | "on-hold";
-export const ProjectStatusEnum: Record<string, ProjectStatus> = {
+export const ProjectStatusEnum: Record<string, Status> = {
   PLANNING: "planning",
-  IN_PROGRESS: "in-progress",
+  IN_PROGRESS: "inProgress",
   COMPLETED: "completed",
-  ON_HOLDING: "on-hold",
+  ON_HOLDING: "onHold",
 };
+
 export const projectStatus = Object.values(ProjectStatusEnum);
 
 export type TUserManagementTabs =
@@ -182,15 +182,18 @@ export type TUserManagementTabs =
   | "roles_&_projects"
   | "permissions"
   | "system_settings";
+
 export const UserManagementTabsEnum: Record<string, TUserManagementTabs> = {
   USERS: "users",
   // ROLES: "roles_&_projects",
-  PERMISSIONS: "permissions",
+  // PERMISSIONS: "permissions",
   // SYSTEM: "system_settings",
 };
+
 export const userManagementTabs = Object.values(UserManagementTabsEnum);
 
 export type TReportTypes = "project" | "financial" | "sales" | "inventory";
+
 export const ReportTypesEnum: Record<
   string,
   { value: TReportTypes; label: string; icon: React.ComponentType<any> }
@@ -204,6 +207,7 @@ export const ReportTypesEnum: Record<
   SALES: { value: "sales", label: "sales reports", icon: FileText },
   INVENTORY: { value: "inventory", label: "inventory status", icon: Package },
 };
+
 export const reportTypes = Object.values(ReportTypesEnum);
 
 export type TAlert = "deadline" | "payment" | "inventory";
@@ -222,6 +226,7 @@ export type TConstructionSection =
   | "materials"
   | "payments"
   | "contractors_&_suppliers";
+
 export const ConstructionSectionsEnum: Record<string, TConstructionSection> = {
   OVERVIEW: "overview",
   MEMBERS: "members",
@@ -230,13 +235,16 @@ export const ConstructionSectionsEnum: Record<string, TConstructionSection> = {
   PAYMENTS: "payments",
   CONTRACTORS: "contractors_&_suppliers",
 };
+
 export const constructionSections = Object.values(ConstructionSectionsEnum);
 
 export type TSalesSection = "overview" | "members" | "incomes" | "units";
+
 export const SalesSectionsEnum: Record<string, TSalesSection> = {
   OVERVIEW: "overview",
   MEMBERS: "members",
   INCOMES: "incomes",
   UNITS: "units",
 };
+
 export const salesSections = Object.values(SalesSectionsEnum);

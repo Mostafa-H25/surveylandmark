@@ -9,24 +9,33 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import type { Dispatch, SetStateAction } from "react";
+import type { User } from "@/types/interfaces";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 type Props = {
+  user: User;
+  onSuccess: () => void;
   isAssignProjectOpen: boolean;
   setIsAssignProjectOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const AssignProjectToUserDialog = ({
+  user,
+  onSuccess,
   isAssignProjectOpen,
   setIsAssignProjectOpen,
 }: Props) => {
   const { toast } = useToast();
+  // const [projects, setProjects] = useState([]);
+
+  // const fetchProjects = () => {};
 
   const handleAssignProjectsToUser = () => {
     toast({
       title: "Projects Assigned",
       description: "Projects have been assigned to the user",
     });
+    onSuccess();
     setIsAssignProjectOpen(false);
   };
 

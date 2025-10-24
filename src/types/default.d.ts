@@ -1,11 +1,11 @@
-export type UserRole = "super_admin" | "admin" | "member";
-export type UserPermission = "full_access" | "limited_access" | "view_only";
+export type UserRole = "superAdmin" | "admin" | "member";
+export type UserPermission = "fullAccess" | "limitedAccess" | "viewOnly";
 export type UserStatus = "active" | "inactive";
 export type DepartmentType = "construction" | "sales" | "storage";
 export type Priority = "low" | "normal" | "high";
 export type MessageStatus = "read" | "unread";
 
-export type Status = "planning" | "in_progress" | "completed" | "on_hold";
+export type Status = "planning" | "inProgress" | "completed" | "onHold";
 export type UnitType = "residential" | "administrative" | "commercial";
 export type SaleType = "sale" | "rent";
 export type UnitStatus = "available" | "reserved" | "sold" | "rented";

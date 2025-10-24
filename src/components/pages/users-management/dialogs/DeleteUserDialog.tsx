@@ -1,3 +1,4 @@
+import { deleteUserApi } from "@/api/user/delete-user.api";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,23 +8,42 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import type { User } from "@/types/interfaces";
 import type { Dispatch, SetStateAction } from "react";
 
 type Props = {
+  user: User;
+  onSuccess: () => void;
   isDeleteUserOpen: boolean;
   setIsDeleteUserOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const DeleteUserDialog = ({ isDeleteUserOpen, setIsDeleteUserOpen }: Props) => {
+const DeleteUserDialog = ({
+  user,
+  onSuccess,
+  isDeleteUserOpen,
+  setIsDeleteUserOpen,
+}: Props) => {
   const { toast } = useToast();
 
-  const handleConfirmDelete = () => {
-    toast({
-      title: "User Deleted",
-      description: `User has been deleted successfully`,
-      variant: "destructive",
-    });
-    setIsDeleteUserOpen(false);
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteUserApi(user.id);
+      toast({
+        title: "User Deleted",
+        description: `User has been deleted successfully`,
+        variant: "destructive",
+      });
+      onSuccess();
+      setIsDeleteUserOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "User Delete Failed",
+        description: `User delete failed, please try again.`,
+        variant: "destructive",
+      });
+    }
   };
 
   return (

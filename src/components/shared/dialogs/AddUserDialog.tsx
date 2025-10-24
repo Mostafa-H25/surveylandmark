@@ -15,36 +15,45 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import UserForm from "../forms/UserForm";
+import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { inviteUserApi } from "@/api/user/invite-user.api";
 
 const AddUserDialog = () => {
   const { toast } = useToast();
-
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [newUser, setNewUser] = useState({
+  const defaultValues = {
     name: "",
     email: "",
     role: UserRolesEnum.MEMBER,
-    financialLimit: "",
-  });
+  };
+  const form = useForm({ defaultValues, mode: "onBlur" });
 
   const handleAddUser = () => {
     setIsAddUserOpen(true);
   };
 
-  const handleSubmitNewUser = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "User Created",
-      description: `User ${newUser.name} has been created successfully`,
-    });
-    setIsAddUserOpen(false);
-    setNewUser({
-      name: "",
-      email: "",
-      role: "member",
-      financialLimit: "",
-    });
+  const handleSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
+    setIsSubmitting(true);
+
+    try {
+      await inviteUserApi(data);
+      toast({
+        title: "User Invited",
+        description: `User ${data.name} has been invited successfully.`,
+      });
+      setIsAddUserOpen(false);
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "User Invite Failed",
+        description: "User invitation failed, please try again.",
+        variant: "destructive",
+      });
+    }
+    setIsSubmitting(false);
   };
 
   return (
@@ -63,12 +72,13 @@ const AddUserDialog = () => {
           <DialogTitle>Add New User</DialogTitle>
           <DialogDescription>Create a new user account</DialogDescription>
         </DialogHeader>
-        <UserForm
-          user={newUser}
-          setUser={setNewUser}
-          setUserFormOpen={setIsAddUserOpen}
-          handleSubmit={handleSubmitNewUser}
-        />
+        <FormProvider {...form}>
+          <UserForm
+            setUserFormOpen={setIsAddUserOpen}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );

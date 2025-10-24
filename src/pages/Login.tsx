@@ -1,48 +1,71 @@
-import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Building2 } from "lucide-react";
+import { Navigate } from "react-router-dom";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+
+import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { emailPattern } from "@/constants/regex";
+import { parseBoolean } from "@/helpers/parseBoolean";
+import { useAuthStore } from "@/lib/store/use-auth-store";
+import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Building2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { loginApi } from "@/api/auth/login.api";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { user, login, isLoading } = useAuth();
   const { toast } = useToast();
+  const { token, isLoading, setToken, setIsLoading } = useAuthStore();
 
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  const keepAlive = parseBoolean(localStorage.getItem("keepAlive")) ?? false;
+  const defaultValues = {
+    email: "",
+    password: "",
+    keepAlive,
+  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const form = useForm({ defaultValues, mode: "onBlur" });
+  const {
+    control,
+    handleSubmit,
+    reset,
+    // formState: { errors },
+    // watch,
+  } = form;
 
-    const success = await login(email, password);
-
-    if (success) {
+  const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
+    setIsLoading(true);
+    try {
+      const result = await loginApi({
+        email: data.email,
+        password: data.password,
+      });
+      setToken(result.token);
+      reset();
       toast({
-        title: "Login successful",
+        title: "Login Successful",
         description: "Welcome back!",
       });
-    } else {
+    } catch (error) {
+      console.error(error);
       toast({
-        title: "Login failed",
+        title: "Login Failed",
         description: "Invalid email or password",
         variant: "destructive",
       });
     }
+
+    setIsLoading(false);
   };
+
+  if (token) return <Navigate to="/dashboard" replace />;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 px-4">
@@ -65,29 +88,68 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="px-8">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-4">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-4">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                required: "Email field is required.",
+                pattern: {
+                  value: emailPattern,
+                  message: "This is not a valid email.",
+                },
+                validate: {
+                  isEmpty: (value) => validateEmptyAfterTrim(value, "Email"),
+                },
+              }}
+              render={({ field, fieldState: { error } }) => (
+                <div>
+                  <div className="space-y-4">
+                    <Label htmlFor={field.name}>Email</Label>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      type="email"
+                      placeholder="Enter your email"
+                      className={cn("border", { "border-red-500": error })}
+                      required
+                    />
+                  </div>
+                  {error && (
+                    <span className="text-sm text-red-500">
+                      {error?.message}
+                    </span>
+                  )}
+                </div>
+              )}
+            />
+            <Controller
+              name="password"
+              control={control}
+              rules={{
+                required: "Password field is required.",
+              }}
+              render={({ field, fieldState: { error } }) => (
+                <div>
+                  <div className="space-y-4">
+                    <Label htmlFor={field.name}>Password</Label>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      type="password"
+                      placeholder="Enter your password"
+                      className={cn("border", { "border-red-500": error })}
+                      required
+                    />
+                  </div>
+                  {error && (
+                    <span className="text-sm text-red-500">
+                      {error?.message}
+                    </span>
+                  )}
+                </div>
+              )}
+            />
             <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700"
@@ -97,37 +159,6 @@ const Login = () => {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex-col px-8">
-          <p className="w-full text-center text-base text-gray-600">
-            <span>Don't have an account?&nbsp;</span>
-            <Link
-              to="/sign-up"
-              className="text-blue-600 underline-offset-2 hover:underline"
-            >
-              Sign up
-            </Link>
-          </p>
-
-          <div className="mt-6 rounded-lg bg-gray-50">
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              Demo Accounts:
-            </p>
-            <div className="space-y-1 text-xs text-gray-600">
-              <p>
-                <strong>Super Admin:</strong> superadmin@landmark.com
-              </p>
-              <p>
-                <strong>Admin:</strong> admin@landmark.com
-              </p>
-              <p>
-                <strong>Member:</strong> member@landmark.com
-              </p>
-              <p>
-                <strong>Password:</strong> password123
-              </p>
-            </div>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );
