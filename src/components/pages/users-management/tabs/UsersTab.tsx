@@ -1,25 +1,25 @@
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 import {
-  Building2,
-  Edit,
-  EllipsisVertical,
-  Pencil,
+  // Building2,
+  // Edit,
+  // EllipsisVertical,
+  // Pencil,
+  // Trash2,
   Search,
-  Trash2,
   Users,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
 import {
   roleHierarchy,
   UserManagementTabsEnum,
   userRoles,
-  UserRolesEnum,
+  // UserRolesEnum,
   UserStatusEnum,
 } from "@/constants/defaults";
 import {
@@ -45,16 +45,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { UserRole, UserStatus } from "@/types/default";
-import { useAuthStore } from "@/lib/store/use-auth-store";
+// import { useAuthStore } from "@/lib/store/use-auth-store";
 import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 
 interface User {
   id: string;
@@ -76,11 +76,11 @@ type Props = {
 
 const UsersTab = ({
   users,
-  setIsAssignProjectOpen,
-  setIsDeleteUserOpen,
-  handleEditUser,
+  // setIsAssignProjectOpen,
+  // setIsDeleteUserOpen,
+  // handleEditUser,
 }: Props) => {
-  const currentUser = useAuthStore((state) => state.user);
+  // const currentUser = useAuthStore((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("all");
 
@@ -92,13 +92,13 @@ const UsersTab = ({
     return matchesSearch && matchesRole;
   });
 
-  const handleAssignProject = (userId: string) => {
-    setIsAssignProjectOpen(true);
-  };
+  // const handleAssignProject = (userId: string) => {
+  //   setIsAssignProjectOpen(true);
+  // };
 
-  const handleDeleteUser = (userId: string) => {
-    setIsDeleteUserOpen(true);
-  };
+  // const handleDeleteUser = (userId: string) => {
+  //   setIsDeleteUserOpen(true);
+  // };
   return (
     <TabsContent value={UserManagementTabsEnum.USERS} className="space-y-6">
       {/* Filters */}
@@ -230,7 +230,7 @@ const UsersTab = ({
                     {new Date(user.joinDate).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
-                    <div className="flex justify-center gap-1">
+                    {/* <div className="flex justify-center gap-1">
                       <DropdownMenu>
                         <DropdownMenuTrigger className="cursor-pointer rounded-full p-2 hover:bg-gray-500/20">
                           <EllipsisVertical />
@@ -259,7 +259,7 @@ const UsersTab = ({
                             )}
                         </DropdownMenuContent>
                       </DropdownMenu>
-                    </div>
+                    </div> */}
                   </TableCell>
                 </TableRow>
               ))}

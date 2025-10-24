@@ -1,9 +1,9 @@
-import { salesUnitsData } from "@/assets/data";
-import { Button } from "@/components/ui/button";
+// import { salesUnitsData } from "@/assets/data";
+// import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -22,7 +22,7 @@ const SalesUnits = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {salesUnitsData.map((unit) => (
+        {/* {salesUnitsData.map((unit) => (
           <TableRow key={unit.id}>
             <TableCell className="font-medium">{unit.category}</TableCell>
             <TableCell>{unit.name}</TableCell>
@@ -38,7 +38,7 @@ const SalesUnits = () => {
               </Button>
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

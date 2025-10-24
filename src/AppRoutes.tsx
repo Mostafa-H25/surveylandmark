@@ -3,21 +3,21 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { abortAxiosInstance } from "./lib/api-client";
 
 import Login from "./pages/Login";
-import Reports from "./pages/Reports";
-import Settings from "./pages/Settings";
-import Messages from "./pages/Messages";
+// import Reports from "./pages/Reports";
+// import Settings from "./pages/Settings";
+// import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
-import ItemPage from "./pages/ItemPage";
-import Payments from "./pages/Payments";
+// import ItemPage from "./pages/ItemPage";
+// import Payments from "./pages/Payments";
 import Dashboard from "./pages/Dashboard";
-import Standards from "./pages/Standards";
+// import Standards from "./pages/Standards";
 import NewProject from "./pages/NewProject";
-import UnitDetails from "./pages/UnitDetails";
+// import UnitDetails from "./pages/UnitDetails";
 import Registration from "./pages/Registration";
-import MemberProfile from "./pages/MemberProfile";
-import ProjectDetails from "./pages/ProjectDetails";
-import UsersManagement from "./pages/UsersManagement";
-import ContractorProfile from "./pages/ContractorProfile";
+// import MemberProfile from "./pages/MemberProfile";
+// import ProjectDetails from "./pages/ProjectDetails";
+// import UsersManagement from "./pages/UsersManagement";
+// import ContractorProfile from "./pages/ContractorProfile";
 import ClientsManagement from "./pages/ClientsManagement";
 
 import { ProtectedRoute } from "./guards/ProtectedRoute";
@@ -86,14 +86,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       /> */}
-      <Route
+      {/* <Route
         path="/users"
         element={
           <ProtectedRoute requiredRole="admin">
             <UsersManagement />
           </ProtectedRoute>
         }
-      />
+      /> */}
       <Route
         path="/clients"
         element={
@@ -110,7 +110,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      <Route
+      {/* <Route
         path="/project/:projectId"
         element={
           <ProtectedRoute>
@@ -125,7 +125,7 @@ const AppRoutes = () => {
             <Standards />
           </ProtectedRoute>
         }
-      />
+      /> */}
       {/* <Route
         path="/messages"
         element={
@@ -150,14 +150,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       /> */}
-      <Route
+      {/* <Route
         path="/settings"
         element={
           <ProtectedRoute>
             <Settings />
           </ProtectedRoute>
         }
-      />
+      /> */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

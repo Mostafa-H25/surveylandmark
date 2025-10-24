@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import SalesTab from "@/components/pages/reports/tabs/SalesTab";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -15,7 +15,6 @@ import ViewReportDialog from "@/components/pages/reports/dialogs/ViewReportDialo
 import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
 
 const Reports = () => {
-  const { toast } = useToast();
   const [openGenerateDialog, setOpenGenerateDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
   const [currentReportType, setCurrentReportType] = useState<string>(
@@ -30,9 +29,9 @@ const Reports = () => {
 
   const handleDownloadReport = (reportName: string) => {
     console.log("Downloading report:", reportName);
-    toast({
-      title: "Download Started",
+    toast.success("Download Started", {
       description: `Downloading ${reportName}...`,
+      richColors: true,
     });
   };
 

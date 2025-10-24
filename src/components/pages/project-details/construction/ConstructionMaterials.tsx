@@ -1,9 +1,9 @@
-import { constructionMaterialsData } from "@/assets/data";
+// import { constructionMaterialsData } from "@/assets/data";
 
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -21,14 +21,14 @@ const ConstructionMaterials = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {constructionMaterialsData.map((material) => (
+        {/* {constructionMaterialsData.map((material) => (
           <TableRow key={material.id}>
             <TableCell className="font-medium">{material.name}</TableCell>
             <TableCell>{material.totalQuantity}</TableCell>
             <TableCell>{material.availableQuantity}</TableCell>
             <TableCell>{material.unit}</TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

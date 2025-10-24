@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Plus } from "lucide-react";
 
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { UserRolesEnum } from "@/constants/defaults";
 
@@ -17,12 +17,12 @@ import {
 import UserForm from "../forms/UserForm";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { inviteUserApi } from "@/api/user/invite-user.api";
+import { useMutation } from "@tanstack/react-query";
+
+const USER_MUTATION_SCOPE = "user_invitation";
 
 const AddUserDialog = () => {
-  const { toast } = useToast();
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const defaultValues = {
     name: "",
     email: "",
@@ -30,30 +30,32 @@ const AddUserDialog = () => {
   };
   const form = useForm({ defaultValues, mode: "onBlur" });
 
+  const { mutate, isPending } = useMutation<void, Error, typeof defaultValues>({
+    mutationFn: (data) => inviteUserApi(data),
+    scope: { id: USER_MUTATION_SCOPE },
+    onSuccess: (_data, variables) => {
+      toast.success("User Invited", {
+        description: `User ${variables.name} has been invited successfully.`,
+        richColors: true,
+      });
+      setIsAddUserOpen(false);
+      form.reset();
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("User Invite Failed", {
+        description: "User invitation failed, please try again.",
+        richColors: true,
+      });
+    },
+  });
+
   const handleAddUser = () => {
     setIsAddUserOpen(true);
   };
 
   const handleSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
-    setIsSubmitting(true);
-
-    try {
-      await inviteUserApi(data);
-      toast({
-        title: "User Invited",
-        description: `User ${data.name} has been invited successfully.`,
-      });
-      setIsAddUserOpen(false);
-      form.reset();
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "User Invite Failed",
-        description: "User invitation failed, please try again.",
-        variant: "destructive",
-      });
-    }
-    setIsSubmitting(false);
+    mutate(data);
   };
 
   return (
@@ -76,7 +78,7 @@ const AddUserDialog = () => {
           <UserForm
             setUserFormOpen={setIsAddUserOpen}
             onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
+            isSubmitting={isPending}
           />
         </FormProvider>
       </DialogContent>

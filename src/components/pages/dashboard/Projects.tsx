@@ -1,6 +1,6 @@
 import { TrendingUp } from "lucide-react";
 
-import { recentProjects } from "@/assets/data";
+// import { recentProjects } from "@/assets/data";
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ const Projects = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {recentProjects.map((project) => (
+          {/* {recentProjects.map((project) => (
             <div
               key={project.id}
               className="flex items-center justify-between rounded-lg border p-4"
@@ -58,7 +58,7 @@ const Projects = () => {
                 </div>
               </div>
             </div>
-          ))}
+          ))} */}
         </div>
       </CardContent>
     </Card>

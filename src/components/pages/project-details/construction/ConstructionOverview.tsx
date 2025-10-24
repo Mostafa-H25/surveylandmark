@@ -1,16 +1,16 @@
-import { constructionOverviewData } from "@/assets/data";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+// import { constructionOverviewData } from "@/assets/data";
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getProjectStatusColor } from "@/helpers/getStatusColor";
-import { cn } from "@/lib/utils";
+// import { getProjectStatusColor } from "@/helpers/getStatusColor";
+// import { cn } from "@/lib/utils";
 
 const ConstructionOverview = () => {
   return (
@@ -25,7 +25,7 @@ const ConstructionOverview = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {constructionOverviewData.map((row) => (
+        {/* {constructionOverviewData.map((row) => (
           <TableRow key={row.id}>
             <TableCell className="font-medium">{row.overview}</TableCell>
             <TableCell>{row.metrics}</TableCell>
@@ -67,7 +67,7 @@ const ConstructionOverview = () => {
               </Button>
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

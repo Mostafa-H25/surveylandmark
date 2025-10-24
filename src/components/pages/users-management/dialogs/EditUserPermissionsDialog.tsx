@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { userPermissions } from "@/constants/defaults";
@@ -27,12 +27,10 @@ const EditUserPermissionsDialog = ({
   isEditPermissionsOpen,
   setIsEditPermissionsOpen,
 }: Props) => {
-  const { toast } = useToast();
-
   const handlePermissionUpdate = () => {
-    toast({
-      title: "Permissions Updated",
+    toast.success("Permissions Updated", {
       description: "Role permissions have been updated",
+      richColors: true,
     });
     setIsEditPermissionsOpen(false);
   };

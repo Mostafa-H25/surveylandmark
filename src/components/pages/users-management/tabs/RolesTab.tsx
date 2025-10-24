@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
 import { roleHierarchy, UserManagementTabsEnum } from "@/constants/defaults";
-import type { UserRole } from "@/contexts/AuthContext";
 import {
   Card,
   CardContent,
@@ -23,6 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { UserRole } from "@/types/default";
 
 interface User {
   id: string;

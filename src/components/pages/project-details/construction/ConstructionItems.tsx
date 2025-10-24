@@ -1,17 +1,17 @@
-import { constructionItemsData } from "@/assets/data";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+// import { constructionItemsData } from "@/assets/data";
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/helpers/formatCurrency";
-import { getProjectStatusColor } from "@/helpers/getStatusColor";
-import { cn } from "@/lib/utils";
+// import { formatCurrency } from "@/helpers/formatCurrency";
+// import { getProjectStatusColor } from "@/helpers/getStatusColor";
+// import { cn } from "@/lib/utils";
 
 const ConstructionItems = () => {
   return (
@@ -31,7 +31,7 @@ const ConstructionItems = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {constructionItemsData.map((item) => (
+        {/* {constructionItemsData.map((item) => (
           <TableRow key={item.id}>
             <TableCell className="font-medium">{item.name}</TableCell>
             <TableCell>{item.type}</TableCell>
@@ -81,7 +81,7 @@ const ConstructionItems = () => {
               </Button>
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

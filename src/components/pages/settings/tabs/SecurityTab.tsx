@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,6 @@ const SecurityTab = () => {
   // TODO: Fetch user preferences to 2-factor auth
   // * will the 2-factor auth be sent with the passwords or will they be separate?
 
-  const { toast } = useToast();
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,16 +41,15 @@ const SecurityTab = () => {
     try {
       await editPasswordApi(data);
       reset();
-      toast({
-        title: "Settings Updated",
+      toast.success("Settings Updated", {
         description: `Your password has been updated successfully.`,
+        richColors: true,
       });
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Settings Update Failed",
+      toast.error("Settings Update Failed", {
         description: `Password update failed, please try again.`,
-        variant: "destructive",
+        richColors: true,
       });
     }
     setIsSubmitting(false);

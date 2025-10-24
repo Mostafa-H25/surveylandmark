@@ -7,8 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { alertsData } from "@/assets/data";
-import { cn } from "@/lib/utils";
+// import { alertsData } from "@/assets/data";
+// import { cn } from "@/lib/utils";
 
 const Alerts = () => {
   return (
@@ -22,7 +22,7 @@ const Alerts = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {alertsData.map((alert) => {
+          {/* {alertsData.map((alert) => {
             const Icon = alert.icon;
             return (
               <div
@@ -48,7 +48,7 @@ const Alerts = () => {
                 </div>
               </div>
             );
-          })}
+          })} */}
         </div>
       </CardContent>
     </Card>

@@ -1,19 +1,19 @@
-import { ChevronDown, Download, Expand } from "lucide-react";
+// import { ChevronDown, Download, Expand } from "lucide-react";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
 
-import { salesSections, SalesSectionsEnum } from "@/constants/defaults";
-import SalesOverview from "../sales/SalesOverview";
-import SalesMembers from "../sales/SalesMembers";
-import SalesIncomes from "../sales/SalesIncomes";
+// import { salesSections, SalesSectionsEnum } from "@/constants/defaults";
+// import SalesOverview from "../sales/SalesOverview";
+// import SalesMembers from "../sales/SalesMembers";
+// import SalesIncomes from "../sales/SalesIncomes";
 import SalesUnits from "../sales/SalesUnits";
 
 const SalesTab = () => {
@@ -30,7 +30,7 @@ const SalesTab = () => {
   return (
     <TabsContent key={department.id} value={department.name}>
       <div className="space-y-4 rounded-lg border bg-white p-4">
-        <div className="flex w-full items-center justify-between gap-4">
+        {/* <div className="flex w-full items-center justify-between gap-4">
           <Select defaultValue={SalesSectionsEnum.OVERVIEW}>
             <SelectTrigger className="w-64 capitalize">
               <SelectValue />
@@ -59,7 +59,7 @@ const SalesTab = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* <SalesOverview /> */}
         {/* <SalesMembers /> */}
         {/* <SalesIncomes /> */}

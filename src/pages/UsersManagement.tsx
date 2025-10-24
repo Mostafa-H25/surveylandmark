@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
+import {
+  // useEffect,
+  useState,
+} from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import EditUserRolesPermissionsDialog from "@/components/pages/users-management/dialogs/EditUserRolesPermissionsDialog";
+// import EditUserRolesPermissionsDialog from "@/components/pages/users-management/dialogs/EditUserRolesPermissionsDialog";
 import {
-  roleHierarchy,
+  // roleHierarchy,
   userManagementTabs,
   UserManagementTabsEnum,
   userRoles,
-  UserRolesEnum,
-  UserStatusEnum,
+  // UserRolesEnum,
+  // UserStatusEnum,
 } from "@/constants/defaults";
-import DeleteUserDialog from "@/components/pages/users-management/dialogs/DeleteUserDialog";
-import AssignProjectToUserDialog from "@/components/pages/users-management/dialogs/AssignProjectToUserDialog";
+// import DeleteUserDialog from "@/components/pages/users-management/dialogs/DeleteUserDialog";
+// import AssignProjectToUserDialog from "@/components/pages/users-management/dialogs/AssignProjectToUserDialog";
 import AddUserDialog from "@/components/shared/dialogs/AddUserDialog";
-import { getAllUsersApi } from "@/api/user/get-all-users.api";
+// import { getAllUsersApi } from "@/api/user/get-all-users.api";
 import {
   Card,
   CardContent,
@@ -23,8 +26,8 @@ import {
 } from "@/components/ui/card";
 import {
   Table,
-  TableBody,
-  TableCell,
+  // TableBody,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -38,86 +41,86 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import {
-  Building2,
-  EllipsisVertical,
-  Pencil,
+  // Building2,
+  // EllipsisVertical,
+  // Pencil,
   Search,
-  Trash2,
+  // Trash2,
   Users,
 } from "lucide-react";
-import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuthStore } from "@/lib/store/use-auth-store";
+// import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
+// import { Badge } from "@/components/ui/badge";
+// import { cn } from "@/lib/utils";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { useAuthStore } from "@/lib/store/use-auth-store";
 import type { User } from "@/types/interfaces";
 
 const UsersManagement = () => {
-  const currentUser = useAuthStore((state) => state.user);
-  const [isEditUserRolesPermissionsOpen, setIsEditUserRolesPermissionsOpen] =
-    useState(false);
-  const [isDeleteUserOpen, setIsDeleteUserOpen] = useState(false);
-  const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
+  // const currentUser = useAuthStore((state) => state.user);
+  // const [isEditUserRolesPermissionsOpen, setIsEditUserRolesPermissionsOpen] =
+  //   useState(false);
+  // const [isDeleteUserOpen, setIsDeleteUserOpen] = useState(false);
+  // const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
 
-  const [user, setUser] = useState<User | null>(null);
+  const [user] = useState<User | null>(null);
 
-  const [users, setUsers] = useState<User[]>([]);
-  const [usersCount, setUsersCount] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [users, setUsers] = useState<User[]>([]);
+  const [usersCount] = useState<number>(0);
+  const [isLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("all");
 
-  const fetchUsers = async () => {
-    try {
-      const res = await getAllUsersApi();
-      setUsers(res.users);
-      setUsersCount(res.total);
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // const fetchUsers = async () => {
+  //   try {
+  //     const res = await getAllUsersApi();
+  //     setUsers(res.users);
+  //     setUsersCount(res.total);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  //   setIsLoading(false);
+  // };
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
 
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = selectedRole === "all" || user.role === selectedRole;
-    return matchesSearch && matchesRole;
-  });
+  // const filteredUsers = users.filter((user) => {
+  //   const matchesSearch =
+  //     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     user.email.toLowerCase().includes(searchTerm.toLowerCase());
+  //   const matchesRole = selectedRole === "all" || user.role === selectedRole;
+  //   return matchesSearch && matchesRole;
+  // });
 
-  const handleAssignProject = (userId: string) => {
-    const user = users.find((u) => u.id === userId);
-    if (user) {
-      setUser(user);
-      setIsAssignProjectOpen(true);
-    }
-  };
+  // const handleAssignProject = (userId: string) => {
+  //   const user = users.find((u) => u.id === userId);
+  //   if (user) {
+  //     setUser(user);
+  //     setIsAssignProjectOpen(true);
+  //   }
+  // };
 
-  const handleDeleteUser = (userId: string) => {
-    const user = users.find((u) => u.id === userId);
-    if (user) {
-      setUser(user);
-      setIsDeleteUserOpen(true);
-    }
-  };
+  // const handleDeleteUser = (userId: string) => {
+  //   const user = users.find((u) => u.id === userId);
+  //   if (user) {
+  //     setUser(user);
+  //     setIsDeleteUserOpen(true);
+  //   }
+  // };
 
-  const handleEditUserRolesPermissions = (userId: string) => {
-    const user = users.find((u) => u.id === userId);
-    if (user) {
-      setUser(user);
-      setIsEditUserRolesPermissionsOpen(true);
-    }
-  };
+  // const handleEditUserRolesPermissions = (userId: string) => {
+  //   const user = users.find((u) => u.id === userId);
+  //   if (user) {
+  //     setUser(user);
+  //     setIsEditUserRolesPermissionsOpen(true);
+  //   }
+  // };
 
   if (isLoading) {
     return (
@@ -140,7 +143,7 @@ const UsersManagement = () => {
       </div>
       {user && (
         <>
-          <EditUserRolesPermissionsDialog
+          {/* <EditUserRolesPermissionsDialog
             isEditUserRolesPermissionsOpen={isEditUserRolesPermissionsOpen}
             setIsEditUserRolesPermissionsOpen={
               setIsEditUserRolesPermissionsOpen
@@ -160,7 +163,7 @@ const UsersManagement = () => {
             setIsAssignProjectOpen={setIsAssignProjectOpen}
             user={user}
             onSuccess={fetchUsers}
-          />
+          /> */}
         </>
       )}
 
@@ -235,7 +238,7 @@ const UsersManagement = () => {
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                {/* <TableBody>
                   {filteredUsers.map((u) => (
                     <TableRow key={u.id}>
                       <TableCell>
@@ -347,7 +350,7 @@ const UsersManagement = () => {
                       </TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
+                </TableBody> */}
               </Table>
             </CardContent>
           </Card>

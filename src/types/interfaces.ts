@@ -1,23 +1,23 @@
 import type {
   DepartmentType,
   Status,
-  UnitStatus,
-  SaleType,
+  // UnitStatus,
+  // SaleType,
   UnitType,
   UserPermission,
   UserRole,
   UserStatus,
-  PaymentStatus,
-  PaymentMethod,
+  // PaymentStatus,
+  // PaymentMethod,
   PaymentType,
   PaymentAction,
   ContractorType,
-  ConstructionType,
-  ConstructionTaskFeedback,
-  Priority,
-  MessageStatus,
-  SalesView,
-  ConstructionView,
+  // ConstructionType,
+  // ConstructionTaskFeedback,
+  // Priority,
+  // MessageStatus,
+  // SalesView,
+  // ConstructionView,
 } from "./default";
 
 export interface AuthUser {
@@ -53,52 +53,52 @@ export interface User {
   email: string;
   phone: string;
   role: UserRole;
-  permmisions: UserPermission;
+  permissions: UserPermission;
   status: UserStatus;
   createdAt: string;
-  project: { id: string; name: string }[];
+  projects: { id: string; name: string }[];
 }
 
-interface Company {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  taxId: string;
-  address: string;
-  website: string;
-  registrationNo: string;
-  createdAt: string;
-}
+// interface Company {
+//   id: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   taxId: string;
+//   address: string;
+//   website: string;
+//   registrationNo: string;
+//   createdAt: string;
+// }
 
-interface NotificationConfig {
-  email: boolean;
-  push: boolean;
-  projects: boolean;
-}
+// interface NotificationConfig {
+//   email: boolean;
+//   push: boolean;
+//   projects: boolean;
+// }
 
-interface Message {
-  id: string;
-  from: UserProfile;
-  to: UserProfile;
-  subject: string;
-  body: string;
-  priority: Priority;
-  createdAt: string;
-  status: MessageStatus;
-}
+// interface Message {
+//   id: string;
+//   from: UserProfile;
+//   to: UserProfile;
+//   subject: string;
+//   body: string;
+//   priority: Priority;
+//   createdAt: string;
+//   status: MessageStatus;
+// }
 
-interface Alert {
-  id: string;
-  type: string;
-  subject: string;
-  body: string;
-  project: Project;
-  client: Client;
-  priority: Priority;
-  createdAt: string;
-  status: Status;
-}
+// interface Alert {
+//   id: string;
+//   type: string;
+//   subject: string;
+//   body: string;
+//   project: Project;
+//   client: Client;
+//   priority: Priority;
+//   createdAt: string;
+//   status: Status;
+// }
 
 // interface Sales {
 //   id: string;
@@ -118,98 +118,98 @@ interface Alert {
 //   task: ConstructionTasks[];
 // }
 
-interface Standard {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  version: number;
-  lastUpdated: string;
-  status: string;
-  document: File;
-}
+// interface Standard {
+//   id: string;
+//   title: string;
+//   description: string;
+//   category: string;
+//   version: number;
+//   lastUpdated: string;
+//   status: string;
+//   document: File;
+// }
 
-interface Storage {
-  id: string;
-  name: string;
-  type: string;
-  quantity: number;
-  batchNo: number;
-  supplyDate: string;
-  contractor: ConstructionContractor;
-  unit: string;
-  recipient: string;
-}
+// interface Storage {
+//   id: string;
+//   name: string;
+//   type: string;
+//   quantity: number;
+//   batchNo: number;
+//   supplyDate: string;
+//   contractor: ConstructionContractor;
+//   unit: string;
+//   recipient: string;
+// }
 
-interface SalesOverview {
-  id: string;
-  title: string;
-  metrics: string;
-}
+// interface SalesOverview {
+//   id: string;
+//   title: string;
+//   metrics: string;
+// }
 
-interface SalesMember {
-  id: string;
-  bio: string;
-  name: string;
-  email: string;
-  phone: string;
-  position: string;
-  projects: Project[];
-  salary: number;
-  commission: number;
-  responsibilities: string[];
-  permissions: string[];
-}
+// interface SalesMember {
+//   id: string;
+//   bio: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   position: string;
+//   projects: Project[];
+//   salary: number;
+//   commission: number;
+//   responsibilities: string[];
+//   permissions: string[];
+// }
 
-interface SalesRevenue {
-  id: string;
-  title: string;
-  revenueTillNow: number;
-  batchNo: number;
-  installmentsRevenue: number;
-  deploymentRevenue: number;
-}
+// interface SalesRevenue {
+//   id: string;
+//   title: string;
+//   revenueTillNow: number;
+//   batchNo: number;
+//   installmentsRevenue: number;
+//   deploymentRevenue: number;
+// }
 
-interface SalesUnit {
-  id: string;
-  name: string;
-  client: Client;
-  project: Project;
-  building: string;
-  floor: string;
-  model: string;
-  saleType: SaleType;
-  revenue: number;
-  type: UnitType;
-  status: UnitStatus;
-  salesTeam: SalesMember[];
-  paymentMethod: PaymentMethod;
-  downPayment: number;
-  installments: Installment[];
-}
+// interface SalesUnit {
+//   id: string;
+//   name: string;
+//   client: Client;
+//   project: Project;
+//   building: string;
+//   floor: string;
+//   model: string;
+//   saleType: SaleType;
+//   revenue: number;
+//   type: UnitType;
+//   status: UnitStatus;
+//   salesTeam: SalesMember[];
+//   paymentMethod: PaymentMethod;
+//   downPayment: number;
+//   installments: Installment[];
+// }
 
-interface ConstructionOverview {
-  id: string;
-  title: string;
-  metrics: string;
-  progress: number;
-  status: Status;
-}
+// interface ConstructionOverview {
+//   id: string;
+//   title: string;
+//   metrics: string;
+//   progress: number;
+//   status: Status;
+// }
 
-interface ConstructionMember {
-  id: string;
-  bio: string;
-  name: string;
-  email: string;
-  phone: string;
-  position: string;
-  projects: Project[];
-  salary: number;
-  financialLimit: number;
-  salesDepartmentAccess: boolean;
-  responsibilities: string[];
-  permissions: string[];
-}
+// interface ConstructionMember {
+//   id: string;
+//   bio: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   position: string;
+//   projects: Project[];
+//   salary: number;
+//   financialLimit: number;
+//   salesDepartmentAccess: boolean;
+//   responsibilities: string[];
+//   permissions: string[];
+// }
 
 interface ConstructionContractor {
   id: string;
@@ -236,63 +236,63 @@ interface ConstructionPayment {
   status: PaymentAction;
 }
 
-interface ConstructionMaterial {
-  id: string;
-  name: string;
-  totalQuantity: number;
-  availableQuantity: number;
-  units: string;
-}
+// interface ConstructionMaterial {
+//   id: string;
+//   name: string;
+//   totalQuantity: number;
+//   availableQuantity: number;
+//   units: string;
+// }
 
-interface ConstructionTaskPhase {
-  id: string;
-  title: string;
-  description: string;
-  status: Status;
-}
+// interface ConstructionTaskPhase {
+//   id: string;
+//   title: string;
+//   description: string;
+//   status: Status;
+// }
 
-interface ConstructionTaskPayments {
-  amount: number;
-  type: PaymentType;
-}
+// interface ConstructionTaskPayments {
+//   amount: number;
+//   type: PaymentType;
+// }
 
-interface ConstructionTaskConfirmation {
-  engineer: ConstructionMember;
-  date: string;
-}
+// interface ConstructionTaskConfirmation {
+//   engineer: ConstructionMember;
+//   date: string;
+// }
 
-interface ConstructionTaskConfirmation {
-  engineer: ConstructionMember;
-  date: string;
-}
+// interface ConstructionTaskConfirmation {
+//   engineer: ConstructionMember;
+//   date: string;
+// }
 
-interface ConstructionTaskImagesFeedback {
-  status: ConstructionTaskFeedback;
-  image: string;
-}
+// interface ConstructionTaskImagesFeedback {
+//   status: ConstructionTaskFeedback;
+//   image: string;
+// }
 
-interface ConstructionTasks {
-  id: string;
-  title: string;
-  type: ConstructionType;
-  totalQuantity: number;
-  implementedQuantity: number;
-  costsTillNow: number;
-  evaluation: number;
-  progress: number;
-  startDate: string;
-  endDate?: string;
-  contractor: ConstructionContractor;
-  status: Status;
-  engineer: ConstructionMember;
-  material: string;
-  costPerMeter: number;
-  units: string;
-  payments: ConstructionTaskPayments[];
-  phases: ConstructionTaskPhase[];
-  confirmations: ConstructionTaskConfirmation[];
-  feedbackImages: ConstructionTaskImagesFeedback[];
-}
+// interface ConstructionTasks {
+//   id: string;
+//   title: string;
+//   type: ConstructionType;
+//   totalQuantity: number;
+//   implementedQuantity: number;
+//   costsTillNow: number;
+//   evaluation: number;
+//   progress: number;
+//   startDate: string;
+//   endDate?: string;
+//   contractor: ConstructionContractor;
+//   status: Status;
+//   engineer: ConstructionMember;
+//   material: string;
+//   costPerMeter: number;
+//   units: string;
+//   payments: ConstructionTaskPayments[];
+//   phases: ConstructionTaskPhase[];
+//   confirmations: ConstructionTaskConfirmation[];
+//   feedbackImages: ConstructionTaskImagesFeedback[];
+// }
 
 interface Department {
   id: string;
@@ -317,31 +317,31 @@ interface Project {
   departments: Department[];
 }
 
-interface Client {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  company: string;
-  createdAt: string;
-  projects: Project[];
-}
+// interface Client {
+//   id: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   company: string;
+//   createdAt: string;
+//   projects: Project[];
+// }
 
-interface Installment {
-  id: string;
-  batchNo: number;
-  dueDate: string;
-  amount: number;
-  status: PaymentStatus;
-}
+// interface Installment {
+//   id: string;
+//   batchNo: number;
+//   dueDate: string;
+//   amount: number;
+//   status: PaymentStatus;
+// }
 
-interface Report {
-  id: string;
-  name: string;
-  summary: string;
-  project: Project;
-  generatedBy: string;
-  createdAt: string;
-  type: string;
-  report: File;
-}
+// interface Report {
+//   id: string;
+//   name: string;
+//   summary: string;
+//   project: Project;
+//   generatedBy: string;
+//   createdAt: string;
+//   type: string;
+//   report: File;
+// }

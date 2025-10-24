@@ -8,9 +8,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import type { User } from "@/types/interfaces";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 
 type Props = {
   user: User;
@@ -20,20 +20,18 @@ type Props = {
 };
 
 const AssignProjectToUserDialog = ({
-  user,
   onSuccess,
   isAssignProjectOpen,
   setIsAssignProjectOpen,
 }: Props) => {
-  const { toast } = useToast();
   // const [projects, setProjects] = useState([]);
 
   // const fetchProjects = () => {};
 
   const handleAssignProjectsToUser = () => {
-    toast({
-      title: "Projects Assigned",
+    toast.success("Projects Assigned", {
       description: "Projects have been assigned to the user",
+      richColors: true,
     });
     onSuccess();
     setIsAssignProjectOpen(false);

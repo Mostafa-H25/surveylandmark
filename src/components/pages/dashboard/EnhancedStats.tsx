@@ -18,9 +18,13 @@ const EnhancedStats = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-900">
-                {stat.value}
+                {0}
+                {/* {stat.value} */}
               </div>
-              <p className="mt-1 text-xs text-gray-500">{stat.description}</p>
+              <p className="mt-1 text-xs text-gray-500">
+                {"-"}
+                {/* {stat.description} */}
+              </p>
             </CardContent>
           </Card>
         );

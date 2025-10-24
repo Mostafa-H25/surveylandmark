@@ -1,15 +1,15 @@
-import { constructionMembersData } from "@/assets/data";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+// import { constructionMembersData } from "@/assets/data";
+// import { Button } from "@/components/ui/button";
+// import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/helpers/formatCurrency";
+// import { formatCurrency } from "@/helpers/formatCurrency";
 
 const ConstructionMembers = () => {
   return (
@@ -27,7 +27,7 @@ const ConstructionMembers = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {constructionMembersData.map((member) => (
+        {/* {constructionMembersData.map((member) => (
           <TableRow key={member.id}>
             <TableCell className="font-medium">{member.name}</TableCell>
             <TableCell>{member.email}</TableCell>
@@ -52,7 +52,7 @@ const ConstructionMembers = () => {
               </Button>
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

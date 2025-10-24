@@ -13,7 +13,7 @@ import { useState } from "react";
 type Props = { message: any };
 
 const ViewMessageDialog = ({ message }: Props) => {
-  const [selectedMessage, setSelectedMessage] = useState<any>(null);
+  const [setSelectedMessage] = useState<any>(null);
 
   const handleViewMessage = (message: any) => {
     setSelectedMessage(message);

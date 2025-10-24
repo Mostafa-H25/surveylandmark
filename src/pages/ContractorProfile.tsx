@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const ContractorProfile = () => {
-  const [paymentType, setPaymentType] = useState("payment");
+  const [paymentType] = useState("payment");
   const navigate = useNavigate();
   const filteredPaymentData = contractorData.payments.filter(
     (payment) => payment.type === paymentType,

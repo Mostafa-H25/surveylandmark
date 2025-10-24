@@ -1,15 +1,15 @@
-import { salesOverviewData } from "@/assets/data";
-import { Button } from "@/components/ui/button";
+// import { salesOverviewData } from "@/assets/data";
+// import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
-const SalesOverview = (props: Props) => {
+const SalesOverview = () => {
   return (
     <Table>
       <TableHeader>
@@ -20,7 +20,7 @@ const SalesOverview = (props: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {salesOverviewData.map((row) => (
+        {/* {salesOverviewData.map((row) => (
           <TableRow key={row.id}>
             <TableCell className="font-medium">{row.overview}</TableCell>
             <TableCell>{row.metrics}</TableCell>
@@ -35,7 +35,7 @@ const SalesOverview = (props: Props) => {
               </Button>
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

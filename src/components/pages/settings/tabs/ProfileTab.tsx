@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { Camera, User as UserIcon } from "lucide-react";
 
 import { meApi } from "@/api/user/me.api";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
 import type { UserProfile } from "@/types/interfaces";
@@ -21,7 +21,6 @@ import {
 import EditProfileSettingsDialog from "../dialogs/EditProfileSettingsDialog";
 
 const ProfileTab = () => {
-  const { toast } = useToast();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,16 +54,15 @@ const ProfileTab = () => {
           profileImageUrl: url,
           profileImage: img,
         });
-        toast({
-          title: "Profile Image Updated",
+        toast.success("Profile Image Updated", {
           description: `Your profile image has been updated successfully.`,
+          richColors: true,
         });
       } catch (error) {
         console.error(error);
-        toast({
-          title: "Profile Image Update Failed",
+        toast.error("Profile Image Update Failed", {
           description: `Your profile image update failed. Please try again.`,
-          variant: "destructive",
+          richColors: true,
         });
       }
       setIsSubmitting(false);

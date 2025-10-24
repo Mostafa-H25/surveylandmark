@@ -8,16 +8,19 @@ import {
 import { TabsContent } from "@/components/ui/tabs";
 import {
   Table,
-  TableBody,
-  TableCell,
+  // TableBody,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download, FileText } from "lucide-react";
+import {
+  // Download,
+  FileText,
+} from "lucide-react";
 import { ReportTypesEnum, type TReportTypes } from "@/constants/defaults";
-import { salesReports } from "@/assets/data";
+// import { salesReports } from "@/assets/data";
 
 type Props = {
   handleOpenGenerateDialog: (type: TReportTypes) => void;
@@ -27,8 +30,8 @@ type Props = {
 
 const SalesTab = ({
   handleOpenGenerateDialog,
-  handleViewReport,
-  handleDownloadReport,
+  // handleViewReport,
+  // handleDownloadReport,
 }: Props) => {
   return (
     <TabsContent value={ReportTypesEnum.SALES.value} className="space-y-6">
@@ -66,7 +69,7 @@ const SalesTab = ({
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            {/* <TableBody>
               {salesReports.map((report) => (
                 <TableRow key={report.id}>
                   <TableCell className="font-medium">{report.name}</TableCell>
@@ -96,7 +99,7 @@ const SalesTab = ({
                   </TableCell>
                 </TableRow>
               ))}
-            </TableBody>
+            </TableBody> */}
           </Table>
         </CardContent>
       </Card>

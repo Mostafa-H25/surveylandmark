@@ -10,14 +10,13 @@ import { Bell } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const NotificationTab = () => {
-  const { toast } = useToast();
   const handleSave = (section: string) => {
-    toast({
-      title: "Settings saved",
+    toast("Settings saved", {
       description: `Your ${section} settings have been updated successfully.`,
+      richColors: true,
     });
   };
   return (

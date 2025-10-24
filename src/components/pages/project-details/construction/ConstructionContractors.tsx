@@ -1,10 +1,10 @@
-import { constructionContractorsData } from "@/assets/data";
+// import { constructionContractorsData } from "@/assets/data";
 
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -23,7 +23,7 @@ const ConstructionContractors = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {constructionContractorsData.map((contractor) => (
+        {/* {constructionContractorsData.map((contractor) => (
           <TableRow key={contractor.id}>
             <TableCell className="font-medium">{contractor.name}</TableCell>
             <TableCell>{contractor.email}</TableCell>
@@ -40,7 +40,7 @@ const ConstructionContractors = () => {
               </Button>
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

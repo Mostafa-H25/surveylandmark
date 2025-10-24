@@ -1,6 +1,6 @@
 import { PieChart } from "lucide-react";
 import {
-  Cell,
+  // Cell,
   Pie,
   PieChart as RechartsPieChart,
   ResponsiveContainer,
@@ -37,9 +37,9 @@ const ProjectStatusChart = () => {
               dataKey="value"
               label={({ name, value }) => `${name}: ${value}`}
             >
-              {projectStatusData.map((entry, index) => (
+              {/* {projectStatusData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
+              ))} */}
             </Pie>
             <Tooltip />
           </RechartsPieChart>

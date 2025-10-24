@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import type { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 
@@ -29,14 +29,13 @@ interface ProjectReportForm {
 type Props = { setOpenGenerateDialog: Dispatch<SetStateAction<boolean>> };
 
 const GenerateProjectReportForm = ({ setOpenGenerateDialog }: Props) => {
-  const { toast } = useToast();
   const projectForm = useForm<ProjectReportForm>();
 
   const handleGenerateProjectReport = (data: ProjectReportForm) => {
     console.log("Generating project report:", data);
-    toast({
-      title: "Project Report Generated",
+    toast.success("Project Report Generated", {
       description: `${data.name} has been generated successfully.`,
+      richColors: true,
     });
     setOpenGenerateDialog(false);
     projectForm.reset();

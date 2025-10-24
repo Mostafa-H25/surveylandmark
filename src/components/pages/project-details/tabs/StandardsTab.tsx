@@ -1,17 +1,17 @@
-import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import { Badge } from "@/components/ui/badge";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { standardsData } from "@/assets/data";
-import { Download, Eye, SquarePen, Trash2, Upload } from "lucide-react";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { standardsData } from "@/assets/data";
+// import { Download, Eye, SquarePen, Trash2, Upload } from "lucide-react";
 
 const StandardsTab = () => {
   const department = {
@@ -25,7 +25,7 @@ const StandardsTab = () => {
   };
   return (
     <TabsContent key={department.id} value={department.name}>
-      <div className="space-y-4 rounded-lg border bg-white p-4">
+      {/* <div className="space-y-4 rounded-lg border bg-white p-4">
         <div className="flex w-full items-center justify-end gap-4">
           <Button className="bg-blue-600 font-semibold text-white hover:bg-blue-700">
             Add Standard
@@ -129,7 +129,7 @@ const StandardsTab = () => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </div> */}
     </TabsContent>
   );
 };

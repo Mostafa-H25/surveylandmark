@@ -1,5 +1,5 @@
 import { roleHierarchy, UserRolesEnum } from "@/constants/defaults";
-import type { UserRole } from "@/contexts/AuthContext";
+import type { UserRole } from "@/types/default";
 
 export const isRequiredRoleOrHigher = (
   requiredRole: UserRole = UserRolesEnum.MEMBER,

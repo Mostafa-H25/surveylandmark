@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import type { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 
@@ -29,14 +29,13 @@ interface InventoryReportForm {
 type Props = { setOpenGenerateDialog: Dispatch<SetStateAction<boolean>> };
 
 const GenerateInventoryReportForm = ({ setOpenGenerateDialog }: Props) => {
-  const { toast } = useToast();
   const inventoryForm = useForm<InventoryReportForm>();
 
   const handleGenerateInventoryReport = (data: InventoryReportForm) => {
     console.log("Generating inventory report:", data);
-    toast({
-      title: "Inventory Report Generated",
+    toast.success("Inventory Report Generated", {
       description: `${data.name} has been generated successfully.`,
+      richColors: true,
     });
     setOpenGenerateDialog(false);
     inventoryForm.reset();

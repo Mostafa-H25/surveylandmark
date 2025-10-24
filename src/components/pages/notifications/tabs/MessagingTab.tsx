@@ -1,14 +1,17 @@
 import { useState } from "react";
 
-import { CheckCircle, Search, Send } from "lucide-react";
+import {
+  //  CheckCircle,
+  Search,
+  Send,
+} from "lucide-react";
 
-import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { internalMessages } from "@/assets/data";
+// import { internalMessages } from "@/assets/data";
 import { TabsContent } from "@/components/ui/tabs";
-import { getPriorityColor } from "@/helpers/getPriorityColor";
+// import { getPriorityColor } from "@/helpers/getPriorityColor";
 import {
   Card,
   CardContent,
@@ -19,17 +22,16 @@ import {
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
-import ViewMessageDialog from "../dialogs/ViewMessageDialog";
+// import ViewMessageDialog from "../dialogs/ViewMessageDialog";
+import { toast } from "sonner";
 
 const MessagingTab = () => {
-  const { toast } = useToast();
-
   const [searchTerm, setSearchTerm] = useState("");
   const [newMessage, setNewMessage] = useState({
     to: "",
@@ -40,17 +42,16 @@ const MessagingTab = () => {
 
   const handleSendMessage = () => {
     if (!newMessage.to || !newMessage.subject || !newMessage.message) {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "Please fill in all required fields.",
-        variant: "destructive",
+        richColors: true,
       });
       return;
     }
 
-    toast({
-      title: "Message Sent",
+    toast.success("Message Sent", {
       description: "Your message has been sent successfully.",
+      richColors: true,
     });
 
     setNewMessage({
@@ -61,12 +62,12 @@ const MessagingTab = () => {
     });
   };
 
-  const handleMarkAsRead = (messageId: number) => {
-    toast({
-      title: "Message Updated",
-      description: "Message marked as read.",
-    });
-  };
+  // const handleMarkAsRead = (messageId: number) => {
+  //   toast("Message Updated", {
+  //     description: "Message marked as read.",
+  //     richColors: true,
+  //   });
+  // };
 
   return (
     <TabsContent value="messaging" className="space-y-6">
@@ -174,7 +175,7 @@ const MessagingTab = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {internalMessages.map((message) => (
+              {/* {internalMessages.map((message) => (
                 <TableRow
                   key={message.id}
                   className={message.status === "unread" ? "bg-blue-50" : ""}
@@ -222,7 +223,7 @@ const MessagingTab = () => {
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))} */}
             </TableBody>
           </Table>
         </CardContent>

@@ -16,7 +16,7 @@ import { useState } from "react";
 type Props = { alert: any };
 
 const ViewNotificationDialog = ({ alert }: Props) => {
-  const [selectedAlert, setSelectedAlert] = useState<any>(null);
+  const [, setSelectedAlert] = useState<any>(null);
   const Icon =
     Alerts.find((a) => a.value === alert.type)?.icon || AlertTriangle;
   const handleViewAlert = (alert: any) => {

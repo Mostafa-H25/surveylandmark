@@ -6,22 +6,25 @@ import { Button } from "@/components/ui/button";
 import UserCard from "@/components/shared/UserCard";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 import Projects from "@/components/pages/dashboard/Projects";
-import { roleHierarchy, UserRolesEnum } from "@/constants/defaults";
+import {
+  roleHierarchy,
+  // UserRolesEnum
+} from "@/constants/defaults";
 import QuickActions from "@/components/pages/dashboard/QuickActions";
 import RevenueTrendChart from "@/components/charts/RevenueTrendChart";
 import EnhancedStats from "@/components/pages/dashboard/EnhancedStats";
 import ProjectStatusChart from "@/components/charts/ProjectStatusChart";
-import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
+// import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
 import MonthlyProgressChart from "@/components/charts/MonthlyProgressChart";
 import DepartmentOverviewChart from "@/components/charts/DepartmentOverviewChart";
 import {
   Card,
-  CardContent,
+  // CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import AddUserDialog from "@/components/shared/dialogs/AddUserDialog";
+// import AddUserDialog from "@/components/shared/dialogs/AddUserDialog";
 
 const Dashboard = () => {
   const user = useAuthStore((state) => state.user);
@@ -65,21 +68,21 @@ const Dashboard = () => {
             </span>
           </CardDescription>
         </CardHeader>
-        {isRequiredRoleOrHigher(UserRolesEnum.ADMIN, user?.role) && (
+        {/* {isRequiredRoleOrHigher(UserRolesEnum.ADMIN, user?.role) && (
           <CardContent className="space-y-4">
             <p className="text-gray-600">
               Start by inviting team members to collaborate on survey projects.
             </p>
             <AddUserDialog />
-            {/* <Button
+            <Button
               onClick={() => navigate("/invite-team-members")}
               className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
             >
               <Plus className="size-5" />
               Invite Team Members
-            </Button> */}
+            </Button>
           </CardContent>
-        )}
+        )} */}
       </Card>
       <EnhancedStats />
 

@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,6 @@ import {
 import { loginApi } from "@/api/auth/login.api";
 
 const Login = () => {
-  const { toast } = useToast();
   const { token, isLoading, setToken, setIsLoading } = useAuthStore();
 
   const keepAlive = parseBoolean(localStorage.getItem("keepAlive")) ?? false;
@@ -32,13 +31,7 @@ const Login = () => {
   };
 
   const form = useForm({ defaultValues, mode: "onBlur" });
-  const {
-    control,
-    handleSubmit,
-    reset,
-    // formState: { errors },
-    // watch,
-  } = form;
+  const { control, handleSubmit, reset } = form;
 
   const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
     setIsLoading(true);
@@ -49,16 +42,15 @@ const Login = () => {
       });
       setToken(result.token);
       reset();
-      toast({
-        title: "Login Successful",
+      toast.success("Login Successful", {
         description: "Welcome back!",
+        richColors: true,
       });
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Login Failed",
+      toast.error("Login Failed", {
         description: "Invalid email or password",
-        variant: "destructive",
+        richColors: true,
       });
     }
 

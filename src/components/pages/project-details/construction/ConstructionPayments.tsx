@@ -1,22 +1,22 @@
-import { constructionPaymentsData } from "@/assets/data";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+// import { constructionPaymentsData } from "@/assets/data";
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
 
 import {
   Table,
-  TableBody,
-  TableCell,
+  // TableBody,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/helpers/formatCurrency";
-import { cn } from "@/lib/utils";
+// import { formatCurrency } from "@/helpers/formatCurrency";
+// import { cn } from "@/lib/utils";
 
-const ConstructionPayments = ({ type }) => {
-  const filteredPaymentData = constructionPaymentsData.filter(
-    (payment) => payment.type === type,
-  );
+const ConstructionPayments = () => {
+  // const filteredPaymentData = constructionPaymentsData.filter(
+  //   (payment) => payment.type === type,
+  // );
   return (
     <Table>
       <TableHeader>
@@ -30,7 +30,7 @@ const ConstructionPayments = ({ type }) => {
           <TableHead>Documents</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      {/* <TableBody>
         {filteredPaymentData.map((payment) => (
           <TableRow key={payment.id}>
             <TableCell className="font-medium">{payment.contractor}</TableCell>
@@ -75,7 +75,7 @@ const ConstructionPayments = ({ type }) => {
             </TableCell>
           </TableRow>
         ))}
-      </TableBody>
+      </TableBody> */}
     </Table>
   );
 };

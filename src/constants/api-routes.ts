@@ -14,7 +14,12 @@ export const API_PATHS = {
     ASSIGN_PROJECTS: "/user/assigned-project",
     DELETE: "/user/delete-user",
   },
+  CLIENTS: {
+    ADD: "/client/add",
+    GET_ALL: "/dash/clients/all",
+  },
   PROJECTS: {
+    ADD: "/project/excel",
     GET_ALL: "###",
   },
 };

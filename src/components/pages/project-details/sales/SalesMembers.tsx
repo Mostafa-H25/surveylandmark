@@ -1,14 +1,14 @@
-import { salesMembersData } from "@/assets/data";
-import { Button } from "@/components/ui/button";
+// import { salesMembersData } from "@/assets/data";
+// import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/helpers/formatCurrency";
+// import { formatCurrency } from "@/helpers/formatCurrency";
 
 const SalesMembers = () => {
   return (
@@ -26,7 +26,7 @@ const SalesMembers = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {salesMembersData.map((member) => (
+        {/* {salesMembersData.map((member) => (
           <TableRow key={member.id}>
             <TableCell className="font-medium">{member.name}</TableCell>
             <TableCell>{member.email}</TableCell>
@@ -46,7 +46,7 @@ const SalesMembers = () => {
               </Button>
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

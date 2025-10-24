@@ -6,12 +6,12 @@ import type {
 } from "@/types/default";
 import {
   LayoutDashboard,
-  Users,
   Building2,
-  Settings,
-  MessageSquare,
+  // Users,
+  // Settings,
+  // MessageSquare,
+  // Banknote,
   FileText,
-  Banknote,
   DollarSign,
   Package,
   AlertTriangle,
@@ -97,21 +97,21 @@ interface NavigationItem {
 
 export const navigation: NavigationItem[] = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  {
-    name: "Users Management",
-    href: "/users",
-    icon: Users,
-    requiredRole: UserRolesEnum.ADMIN,
-  },
+  // {
+  //   name: "Users Management",
+  //   href: "/users",
+  //   icon: Users,
+  //   requiredRole: UserRolesEnum.ADMIN,
+  // },
   { name: "Clients & Projects", href: "/clients", icon: Building2 },
-  {
-    name: "Notifications & Messages",
-    href: "/messages",
-    icon: MessageSquare,
-  },
-  { name: "Reports", href: "/reports", icon: FileText },
-  { name: "Payments", href: "/payments", icon: Banknote },
-  { name: "Settings", href: "/settings", icon: Settings },
+  // {
+  //   name: "Notifications & Messages",
+  //   href: "/messages",
+  //   icon: MessageSquare,
+  // },
+  // { name: "Reports", href: "/reports", icon: FileText },
+  // { name: "Payments", href: "/payments", icon: Banknote },
+  // { name: "Settings", href: "/settings", icon: Settings },
 ];
 
 export type TFileCategories =
@@ -168,14 +168,14 @@ export const fileExtensions = [
   { value: FileExtensionEnum.DOC, label: "Word (.docx)" },
 ];
 
-export const ProjectStatusEnum: Record<string, Status> = {
+export const PROJECT_STATUS_ENUM: Record<string, Status> = {
   PLANNING: "planning",
   IN_PROGRESS: "inProgress",
   COMPLETED: "completed",
   ON_HOLDING: "onHold",
 };
 
-export const projectStatus = Object.values(ProjectStatusEnum);
+export const projectStatus = Object.values(PROJECT_STATUS_ENUM);
 
 export type TUserManagementTabs =
   | "users"

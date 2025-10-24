@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import type { User } from "@/types/interfaces";
 import type { Dispatch, SetStateAction } from "react";
 
@@ -24,24 +24,20 @@ const DeleteUserDialog = ({
   isDeleteUserOpen,
   setIsDeleteUserOpen,
 }: Props) => {
-  const { toast } = useToast();
-
   const handleConfirmDelete = async () => {
     try {
       await deleteUserApi(user.id);
-      toast({
-        title: "User Deleted",
+      toast.success("User Deleted", {
         description: `User has been deleted successfully`,
-        variant: "destructive",
+        richColors: true,
       });
       onSuccess();
       setIsDeleteUserOpen(false);
     } catch (error) {
       console.error(error);
-      toast({
-        title: "User Delete Failed",
+      toast.error("User Delete Failed", {
         description: `User delete failed, please try again.`,
-        variant: "destructive",
+        richColors: true,
       });
     }
   };

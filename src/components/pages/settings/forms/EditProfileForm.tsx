@@ -6,7 +6,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import type { FormUser, UserProfile } from "@/types/interfaces";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,6 @@ type Props = {
 };
 
 const EditProfileForm = ({ user, setIsUpdateProfileOpen, setUser }: Props) => {
-  const { toast } = useToast();
   const setUserGlobal = useAuthStore((state) => state.setUser);
   const { control, handleSubmit } = useFormContext<FormUser>();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,9 +30,9 @@ const EditProfileForm = ({ user, setIsUpdateProfileOpen, setUser }: Props) => {
     setIsSubmitting(true);
     try {
       await editProfileApi(data);
-      toast({
-        title: "Profile Updated",
+      toast.success("Profile Updated", {
         description: `${data.name} has been added successfully.`,
+        richColors: true,
       });
       setUserGlobal({
         name: data.name,
@@ -44,10 +43,9 @@ const EditProfileForm = ({ user, setIsUpdateProfileOpen, setUser }: Props) => {
       setIsUpdateProfileOpen(false);
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Profile Update Failed",
+      toast.error("Profile Update Failed", {
         description: "User invitation failed, please try again.",
-        variant: "destructive",
+        richColors: true,
       });
     }
     setIsSubmitting(false);

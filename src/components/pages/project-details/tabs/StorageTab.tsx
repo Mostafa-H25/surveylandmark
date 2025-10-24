@@ -1,16 +1,16 @@
-import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
+// import { Button } from "@/components/ui/button";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { storageData } from "@/assets/data";
-import { ChevronDown, Download, Expand } from "lucide-react";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { storageData } from "@/assets/data";
+// import { ChevronDown, Download, Expand } from "lucide-react";
 
 const StorageTab = () => {
   const department = {
@@ -24,7 +24,7 @@ const StorageTab = () => {
   };
   return (
     <TabsContent key={department.id} value={department.name}>
-      <div className="space-y-4 rounded-lg border bg-white p-4">
+      {/* <div className="space-y-4 rounded-lg border bg-white p-4">
         <div className="flex w-full items-center justify-end gap-4">
           <div>
             <div className="flex items-center gap-2">
@@ -84,7 +84,7 @@ const StorageTab = () => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </div> */}
     </TabsContent>
   );
 };

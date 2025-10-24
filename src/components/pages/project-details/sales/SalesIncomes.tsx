@@ -1,13 +1,13 @@
-import { salesIncomesData } from "@/assets/data";
+// import { salesIncomesData } from "@/assets/data";
 import {
   Table,
   TableBody,
-  TableCell,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/helpers/formatCurrency";
+// import { formatCurrency } from "@/helpers/formatCurrency";
 
 const SalesIncomes = () => {
   return (
@@ -22,7 +22,7 @@ const SalesIncomes = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {salesIncomesData.map((row) => (
+        {/* {salesIncomesData.map((row) => (
           <TableRow key={row.id}>
             <TableCell className="font-medium">{row.type}</TableCell>
 
@@ -37,7 +37,7 @@ const SalesIncomes = () => {
               {row.downPayment ? formatCurrency(row.downPayment) : "-"}
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

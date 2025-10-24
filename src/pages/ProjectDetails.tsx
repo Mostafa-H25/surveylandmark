@@ -103,48 +103,48 @@ const ProjectDetails = () => {
     ],
   };
 
-  const mockDepartments = [
-    {
-      id: 1,
-      name: "HVAC Systems",
-      building: "Building A",
-      floor: "Floor 3",
-      units: [
-        {
-          name: "AC Unit 1",
-          model: "Carrier 50TC",
-          type: "Rooftop",
-          status: "Active",
-        },
-        {
-          name: "Heat Pump 1",
-          model: "Trane XR16",
-          type: "Split System",
-          status: "Maintenance",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Electrical",
-      building: "Building B",
-      floor: "Floor 1",
-      units: [
-        {
-          name: "Panel A1",
-          model: "Square D QO",
-          type: "Main Panel",
-          status: "Active",
-        },
-        {
-          name: "Generator 1",
-          model: "Generac 22kW",
-          type: "Standby",
-          status: "Standby",
-        },
-      ],
-    },
-  ];
+  // const mockDepartments = [
+  //   {
+  //     id: 1,
+  //     name: "HVAC Systems",
+  //     building: "Building A",
+  //     floor: "Floor 3",
+  //     units: [
+  //       {
+  //         name: "AC Unit 1",
+  //         model: "Carrier 50TC",
+  //         type: "Rooftop",
+  //         status: "Active",
+  //       },
+  //       {
+  //         name: "Heat Pump 1",
+  //         model: "Trane XR16",
+  //         type: "Split System",
+  //         status: "Maintenance",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Electrical",
+  //     building: "Building B",
+  //     floor: "Floor 1",
+  //     units: [
+  //       {
+  //         name: "Panel A1",
+  //         model: "Square D QO",
+  //         type: "Main Panel",
+  //         status: "Active",
+  //       },
+  //       {
+  //         name: "Generator 1",
+  //         model: "Generac 22kW",
+  //         type: "Standby",
+  //         status: "Standby",
+  //       },
+  //     ],
+  //   },
+  // ];
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -165,49 +165,49 @@ const ProjectDetails = () => {
     navigate("/clients");
   };
 
-  const filteredDepartments = mockDepartments.filter((dept) => {
-    if (
-      filters.building &&
-      !dept.building.toLowerCase().includes(filters.building.toLowerCase())
-    )
-      return false;
-    if (
-      filters.floor &&
-      !dept.floor.toLowerCase().includes(filters.floor.toLowerCase())
-    )
-      return false;
+  // const filteredDepartments = mockDepartments.filter((dept) => {
+  //   if (
+  //     filters.building &&
+  //     !dept.building.toLowerCase().includes(filters.building.toLowerCase())
+  //   )
+  //     return false;
+  //   if (
+  //     filters.floor &&
+  //     !dept.floor.toLowerCase().includes(filters.floor.toLowerCase())
+  //   )
+  //     return false;
 
-    if (
-      filters.unitName ||
-      filters.unitModel ||
-      filters.unitType ||
-      filters.unitStatus
-    ) {
-      const hasMatchingUnit = dept.units.some((unit) => {
-        if (
-          filters.unitName &&
-          !unit.name.toLowerCase().includes(filters.unitName.toLowerCase())
-        )
-          return false;
-        if (
-          filters.unitModel &&
-          !unit.model.toLowerCase().includes(filters.unitModel.toLowerCase())
-        )
-          return false;
-        if (
-          filters.unitType &&
-          !unit.type.toLowerCase().includes(filters.unitType.toLowerCase())
-        )
-          return false;
-        if (filters.unitStatus && unit.status !== filters.unitStatus)
-          return false;
-        return true;
-      });
-      if (!hasMatchingUnit) return false;
-    }
+  //   if (
+  //     filters.unitName ||
+  //     filters.unitModel ||
+  //     filters.unitType ||
+  //     filters.unitStatus
+  //   ) {
+  //     const hasMatchingUnit = dept.units.some((unit) => {
+  //       if (
+  //         filters.unitName &&
+  //         !unit.name.toLowerCase().includes(filters.unitName.toLowerCase())
+  //       )
+  //         return false;
+  //       if (
+  //         filters.unitModel &&
+  //         !unit.model.toLowerCase().includes(filters.unitModel.toLowerCase())
+  //       )
+  //         return false;
+  //       if (
+  //         filters.unitType &&
+  //         !unit.type.toLowerCase().includes(filters.unitType.toLowerCase())
+  //       )
+  //         return false;
+  //       if (filters.unitStatus && unit.status !== filters.unitStatus)
+  //         return false;
+  //       return true;
+  //     });
+  //     if (!hasMatchingUnit) return false;
+  //   }
 
-    return true;
-  });
+  //   return true;
+  // });
 
   return (
     <div className="container mx-auto space-y-6">

@@ -2,22 +2,22 @@ import { type Dispatch, type SetStateAction, useState } from "react";
 
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import type { User } from "@/types/interfaces";
-import { useAuthStore } from "@/lib/store/use-auth-store";
+// import { useAuthStore } from "@/lib/store/use-auth-store";
 import { editUserRoleApi } from "@/api/user/edit-user-role";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
-import { userPermissions, userRoles } from "@/constants/defaults";
+// import { userPermissions, userRoles } from "@/constants/defaults";
 import {
   Select,
   SelectContent,
-  SelectItem,
+  // SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
+// import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
 
 type Props = {
   user: User;
@@ -30,15 +30,14 @@ const UserRolesPermissionsForm = ({
   onSuccess,
   setIsEditUserRolesPermissionsOpen,
 }: Props) => {
-  const { toast } = useToast();
-  const currentUser = useAuthStore((state) => state.user);
+  // const currentUser = useAuthStore((state) => state.user);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues = {
     id: user.id,
     role: user?.role || "",
-    permission: user?.permmisions || "",
+    permission: user?.permissions || "",
   };
 
   const form = useForm({ defaultValues, mode: "onBlur" });
@@ -50,18 +49,18 @@ const UserRolesPermissionsForm = ({
     console.log(data);
     try {
       await editUserRoleApi(id, rest);
-      toast({
-        title: "User Updated",
+      toast.success("User Updated", {
         description: "User information has been updated successfully",
+        richColors: true,
       });
       onSuccess();
       reset();
       setIsEditUserRolesPermissionsOpen(false);
     } catch (error) {
       console.error(error);
-      toast({
-        title: "User Update Failed",
+      toast.error("User Update Failed", {
         description: "User data update failed, please try again.",
+        richColors: true,
       });
     }
     setIsSubmitting(false);
@@ -91,7 +90,7 @@ const UserRolesPermissionsForm = ({
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
-                  {userRoles.map((role) => (
+                  {/* {userRoles.map((role) => (
                     <SelectItem
                       key={role}
                       value={role}
@@ -103,7 +102,7 @@ const UserRolesPermissionsForm = ({
                     >
                       {role.replaceAll("_", " ")}
                     </SelectItem>
-                  ))}
+                  ))} */}
                 </SelectContent>
               </Select>
             </div>
@@ -135,7 +134,7 @@ const UserRolesPermissionsForm = ({
                   <SelectValue placeholder="Select access level" />
                 </SelectTrigger>
                 <SelectContent>
-                  {userPermissions.map((permission) => (
+                  {/* {userPermissions.map((permission) => (
                     <SelectItem
                       key={permission}
                       value={permission}
@@ -144,7 +143,7 @@ const UserRolesPermissionsForm = ({
                     >
                       {permission.replaceAll("_", " ")}
                     </SelectItem>
-                  ))}
+                  ))} */}
                 </SelectContent>
               </Select>
             </div>

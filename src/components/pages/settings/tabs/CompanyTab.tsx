@@ -11,16 +11,14 @@ import { Label } from "@/components/ui/label";
 import { TabsContent } from "@/components/ui/tabs";
 
 import { Building } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { companyInfo } from "@/assets/data";
 
 const CompanyTab = () => {
-  const { toast } = useToast();
-
   const handleSave = (section: string) => {
-    toast({
-      title: "Settings saved",
+    toast.success("Settings saved", {
       description: `Your ${section} settings have been updated successfully.`,
+      richColors: true,
     });
   };
   return (

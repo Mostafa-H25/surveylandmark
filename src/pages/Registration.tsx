@@ -5,7 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+// import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -22,9 +22,8 @@ import {
 } from "@/components/ui/card";
 
 const Registration = () => {
-  const { toast } = useToast();
   const token = useAuthStore((state) => state.token);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   const defaultValues = {
     username: "",
@@ -37,7 +36,7 @@ const Registration = () => {
   const form = useForm({ defaultValues, mode: "onBlur" });
   const { control, handleSubmit } = form;
 
-  const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
+  const onSubmit: SubmitHandler<typeof defaultValues> = async () => {
     // if (true) {
     //   toast({
     //     title: "Login successful",

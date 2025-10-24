@@ -29,12 +29,11 @@ import {
   Eye,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const Standards = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
-  const { toast } = useToast();
   const [isAddingStandard, setIsAddingStandard] = useState(false);
   const [newStandard, setNewStandard] = useState({
     title: "",
@@ -82,10 +81,9 @@ const Standards = () => {
 
   const handleAddStandard = () => {
     if (!newStandard.title || !newStandard.category) {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "Please fill in all required fields",
-        variant: "destructive",
+        richColors: true,
       });
       return;
     }
@@ -108,17 +106,17 @@ const Standards = () => {
     });
     setIsAddingStandard(false);
 
-    toast({
-      title: "Success",
+    toast.success("Success", {
       description: "Standard added successfully",
+      richColors: true,
     });
   };
 
   const handleDeleteStandard = (id: number) => {
     setStandards(standards.filter((s) => s.id !== id));
-    toast({
-      title: "Success",
+    toast.success("Success", {
       description: "Standard deleted successfully",
+      richColors: true,
     });
   };
 
@@ -138,9 +136,9 @@ const Standards = () => {
       ),
     );
 
-    toast({
-      title: "Success",
+    toast.success("Success", {
       description: "Document uploaded successfully",
+      richColors: true,
     });
   };
 

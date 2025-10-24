@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import type { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 
@@ -29,15 +29,13 @@ interface FinancialReportForm {
 type Props = { setOpenGenerateDialog: Dispatch<SetStateAction<boolean>> };
 
 const GenerateFinancialReportFrom = ({ setOpenGenerateDialog }: Props) => {
-  const { toast } = useToast();
-
   const financialForm = useForm<FinancialReportForm>();
 
   const handleGenerateFinancialReport = (data: FinancialReportForm) => {
     console.log("Generating financial report:", data);
-    toast({
-      title: "Financial Report Generated",
+    toast.success("Financial Report Generated", {
       description: `${data.name} has been generated successfully.`,
+      richColors: true,
     });
     setOpenGenerateDialog(false);
     financialForm.reset();

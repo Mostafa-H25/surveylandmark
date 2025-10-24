@@ -10,6 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 import {
   Building2,
@@ -23,12 +31,13 @@ import {
   HammerIcon,
   Settings,
   Box,
+  CircleSlash,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AddClientDialog from "@/components/pages/clients/dialogs/AddClientDialog";
 import { clientsData } from "@/assets/data";
 import { getProjectStatusColor } from "@/helpers/getStatusColor";
 import { cn } from "@/lib/utils";
+import AddClientDialog from "@/components/pages/clients/dialogs/add-client/AddClientDialog";
 
 interface Department {
   id: string;
@@ -125,11 +134,11 @@ const ClientsManagement = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="space-y-2">
           <h1 className="text-3xl font-bold text-gray-900">
             Clients & Projects
           </h1>
-          <p className="mt-2 text-gray-600">
+          <p className="text-gray-600">
             Manage clients and their projects with construction, sales, and
             storage departments.
           </p>
@@ -155,6 +164,18 @@ const ClientsManagement = () => {
 
       {/* Clients List */}
       <div className="space-y-4">
+        {!filteredClients?.length && (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <CircleSlash color="#4a5565 " />
+              </EmptyMedia>
+              <EmptyTitle>No data</EmptyTitle>
+              <EmptyDescription>No data found</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+          </Empty>
+        )}
         {filteredClients.map((client) => (
           <Card key={client.id} className="transition-shadow hover:shadow-md">
             <CardHeader>

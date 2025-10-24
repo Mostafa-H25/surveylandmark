@@ -1,12 +1,15 @@
-import { AlertTriangle, CheckCircle } from "lucide-react";
+import {
+  AlertTriangle,
+  //  CheckCircle
+} from "lucide-react";
 
-import { alerts } from "@/assets/data";
-import { useToast } from "@/hooks/use-toast";
-import { Badge } from "@/components/ui/badge";
-import { Alerts } from "@/constants/defaults";
-import { Button } from "@/components/ui/button";
+// import { alerts } from "@/assets/data";
+// import { toast } from "sonner";
+// import { Badge } from "@/components/ui/badge";
+// import { Alerts } from "@/constants/defaults";
+// import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
-import { getPriorityColor } from "@/helpers/getPriorityColor";
+// import { getPriorityColor } from "@/helpers/getPriorityColor";
 import {
   Card,
   CardContent,
@@ -16,24 +19,22 @@ import {
 } from "@/components/ui/card";
 import {
   Table,
-  TableBody,
-  TableCell,
+  // TableBody,
+  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
-import ViewNotificationDialog from "../dialogs/ViewNotificationDialog";
+// import ViewNotificationDialog from "../dialogs/ViewNotificationDialog";
 
 const NotificationsTab = () => {
-  const { toast } = useToast();
-
-  const handleResolveAlert = (alertId: number) => {
-    toast({
-      title: "Alert Resolved",
-      description: "Alert has been marked as resolved.",
-    });
-  };
+  // const handleResolveAlert = (alertId: number) => {
+  //   toast.success("Alert Resolved", {
+  //     description: "Alert has been marked as resolved.",
+  //     richColors: true,
+  //   });
+  // };
 
   return (
     <TabsContent value="alerts" className="space-y-6">
@@ -60,7 +61,7 @@ const NotificationsTab = () => {
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            {/* <TableBody>
               {alerts.map((alert) => {
                 const Icon =
                   Alerts.find((a) => a.value === alert.type)?.icon ||
@@ -115,7 +116,7 @@ const NotificationsTab = () => {
                   </TableRow>
                 );
               })}
-            </TableBody>
+            </TableBody> */}
           </Table>
         </CardContent>
       </Card>

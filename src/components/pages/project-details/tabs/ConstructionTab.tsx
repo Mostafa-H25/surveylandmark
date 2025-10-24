@@ -1,25 +1,28 @@
-import { ChevronDown, Download, Expand } from "lucide-react";
+// import { ChevronDown, Download, Expand } from "lucide-react";
 
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+  TabsContent,
+  // TabsList, TabsTrigger
+} from "@/components/ui/tabs";
 
-import {
-  constructionSections,
-  ConstructionSectionsEnum,
-} from "@/constants/defaults";
-import ConstructionOverview from "../construction/ConstructionOverview";
-import ConstructionMembers from "../construction/ConstructionMembers";
-import ConstructionPayments from "../construction/ConstructionPayments";
-import ConstructionItems from "../construction/ConstructionItems";
-import ConstructionMaterials from "../construction/ConstructionMaterials";
-import ConstructionContractors from "../construction/ConstructionContractors";
+// import {
+//   constructionSections,
+//   ConstructionSectionsEnum,
+// } from "@/constants/defaults";
+// import ConstructionOverview from "../construction/ConstructionOverview";
+// import ConstructionMembers from "../construction/ConstructionMembers";
+// import ConstructionPayments from "../construction/ConstructionPayments";
+// import ConstructionItems from "../construction/ConstructionItems";
+// import ConstructionMaterials from "../construction/ConstructionMaterials";
+// import ConstructionContractors from "../construction/ConstructionContractors";
 
 const ConstructionTab = () => {
   const department = {
@@ -35,7 +38,7 @@ const ConstructionTab = () => {
   return (
     <TabsContent key={department.id} value={department.name}>
       <div className="space-y-4 rounded-lg border bg-white p-4">
-        <div className="flex w-full items-center justify-between gap-4">
+        {/* <div className="flex w-full items-center justify-between gap-4">
           <Select defaultValue={ConstructionSectionsEnum.OVERVIEW}>
             <SelectTrigger className="w-64 capitalize">
               <SelectValue />
@@ -72,7 +75,7 @@ const ConstructionTab = () => {
             </div>
           </div>
         </div>
-        <ConstructionOverview />
+        <ConstructionOverview /> */}
         {/* <ConstructionMembers /> */}
         {/* <ConstructionPayments type={"payment"} /> */}
         {/* <ConstructionItems /> */}

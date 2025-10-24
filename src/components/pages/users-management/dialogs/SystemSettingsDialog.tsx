@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,6 @@ const SystemSettingsDialog = ({
   isSystemSettingsOpen,
   setIsSystemSettingsOpen,
 }: Props) => {
-  const { toast } = useToast();
-
   return (
     <Dialog open={isSystemSettingsOpen} onOpenChange={setIsSystemSettingsOpen}>
       <DialogContent className="max-w-md">
@@ -49,9 +47,9 @@ const SystemSettingsDialog = ({
             </Button>
             <Button
               onClick={() => {
-                toast({
-                  title: "Setting Updated",
+                toast.success("Setting Updated", {
                   description: "System setting has been updated",
+                  richColors: true,
                 });
                 setIsSystemSettingsOpen(false);
               }}
