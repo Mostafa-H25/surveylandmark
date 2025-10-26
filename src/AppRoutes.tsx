@@ -4,7 +4,7 @@ import { abortAxiosInstance } from "./lib/api-client";
 
 import Login from "./pages/Login";
 // import Reports from "./pages/Reports";
-// import Settings from "./pages/Settings";
+import Settings from "./pages/Settings";
 // import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
 // import ItemPage from "./pages/ItemPage";
@@ -150,14 +150,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       /> */}
-      {/* <Route
+      <Route
         path="/settings"
         element={
           <ProtectedRoute>
             <Settings />
           </ProtectedRoute>
         }
-      /> */}
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -8,7 +8,7 @@ import {
   LayoutDashboard,
   Building2,
   // Users,
-  // Settings,
+  Settings,
   // MessageSquare,
   // Banknote,
   FileText,
@@ -111,7 +111,7 @@ export const navigation: NavigationItem[] = [
   // },
   // { name: "Reports", href: "/reports", icon: FileText },
   // { name: "Payments", href: "/payments", icon: Banknote },
-  // { name: "Settings", href: "/settings", icon: Settings },
+  { name: "Settings", href: "/settings", icon: Settings },
 ];
 
 export type TFileCategories =

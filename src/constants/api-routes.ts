@@ -9,6 +9,10 @@ export const API_PATHS = {
       UPDATE_PASSWORD: "/user/change-password",
       UPDATE_IMG: "/user/me/profile-image?profileImage",
     },
+    COMPANY: {
+      GET: "/user/company-info",
+      UPDATE: "/user/update-company",
+    },
     GET_ALL: "/user/get-Users-Info",
     UPDATE: "/user/editRole",
     ASSIGN_PROJECTS: "/user/assigned-project",

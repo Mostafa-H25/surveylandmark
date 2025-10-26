@@ -16,7 +16,7 @@ const NewProject = () => {
   const navigate = useNavigate();
   const defaultValues = {
     name: "",
-    client: "68fbc0c71948348751587efb",
+    client: "",
     status: PROJECT_STATUS_ENUM.PLANNING,
     description: "",
     totalBudget: 0,

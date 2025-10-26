@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/card";
 
 import EditProfileSettingsDialog from "../dialogs/EditProfileSettingsDialog";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 
 const ProfileTab = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -76,7 +77,6 @@ const ProfileTab = () => {
       </div>
     );
   }
-
   return (
     <TabsContent value="profile" className="space-y-6">
       <Card>
@@ -110,7 +110,7 @@ const ProfileTab = () => {
                   {user.name}
                 </p>
                 <p className="text-xs text-gray-500 capitalize">
-                  {user.role.replaceAll("_", " ")}
+                  {formatCamelCaseToText(user.role)}
                 </p>
               </div>
               <Button

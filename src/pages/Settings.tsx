@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileTab from "@/components/pages/settings/tabs/ProfileTab";
 import CompanyTab from "@/components/pages/settings/tabs/CompanyTab";
 import SecurityTab from "@/components/pages/settings/tabs/SecurityTab";
-import NotificationTab from "@/components/pages/settings/tabs/NotificationTab";
+// import NotificationTab from "@/components/pages/settings/tabs/NotificationTab";
 
 const Settings = () => {
   return (
@@ -17,16 +17,16 @@ const Settings = () => {
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="profile">Profile Information</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="notification">Notifications</TabsTrigger>
+          {/* <TabsTrigger value="notification">Notifications</TabsTrigger> */}
           <TabsTrigger value="company">Company Info</TabsTrigger>
         </TabsList>
 
         <ProfileTab />
         <SecurityTab />
-        <NotificationTab />
+        {/* <NotificationTab /> */}
         <CompanyTab />
       </Tabs>
     </div>

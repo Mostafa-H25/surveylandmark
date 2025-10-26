@@ -59,17 +59,15 @@ export interface User {
   projects: { id: string; name: string }[];
 }
 
-// interface Company {
-//   id: string;
-//   name: string;
-//   email: string;
-//   phone: string;
-//   taxId: string;
-//   address: string;
-//   website: string;
-//   registrationNo: string;
-//   createdAt: string;
-// }
+export interface Company {
+  companyName: string;
+  email: string;
+  phone: string;
+  taxId: string;
+  address: string;
+  website: string;
+  registrationNumber: string;
+}
 
 // interface NotificationConfig {
 //   email: boolean;

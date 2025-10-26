@@ -1,4 +1,4 @@
-// import { getAllClientsApi } from "@/api/clients/get-all-clients.api";
+import { getAllClientsApi } from "@/api/clients/get-all-clients.api";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,21 +12,26 @@ import { Textarea } from "@/components/ui/textarea";
 import { projectStatus } from "@/constants/defaults";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-// const CLIENTS_QUERY_KEY = "clients";
+const CLIENTS_QUERY_KEY = "clients";
 
 const ProjectInformation = () => {
   const { control } = useFormContext();
-  // const { data: clients } = useQuery({
-  //   queryKey: [CLIENTS_QUERY_KEY],
-  //   queryFn: () => getAllClientsApi(),
-  // });
-  // const { data: clients } = useSuspenseQuery({
-  //   queryKey: [CLIENTS_QUERY_KEY],
-  //   queryFn: () => getAllClientsApi(),
-  // });
+
+  const { data: clients, isPending } = useQuery({
+    queryKey: [CLIENTS_QUERY_KEY],
+    queryFn: () => getAllClientsApi(),
+    select: useCallback((data: ClientQueryResponse) => {
+      return data.data.map((option) => ({
+        id: option.client.id,
+        name: option.client.name,
+      }));
+    }, []),
+  });
+
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6">
       <h2 className="mb-2 text-2xl font-semibold text-gray-900">
@@ -56,20 +61,29 @@ const ProjectInformation = () => {
                   >
                     Client
                   </Label>
-                  <Select {...field} onValueChange={field.onChange}>
+                  <Select
+                    name={field.name}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
                     <SelectTrigger id={field.name} className="capitalize">
                       <SelectValue placeholder="Select client" />
                     </SelectTrigger>
                     <SelectContent>
-                      {/* {clients?.map((client) => (
-                          <SelectItem
-                            key={client.id}
-                            value={client.id.toString()}
-                            className="capitalize"
-                          >
-                            {client.name}
-                          </SelectItem>
-                        ))} */}
+                      {isPending && (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
+                        </div>
+                      )}
+                      {clients?.map((client) => (
+                        <SelectItem
+                          key={client.id}
+                          value={client.id.toString()}
+                          className="capitalize"
+                        >
+                          {client.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -125,7 +139,11 @@ const ProjectInformation = () => {
                   >
                     Status
                   </Label>
-                  <Select {...field} onValueChange={field.onChange}>
+                  <Select
+                    name={field.name}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
                     <SelectTrigger id={field.name} className="capitalize">
                       <SelectValue />
                     </SelectTrigger>
@@ -263,3 +281,36 @@ const ProjectInformation = () => {
 };
 
 export default ProjectInformation;
+
+type ClientQueryResponse = {
+  message: string;
+  success: boolean;
+  data: {
+    client: {
+      id: string;
+      name: string;
+      email: string;
+      phone: string;
+      company: string;
+      joinDate: string | null;
+    };
+    projects: {
+      count: number;
+      totalBudget: number;
+      details: {
+        id: string;
+        name: string;
+        budget: number;
+        status: string;
+        startDate: string | null;
+        endDate: string | null;
+        projectManager: {
+          id: string;
+          name: string;
+          title: string;
+        };
+        progressPercentage: number;
+      }[];
+    };
+  }[];
+};
