@@ -15,13 +15,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { CircleSlash, Download } from "lucide-react";
 import { ReportTypesEnum } from "@/constants/defaults";
 import type { Report } from "@/types/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { getAllReportsApi } from "@/api/reports/get-all-reports.api";
 import { useCallback } from "react";
 import { formatDate } from "@/helpers/formatDate";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 // import { financialReports } from "@/assets/data";
 
 type Props = {
@@ -95,6 +103,18 @@ const FinancialTab = ({
               </TableRow>
             </TableHeader>
             <TableBody>
+              {!reports?.length && (
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <CircleSlash color="#4a5565 " />
+                    </EmptyMedia>
+                    <EmptyTitle>No data</EmptyTitle>
+                    <EmptyDescription>No data found</EmptyDescription>
+                  </EmptyHeader>
+                  <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+                </Empty>
+              )}
               {reports?.map((report) => (
                 <TableRow key={report.id}>
                   <TableCell className="font-medium">{report.name}</TableCell>
