@@ -9,12 +9,14 @@ import {
 import type { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import type { Report } from "@/types/interfaces";
+import { formatDate } from "@/helpers/formatDate";
 
 type Props = {
-  selectedReport: any;
+  selectedReport: Report | null;
   openViewDialog: boolean;
   setOpenViewDialog: Dispatch<SetStateAction<boolean>>;
-  handleDownloadReport: (reportName: string) => void;
+  handleDownloadReport: (reportName: string, reportUrl: string) => void;
 };
 
 const ViewReportDialog = ({
@@ -23,6 +25,7 @@ const ViewReportDialog = ({
   setOpenViewDialog,
   handleDownloadReport,
 }: Props) => {
+  if (!selectedReport) return;
   return (
     <Dialog open={openViewDialog} onOpenChange={setOpenViewDialog}>
       <DialogContent className="sm:max-w-[600px]">
@@ -42,10 +45,10 @@ const ViewReportDialog = ({
                 <p className="text-sm text-gray-900">{selectedReport.name}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700">
+                {/* <label className="text-sm font-medium text-gray-700">
                   Type
                 </label>
-                <p className="text-sm text-gray-900">{selectedReport.type}</p>
+                <p className="text-sm text-gray-900">{selectedReport.type}</p> */}
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700">
@@ -59,7 +62,9 @@ const ViewReportDialog = ({
                 <label className="text-sm font-medium text-gray-700">
                   Date
                 </label>
-                <p className="text-sm text-gray-900">{selectedReport.date}</p>
+                <p className="text-sm text-gray-900">
+                  {formatDate(selectedReport.generatedAt)}
+                </p>
               </div>
               {selectedReport.project && (
                 <div>
@@ -71,7 +76,7 @@ const ViewReportDialog = ({
                   </p>
                 </div>
               )}
-              {selectedReport.period && (
+              {/* {selectedReport.period && (
                 <div>
                   <label className="text-sm font-medium text-gray-700">
                     Period
@@ -136,17 +141,14 @@ const ViewReportDialog = ({
                     </p>
                   </div>
                 </>
-              )}
+              )} */}
             </div>
             <div>
               <label className="text-sm font-medium text-gray-700">
                 Summary
               </label>
               <p className="mt-1 text-sm text-gray-600">
-                This report contains detailed information about{" "}
-                {selectedReport.type.toLowerCase()} metrics. The data has been
-                compiled and verified for accuracy. You can download the full
-                report for detailed analysis and record keeping.
+                {selectedReport.description}
               </p>
             </div>
           </div>
@@ -156,7 +158,14 @@ const ViewReportDialog = ({
             Close
           </Button>
           {selectedReport && (
-            <Button onClick={() => handleDownloadReport(selectedReport.name)}>
+            <Button
+              onClick={() =>
+                handleDownloadReport(
+                  selectedReport.name,
+                  selectedReport.downloadUrl,
+                )
+              }
+            >
               <Download className="mr-2 size-4" />
               Download Report
             </Button>

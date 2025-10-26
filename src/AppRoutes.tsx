@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { abortAxiosInstance } from "./lib/api-client";
 
 import Login from "./pages/Login";
-// import Reports from "./pages/Reports";
+import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 // import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
@@ -133,7 +133,7 @@ const AppRoutes = () => {
             <Messages />
           </ProtectedRoute>
         }
-      />
+      /> */}
       <Route
         path="/reports"
         element={
@@ -142,7 +142,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      <Route
+      {/* <Route
         path="/payments"
         element={
           <ProtectedRoute>

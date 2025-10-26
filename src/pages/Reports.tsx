@@ -1,41 +1,41 @@
 import { useState } from "react";
 
-import { toast } from "sonner";
 import SalesTab from "@/components/pages/reports/tabs/SalesTab";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  reportTypes,
-  ReportTypesEnum,
-  type TReportTypes,
-} from "@/constants/defaults";
+import { reportTypes, ReportTypesEnum } from "@/constants/defaults";
 import ProjectsTab from "@/components/pages/reports/tabs/ProjectsTab";
 import FinancialTab from "@/components/pages/reports/tabs/FinancialTab";
 import InventoryTab from "@/components/pages/reports/tabs/InventoryTab";
 import ViewReportDialog from "@/components/pages/reports/dialogs/ViewReportDialog";
-import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
+// import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
+import type { Report } from "@/types/interfaces";
 
 const Reports = () => {
-  const [openGenerateDialog, setOpenGenerateDialog] = useState(false);
+  // const [openGenerateDialog, setOpenGenerateDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
-  const [currentReportType, setCurrentReportType] = useState<string>(
-    ReportTypesEnum.PROJECTS.value,
-  );
-  const [selectedReport, setSelectedReport] = useState<any>(null);
+  // const [currentReportType, setCurrentReportType] = useState<string>(
+  //   ReportTypesEnum.PROJECTS.value,
+  // );
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
 
-  const handleOpenGenerateDialog = (type: TReportTypes) => {
-    setCurrentReportType(type);
-    setOpenGenerateDialog(true);
+  // const handleOpenGenerateDialog = (type: TReportTypes) => {
+  //   setCurrentReportType(type);
+  //   setOpenGenerateDialog(true);
+  // };
+
+  const handleDownloadReport = (reportName: string, reportUrl: string) => {
+    const a = document.createElement("a");
+    const url = import.meta.env.BASE_URL + reportUrl;
+    const encodedURI = encodeURIComponent(url);
+    a.setAttribute("href", encodedURI);
+    a.setAttribute("download", reportName);
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
-  const handleDownloadReport = (reportName: string) => {
-    console.log("Downloading report:", reportName);
-    toast.success("Download Started", {
-      description: `Downloading ${reportName}...`,
-      richColors: true,
-    });
-  };
-
-  const handleViewReport = (report: any) => {
+  const handleViewReport = (report: Report) => {
     setSelectedReport(report);
     setOpenViewDialog(true);
   };
@@ -68,33 +68,33 @@ const Reports = () => {
         </TabsList>
 
         <ProjectsTab
-          handleOpenGenerateDialog={handleOpenGenerateDialog}
+          // handleOpenGenerateDialog={handleOpenGenerateDialog}
           handleViewReport={handleViewReport}
           handleDownloadReport={handleDownloadReport}
         />
         <FinancialTab
-          handleOpenGenerateDialog={handleOpenGenerateDialog}
+          // handleOpenGenerateDialog={handleOpenGenerateDialog}
           handleViewReport={handleViewReport}
           handleDownloadReport={handleDownloadReport}
         />
         <SalesTab
-          handleOpenGenerateDialog={handleOpenGenerateDialog}
+          // handleOpenGenerateDialog={handleOpenGenerateDialog}
           handleViewReport={handleViewReport}
           handleDownloadReport={handleDownloadReport}
         />
         <InventoryTab
-          handleOpenGenerateDialog={handleOpenGenerateDialog}
+          // handleOpenGenerateDialog={handleOpenGenerateDialog}
           handleViewReport={handleViewReport}
           handleDownloadReport={handleDownloadReport}
         />
       </Tabs>
 
-      <GenerateReportDialog
+      {/* <GenerateReportDialog
         currentReportType={currentReportType}
         setCurrentReportType={setCurrentReportType}
         openGenerateDialog={openGenerateDialog}
         setOpenGenerateDialog={setOpenGenerateDialog}
-      />
+      /> */}
       <ViewReportDialog
         selectedReport={selectedReport}
         openViewDialog={openViewDialog}

@@ -13,13 +13,13 @@ import { TabsContent } from "@/components/ui/tabs";
 import { Building } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { getCompanyApi } from "@/api/user/get-company";
+import { getCompanyApi } from "@/api/user/get-company.api";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { emailPattern, phonePattern } from "@/constants/regex";
 import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
-import { editCompanyApi } from "@/api/user/edit-company";
+import { editCompanyApi } from "@/api/user/edit-company.api";
 
 const CompanyTab = () => {
   const [isLoading, setIsLoading] = useState(true);

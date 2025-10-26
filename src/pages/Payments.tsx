@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { AddPaymentDialog } from "@/components/pages/payments/AddPaymentDialog";
 import { paymentData } from "@/assets/data";
 import { formatCurrency } from "@/helpers/formatCurrency";
+import { formatDate } from "@/helpers/formatDate";
 
 interface PaymentData {
   id: number;
@@ -92,14 +93,6 @@ const Payments = () => {
       default:
         return "bg-gray-100 text-gray-800";
     }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
   };
 
   return (

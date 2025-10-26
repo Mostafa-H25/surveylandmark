@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import type { User } from "@/types/interfaces";
 // import { useAuthStore } from "@/lib/store/use-auth-store";
-import { editUserRoleApi } from "@/api/user/edit-user-role";
+import { editUserRoleApi } from "@/api/user/edit-user-role.api";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 // import { userPermissions, userRoles } from "@/constants/defaults";
 import {

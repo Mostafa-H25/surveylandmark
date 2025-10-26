@@ -1,3 +1,4 @@
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 
 const UserCard = () => {
@@ -14,7 +15,7 @@ const UserCard = () => {
           {user?.name}
         </p>
         <p className="text-xs text-gray-500 capitalize">
-          {user?.role?.replaceAll("_", " ")}
+          {formatCamelCaseToText(user?.role || "")}
         </p>
       </div>
     </div>

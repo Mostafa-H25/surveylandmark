@@ -333,13 +333,13 @@ interface Project {
 //   status: PaymentStatus;
 // }
 
-// interface Report {
-//   id: string;
-//   name: string;
-//   summary: string;
-//   project: Project;
-//   generatedBy: string;
-//   createdAt: string;
-//   type: string;
-//   report: File;
-// }
+export interface Report {
+  id: string;
+  name: string;
+  // type: string;
+  generatedAt: string;
+  description: string;
+  downloadUrl: string;
+  project: string;
+  generatedBy: string;
+}

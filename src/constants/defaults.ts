@@ -109,7 +109,7 @@ export const navigation: NavigationItem[] = [
   //   href: "/messages",
   //   icon: MessageSquare,
   // },
-  // { name: "Reports", href: "/reports", icon: FileText },
+  { name: "Reports", href: "/reports", icon: FileText },
   // { name: "Payments", href: "/payments", icon: Banknote },
   { name: "Settings", href: "/settings", icon: Settings },
 ];

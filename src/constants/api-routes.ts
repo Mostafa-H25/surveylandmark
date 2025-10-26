@@ -26,4 +26,8 @@ export const API_PATHS = {
     ADD: "/project/excel",
     GET_ALL: "###",
   },
+  REPORTS: {
+    ADD: (projectId: string) => `reports/project/${projectId}/generate`,
+    GET_ALL: "/reports/list",
+  },
 };

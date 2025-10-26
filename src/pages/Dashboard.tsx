@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 // import AddUserDialog from "@/components/shared/dialogs/AddUserDialog";
 
 const Dashboard = () => {
@@ -64,7 +65,7 @@ const Dashboard = () => {
                   : "bg-gray-500 text-gray-700",
               )}
             >
-              {user?.role.replaceAll("_", " ")}
+              {formatCamelCaseToText(user?.role)}
             </span>
           </CardDescription>
         </CardHeader>
