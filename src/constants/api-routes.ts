@@ -30,4 +30,9 @@ export const API_PATHS = {
     ADD: (projectId: string) => `reports/project/${projectId}/generate`,
     GET_ALL: "/reports/list",
   },
+  MESSAGES: {
+    ADD: "/user/send",
+    UPDATE: (messageId: string) => `/user/update-message/${messageId}`,
+    GET_ALL: "/user/getmssage",
+  },
 };

@@ -1,4 +1,5 @@
 import type {
+  Priority,
   Status,
   UserPermission,
   UserRole,
@@ -9,7 +10,7 @@ import {
   Building2,
   // Users,
   Settings,
-  // MessageSquare,
+  MessageSquare,
   // Banknote,
   FileText,
   DollarSign,
@@ -104,11 +105,11 @@ export const navigation: NavigationItem[] = [
   //   requiredRole: UserRolesEnum.ADMIN,
   // },
   { name: "Clients & Projects", href: "/clients", icon: Building2 },
-  // {
-  //   name: "Notifications & Messages",
-  //   href: "/messages",
-  //   icon: MessageSquare,
-  // },
+  {
+    name: "Notifications & Messages",
+    href: "/messages",
+    icon: MessageSquare,
+  },
   { name: "Reports", href: "/reports", icon: FileText },
   // { name: "Payments", href: "/payments", icon: Banknote },
   { name: "Settings", href: "/settings", icon: Settings },
@@ -248,3 +249,11 @@ export const SalesSectionsEnum: Record<string, TSalesSection> = {
 };
 
 export const salesSections = Object.values(SalesSectionsEnum);
+
+export const MESSAGE_PRIORITY_ENUM: Record<string, Priority> = {
+  NORMAL: "normal",
+  HIGH: "high",
+  URGENT: "urgent",
+};
+
+export const messagePriority = Object.values(MESSAGE_PRIORITY_ENUM);

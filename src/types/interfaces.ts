@@ -12,6 +12,7 @@ import type {
   PaymentType,
   PaymentAction,
   ContractorType,
+  Priority,
   // ConstructionType,
   // ConstructionTaskFeedback,
   // Priority,
@@ -75,16 +76,16 @@ export interface Company {
 //   projects: boolean;
 // }
 
-// interface Message {
-//   id: string;
-//   from: UserProfile;
-//   to: UserProfile;
-//   subject: string;
-//   body: string;
-//   priority: Priority;
-//   createdAt: string;
-//   status: MessageStatus;
-// }
+export interface Message {
+  id: string;
+  from: string;
+  // to: UserProfile;
+  subject: string;
+  body: string;
+  priority: Priority;
+  createdAt: string;
+  isRead: boolean;
+}
 
 // interface Alert {
 //   id: string;

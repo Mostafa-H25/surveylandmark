@@ -104,16 +104,22 @@ const FinancialTab = ({
             </TableHeader>
             <TableBody>
               {!reports?.length && (
-                <Empty>
-                  <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                      <CircleSlash color="#4a5565 " />
-                    </EmptyMedia>
-                    <EmptyTitle>No data</EmptyTitle>
-                    <EmptyDescription>No data found</EmptyDescription>
-                  </EmptyHeader>
-                  <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
-                </Empty>
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <CircleSlash color="#4a5565 " />
+                        </EmptyMedia>
+                        <EmptyTitle>No data</EmptyTitle>
+                        <EmptyDescription>No data found</EmptyDescription>
+                      </EmptyHeader>
+                      <EmptyContent>
+                        {/* <Button>Add data</Button> */}
+                      </EmptyContent>
+                    </Empty>
+                  </TableCell>
+                </TableRow>
               )}
               {reports?.map((report) => (
                 <TableRow key={report.id}>

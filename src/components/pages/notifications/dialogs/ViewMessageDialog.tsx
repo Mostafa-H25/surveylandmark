@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,15 +8,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { formatDate } from "@/helpers/formatDate";
+import { getPriorityColor } from "@/helpers/getPriorityColor";
+import type { Message } from "@/types/interfaces";
 import { Eye } from "lucide-react";
 import { useState } from "react";
 
-type Props = { message: any };
+type Props = { message: Message };
 
 const ViewMessageDialog = ({ message }: Props) => {
-  const [setSelectedMessage] = useState<any>(null);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
-  const handleViewMessage = (message: any) => {
+  const handleViewMessage = (message: Message) => {
     setSelectedMessage(message);
   };
 
@@ -31,15 +35,25 @@ const ViewMessageDialog = ({ message }: Props) => {
           View
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="flex max-w-2xl flex-col gap-8">
         <DialogHeader>
-          <DialogTitle>{message.subject}</DialogTitle>
+          <DialogTitle>{selectedMessage?.subject}</DialogTitle>
           <DialogDescription>
-            From: {message.from} | To: {message.to} | {message.timestamp}
+            From: {selectedMessage?.from}
+            {/* | To: {selectedMessage?.to} */}&nbsp;|&nbsp;
+            {selectedMessage?.createdAt
+              ? formatDate(selectedMessage?.createdAt)
+              : selectedMessage?.createdAt}
           </DialogDescription>
         </DialogHeader>
-        <div className="mt-4">
-          <p className="text-gray-700">{message.message}</p>
+        <div className="flex flex-col gap-4">
+          <p className="text-gray-700">{selectedMessage?.body}</p>
+          <div className="flex items-center gap-4">
+            <span>Priority</span>
+            <Badge className={getPriorityColor(message.priority)}>
+              {message.priority?.toUpperCase()}
+            </Badge>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

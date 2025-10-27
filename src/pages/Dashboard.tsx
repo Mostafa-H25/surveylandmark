@@ -65,7 +65,7 @@ const Dashboard = () => {
                   : "bg-gray-500 text-gray-700",
               )}
             >
-              {formatCamelCaseToText(user?.role)}
+              {user?.role ? formatCamelCaseToText(user?.role) : user?.role}
             </span>
           </CardDescription>
         </CardHeader>

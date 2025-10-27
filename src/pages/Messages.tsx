@@ -1,8 +1,11 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { MessageSquare, AlertTriangle } from "lucide-react";
+import {
+  MessageSquare,
+  // AlertTriangle
+} from "lucide-react";
 import MessagingTab from "@/components/pages/notifications/tabs/MessagingTab";
-import NotificationsTab from "@/components/pages/notifications/tabs/NotificationsTab";
+// import NotificationsTab from "@/components/pages/notifications/tabs/NotificationsTab";
 
 const Messages = () => {
   return (
@@ -17,19 +20,19 @@ const Messages = () => {
       </div>
 
       <Tabs defaultValue="messaging" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-1">
           <TabsTrigger value="messaging" className="flex items-center gap-2">
             <MessageSquare className="size-4" />
             Internal Messaging (To Individuals / Teams)
           </TabsTrigger>
-          <TabsTrigger value="alerts" className="flex items-center gap-2">
+          {/* <TabsTrigger value="alerts" className="flex items-center gap-2">
             <AlertTriangle className="size-4" />
             Alerts (Deadlines – Payment Approvals – Inventory Shortage)
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
 
         <MessagingTab />
-        <NotificationsTab />
+        {/* <NotificationsTab /> */}
       </Tabs>
     </div>
   );

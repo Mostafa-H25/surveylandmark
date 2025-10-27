@@ -5,7 +5,7 @@ import { abortAxiosInstance } from "./lib/api-client";
 import Login from "./pages/Login";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
-// import Messages from "./pages/Messages";
+import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
 // import ItemPage from "./pages/ItemPage";
 // import Payments from "./pages/Payments";
@@ -126,14 +126,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       /> */}
-      {/* <Route
+      <Route
         path="/messages"
         element={
           <ProtectedRoute>
             <Messages />
           </ProtectedRoute>
         }
-      /> */}
+      />
       <Route
         path="/reports"
         element={
