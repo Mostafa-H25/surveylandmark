@@ -1,9 +1,20 @@
+import type { DepartmentType } from "@/types/default";
+
 export const API_PATHS = {
+  DASHBOARD: {
+    GET: "/dash/dashboard/home",
+  },
+  NOTIFICATIONS: {
+    GET_ALL: "/dash/notifications/all",
+  },
   USER: {
     LOGIN: "/user/login",
     LOGOUT: "/user/logout",
     ME: "/user/me",
-    INVITE: "/user/invitations",
+    INVITATION: {
+      ADD: "/user/invitations",
+      GET_ALL: "/user/invitations/mine",
+    },
     PROFILE: {
       UPDATE: "/user/updateMyProf",
       UPDATE_PASSWORD: "/user/change-password",
@@ -15,7 +26,7 @@ export const API_PATHS = {
     },
     GET_ALL: "/user/get-Users-Info",
     UPDATE: "/user/editRole",
-    ASSIGN_PROJECTS: "/user/assigned-project",
+    ASSIGN_PROJECTS: (userId: string) => `/user/assigned-project/${userId}`,
     DELETE: "/user/delete-user",
   },
   CLIENTS: {
@@ -24,7 +35,20 @@ export const API_PATHS = {
   },
   PROJECTS: {
     ADD: "/project/excel",
-    GET_ALL: "###",
+    GET: (projectId: string) => `/dash/brief/${projectId}`,
+    GET_DEPARTMENT_GENERAL: (projectId: string) =>
+      `/dash/department/${projectId}`,
+    GET_DEPARTMENT: (projectId: string, department: DepartmentType) =>
+      `/dash/department/${department}/${projectId}`,
+    GET_ALL_BUILDINGS: (projectId: string) => `/dash/buildings/${projectId}`,
+    GET_ALL_FLOORS: (projectId: string, buildingId: string) =>
+      `/dash/floors/${projectId}/${buildingId}`,
+    GET_ALL_UNITS: (projectId: string, buildingId: string, floorId: string) =>
+      `/dash/units/${projectId}/${buildingId}/${floorId}`,
+    GET_MEMBER: (projectId: string, memberId: string) =>
+      `/dash/${projectId}/memberProfileDetails/${memberId}`,
+    GET_ITEM: (projectId: string, itemId: string) =>
+      `/dash/processing/${projectId}/${itemId}`,
   },
   REPORTS: {
     ADD: (projectId: string) => `reports/project/${projectId}/generate`,
@@ -34,5 +58,11 @@ export const API_PATHS = {
     ADD: "/user/send",
     UPDATE: (messageId: string) => `/user/update-message/${messageId}`,
     GET_ALL: "/user/getmssage",
+  },
+  PAYMENTS: {
+    ADD: (projectId: string) => `/dash/addPayment/projectId/${projectId}`,
+    UPDATE: (projectId: string, paymentId: string) =>
+      `/dash/updatePayment/projectId/${projectId}/${paymentId}`,
+    GET_ALL: "/dash/getPayment",
   },
 };

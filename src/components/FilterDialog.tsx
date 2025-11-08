@@ -116,13 +116,17 @@ const FilterDialog = ({ open, onOpenChange }: FilterDialogProps) => {
           </div>
         </div>
 
-        <div className="flex gap-3 justify-end">
-          <Button variant="outline" onClick={handleClearFilters}>
+        <div className="flex justify-end gap-3">
+          <Button
+            variant="outline"
+            className="cursor-pointer"
+            onClick={handleClearFilters}
+          >
             Clear
           </Button>
           <Button
             onClick={handleApplyFilters}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="cursor-pointer bg-blue-600 hover:bg-blue-700"
           >
             Apply Filters
           </Button>

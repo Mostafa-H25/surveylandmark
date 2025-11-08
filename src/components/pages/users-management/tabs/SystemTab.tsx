@@ -105,6 +105,7 @@ const SystemTab = ({
                     <Button
                       variant="outline"
                       size="sm"
+                      className="cursor-pointer"
                       onClick={() => handleUpdateSetting(setting.id)}
                     >
                       Update

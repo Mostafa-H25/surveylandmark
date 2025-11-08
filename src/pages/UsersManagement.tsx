@@ -1,22 +1,19 @@
-import {
-  // useEffect,
-  useState,
-} from "react";
+import { useCallback, useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import EditUserRolesPermissionsDialog from "@/components/pages/users-management/dialogs/EditUserRolesPermissionsDialog";
+import EditUserRolesPermissionsDialog from "@/components/pages/users-management/dialogs/EditUserRolesPermissionsDialog";
 import {
-  // roleHierarchy,
+  roleHierarchy,
   userManagementTabs,
   UserManagementTabsEnum,
   userRoles,
-  // UserRolesEnum,
-  // UserStatusEnum,
+  UserRolesEnum,
+  UserStatusEnum,
 } from "@/constants/defaults";
-// import DeleteUserDialog from "@/components/pages/users-management/dialogs/DeleteUserDialog";
-// import AssignProjectToUserDialog from "@/components/pages/users-management/dialogs/AssignProjectToUserDialog";
+import DeleteUserDialog from "@/components/pages/users-management/dialogs/DeleteUserDialog";
+import AssignProjectToUserDialog from "@/components/pages/users-management/dialogs/AssignProjectToUserDialog";
 import AddUserDialog from "@/components/shared/dialogs/AddUserDialog";
-// import { getAllUsersApi } from "@/api/user/get-all-users.api";
+import { getAllUsersApi } from "@/api/user/get-all-users.api";
 import {
   Card,
   CardContent,
@@ -26,8 +23,8 @@ import {
 } from "@/components/ui/card";
 import {
   Table,
-  // TableBody,
-  // TableCell,
+  TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -41,94 +38,107 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import {
-  // Building2,
-  // EllipsisVertical,
-  // Pencil,
+  Building2,
+  CircleSlash,
+  EllipsisVertical,
+  Pencil,
   Search,
-  // Trash2,
+  Trash2,
   Users,
 } from "lucide-react";
-// import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
-// import { Badge } from "@/components/ui/badge";
-// import { cn } from "@/lib/utils";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-// import { useAuthStore } from "@/lib/store/use-auth-store";
+import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAuthStore } from "@/lib/store/use-auth-store";
 import type { User } from "@/types/interfaces";
+import { useQuery } from "@tanstack/react-query";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
+import { formatDate } from "@/helpers/formatDate";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import type { UserPermission, UserRole, UserStatus } from "@/types/default";
+
+const USERS_QUERY_KEY = "users";
 
 const UsersManagement = () => {
-  // const currentUser = useAuthStore((state) => state.user);
-  // const [isEditUserRolesPermissionsOpen, setIsEditUserRolesPermissionsOpen] =
-  //   useState(false);
-  // const [isDeleteUserOpen, setIsDeleteUserOpen] = useState(false);
-  // const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
+  const currentUser = useAuthStore((state) => state.user);
+  const [isEditUserRolesPermissionsOpen, setIsEditUserRolesPermissionsOpen] =
+    useState(false);
+  const [isDeleteUserOpen, setIsDeleteUserOpen] = useState(false);
+  const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
 
-  const [user] = useState<User | null>(null);
-
-  // const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [usersCount] = useState<number>(0);
-  const [isLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("all");
 
-  // const fetchUsers = async () => {
-  //   try {
-  //     const res = await getAllUsersApi();
-  //     setUsers(res.users);
-  //     setUsersCount(res.total);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  //   setIsLoading(false);
-  // };
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  const { data: users, isFetching } = useQuery({
+    queryKey: [USERS_QUERY_KEY],
+    queryFn: () => getAllUsersApi(),
+    select: useCallback((data: UsersQueryResponse) => {
+      return data.users.map((user) => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        permissions: user.permmisions,
+        canEdit: user.canEdit,
+        status: user.status,
+        title: user.title,
+        createdAt: user.createdAt,
+        projects: user.projects,
+      }));
+    }, []),
+  });
 
-  // const filteredUsers = users.filter((user) => {
-  //   const matchesSearch =
-  //     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     user.email.toLowerCase().includes(searchTerm.toLowerCase());
-  //   const matchesRole = selectedRole === "all" || user.role === selectedRole;
-  //   return matchesSearch && matchesRole;
-  // });
+  const handleAssignProject = (userId: string) => {
+    if (!users) return;
+    const user = users.find((u) => u.id === userId);
+    if (user) {
+      setUser(user);
+      setIsAssignProjectOpen(true);
+    }
+  };
 
-  // const handleAssignProject = (userId: string) => {
-  //   const user = users.find((u) => u.id === userId);
-  //   if (user) {
-  //     setUser(user);
-  //     setIsAssignProjectOpen(true);
-  //   }
-  // };
+  const handleDeleteUser = (userId: string) => {
+    if (!users) return;
+    const user = users.find((u) => u.id === userId);
+    if (user) {
+      setUser(user);
+      setIsDeleteUserOpen(true);
+    }
+  };
 
-  // const handleDeleteUser = (userId: string) => {
-  //   const user = users.find((u) => u.id === userId);
-  //   if (user) {
-  //     setUser(user);
-  //     setIsDeleteUserOpen(true);
-  //   }
-  // };
+  const handleEditUserRolesPermissions = (userId: string) => {
+    if (!users) return;
+    const user = users.find((u) => u.id === userId);
+    if (user) {
+      setUser(user);
+      setIsEditUserRolesPermissionsOpen(true);
+    }
+  };
 
-  // const handleEditUserRolesPermissions = (userId: string) => {
-  //   const user = users.find((u) => u.id === userId);
-  //   if (user) {
-  //     setUser(user);
-  //     setIsEditUserRolesPermissionsOpen(true);
-  //   }
-  // };
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="aspect-square size-32 h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const filteredUsers = users?.filter((user) => {
+    const matchesSearch =
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = selectedRole === "all" || user.role === selectedRole;
+    return matchesSearch && matchesRole;
+  });
 
   return (
     <div className="space-y-6">
@@ -143,27 +153,28 @@ const UsersManagement = () => {
       </div>
       {user && (
         <>
-          {/* <EditUserRolesPermissionsDialog
-            isEditUserRolesPermissionsOpen={isEditUserRolesPermissionsOpen}
-            setIsEditUserRolesPermissionsOpen={
-              setIsEditUserRolesPermissionsOpen
-            }
-            user={user}
-            onSuccess={fetchUsers}
-          />
+          {isEditUserRolesPermissionsOpen && (
+            <EditUserRolesPermissionsDialog
+              isEditUserRolesPermissionsOpen={isEditUserRolesPermissionsOpen}
+              setIsEditUserRolesPermissionsOpen={
+                setIsEditUserRolesPermissionsOpen
+              }
+              user={user}
+            />
+          )}
           <DeleteUserDialog
             isDeleteUserOpen={isDeleteUserOpen}
             setIsDeleteUserOpen={setIsDeleteUserOpen}
             user={user}
-            onSuccess={fetchUsers}
           />
 
-          <AssignProjectToUserDialog
-            isAssignProjectOpen={isAssignProjectOpen}
-            setIsAssignProjectOpen={setIsAssignProjectOpen}
-            user={user}
-            onSuccess={fetchUsers}
-          /> */}
+          {isAssignProjectOpen && (
+            <AssignProjectToUserDialog
+              isAssignProjectOpen={isAssignProjectOpen}
+              setIsAssignProjectOpen={setIsAssignProjectOpen}
+              user={user}
+            />
+          )}
         </>
       )}
 
@@ -177,7 +188,6 @@ const UsersManagement = () => {
         </TabsList>
 
         <TabsContent value={UserManagementTabsEnum.USERS} className="space-y-6">
-          {/* Filters */}
           <Card>
             <CardContent className="p-6">
               <div className="flex flex-col gap-4 sm:flex-row">
@@ -204,7 +214,7 @@ const UsersManagement = () => {
                         value={role}
                         className="capitalize"
                       >
-                        {role.replaceAll("_", " ")}
+                        {formatCamelCaseToText(role)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -213,7 +223,6 @@ const UsersManagement = () => {
             </CardContent>
           </Card>
 
-          {/* Users List */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -238,14 +247,42 @@ const UsersManagement = () => {
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
-                {/* <TableBody>
-                  {filteredUsers.map((u) => (
-                    <TableRow key={u.id}>
+                <TableBody>
+                  {isFetching && !filteredUsers && (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center">
+                        <div className="flex h-full w-full items-center justify-center p-8">
+                          <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {!filteredUsers ||
+                    (!filteredUsers?.length && (
+                      <TableRow>
+                        <TableCell colSpan={8} className="text-center">
+                          <Empty>
+                            <EmptyHeader>
+                              <EmptyMedia variant="icon">
+                                <CircleSlash color="#4a5565 " />
+                              </EmptyMedia>
+                              <EmptyTitle>No data</EmptyTitle>
+                              <EmptyDescription>No data found</EmptyDescription>
+                            </EmptyHeader>
+                            <EmptyContent>
+                              {/* <Button>Add data</Button> */}
+                            </EmptyContent>
+                          </Empty>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  {filteredUsers?.map((user) => (
+                    <TableRow key={user.id}>
                       <TableCell>
                         <div className="flex items-center space-x-3">
                           <div className="flex size-8 items-center justify-center rounded-full bg-blue-100">
                             <span className="text-sm font-medium text-blue-600">
-                              {u.name
+                              {user.name
                                 .split(" ")
                                 .map((n) => n[0].toUpperCase())
                                 .join("")}
@@ -253,44 +290,44 @@ const UsersManagement = () => {
                           </div>
                           <div>
                             <div className="font-medium text-gray-900">
-                              {u.name}
+                              {user.name}
                             </div>
                             <div className="text-sm text-gray-600">
-                              {u.email}
+                              {user.email}
                             </div>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>{formatPhoneNumber(u.phone)}</TableCell>
+                      <TableCell>{formatPhoneNumber(user.phone)}</TableCell>
                       <TableCell>
                         <Badge
                           className={cn(
-                            u?.role
-                              ? roleHierarchy[u?.role]?.color
+                            user?.role
+                              ? roleHierarchy[user?.role]?.color
                               : "bg-gray-500 text-gray-700",
                           )}
                         >
-                          {u.role?.replaceAll("_", " ").toUpperCase()}
+                          {formatCamelCaseToText(user.role).toUpperCase()}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {u.permmisions || <p className="text-center">-</p>}
+                        {user.permissions || <p className="text-center">-</p>}
                       </TableCell>
 
                       <TableCell>
                         <Badge
                           variant={
-                            u.status === UserStatusEnum.ACTIVE
+                            user.status === UserStatusEnum.ACTIVE
                               ? "outline"
                               : "secondary"
                           }
                         >
-                          {u.status.toUpperCase()}
+                          {user.status.toUpperCase()}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <div className="max-w-xs">
-                          {u.project?.slice(0, 2)?.map((project) => (
+                          {user.projects?.slice(0, 2)?.map((project) => (
                             <span
                               key={project.id}
                               className="mr-1 rounded bg-gray-100 px-2 py-1 text-xs text-gray-700 capitalize"
@@ -298,16 +335,16 @@ const UsersManagement = () => {
                               {project.name}
                             </span>
                           ))}
-                          {u.project?.length > 2 && (
+                          {user.projects?.length > 2 && (
                             <span className="text-xs text-gray-500">
-                              +{u.project.length - 2} more
+                              +{user.projects.length - 2} more
                             </span>
                           )}
                         </div>
                       </TableCell>
 
                       <TableCell className="text-sm text-gray-600">
-                        {new Date(u.createdAt).toLocaleDateString()}
+                        {formatDate(user.createdAt)}
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-center gap-1">
@@ -317,25 +354,28 @@ const UsersManagement = () => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                               <DropdownMenuItem
-                                onClick={() => handleAssignProject(u.id)}
+                                onClick={() => handleAssignProject(user.id)}
                                 className="hover:bg-gray-100"
                               >
                                 <Building2 className="size-4" />
                                 Assign Projects
                               </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleEditUserRolesPermissions(u.id)
-                                }
-                                className="hover:bg-gray-100"
-                              >
-                                <Pencil className="size-4" />
-                                Edit Role
-                              </DropdownMenuItem>
-                              {u?.role === UserRolesEnum.SUPER_ADMIN ||
-                                (u.id !== currentUser?.id && (
+                              {user?.role !== UserRolesEnum.SUPER_ADMIN &&
+                                user.email !== currentUser?.email && (
                                   <DropdownMenuItem
-                                    onClick={() => handleDeleteUser(u.id)}
+                                    onClick={() =>
+                                      handleEditUserRolesPermissions(user.id)
+                                    }
+                                    className="hover:bg-gray-100"
+                                  >
+                                    <Pencil className="size-4" />
+                                    Edit Role
+                                  </DropdownMenuItem>
+                                )}
+                              {user?.role !== UserRolesEnum.SUPER_ADMIN &&
+                                user.email !== currentUser?.email && (
+                                  <DropdownMenuItem
+                                    onClick={() => handleDeleteUser(user.id)}
                                     className="text-red-600 hover:bg-red-100 hover:text-red-700"
                                   >
                                     <Trash2 className="size-4 text-red-600 hover:text-red-700" />
@@ -343,14 +383,14 @@ const UsersManagement = () => {
                                       Delete
                                     </span>
                                   </DropdownMenuItem>
-                                ))}
+                                )}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </div>
                       </TableCell>
                     </TableRow>
                   ))}
-                </TableBody> */}
+                </TableBody>
               </Table>
             </CardContent>
           </Card>
@@ -361,3 +401,24 @@ const UsersManagement = () => {
 };
 
 export default UsersManagement;
+
+type UsersQueryResponse = {
+  total: number;
+  users: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    role: UserRole;
+    permmisions: UserPermission;
+    canEdit: boolean;
+    status: UserStatus;
+    title: string;
+    createdAt: string;
+    projects: {
+      id: string;
+      name: string;
+      status: string;
+    }[];
+  }[];
+};

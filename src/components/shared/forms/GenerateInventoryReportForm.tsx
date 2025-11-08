@@ -116,11 +116,14 @@ const GenerateInventoryReportForm = ({ setOpenGenerateDialog }: Props) => {
           <Button
             type="button"
             variant="outline"
+            className="cursor-pointer"
             onClick={() => setOpenGenerateDialog(false)}
           >
             Cancel
           </Button>
-          <Button type="submit">Generate Report</Button>
+          <Button type="submit" className="cursor-pointer">
+            Generate Report
+          </Button>
         </DialogFooter>
       </form>
     </Form>

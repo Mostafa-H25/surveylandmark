@@ -111,6 +111,7 @@ const RolesTab = ({
                       <Button
                         variant="outline"
                         size="sm"
+                        className="cursor-pointer"
                         onClick={() => handleAssignProject(user.id)}
                       >
                         Assign Project
@@ -118,6 +119,7 @@ const RolesTab = ({
                       <Button
                         variant="outline"
                         size="sm"
+                        className="cursor-pointer"
                         onClick={() => handleEditUser(user.id)}
                       >
                         Edit Role

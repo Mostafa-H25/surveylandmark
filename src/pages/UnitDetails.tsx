@@ -174,7 +174,7 @@ const UnitDetails = () => {
           </h1>
           <Button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2"
+            className="flex cursor-pointer items-center gap-2"
           >
             <ArrowLeft className="size-4" />
             Back to Properties
@@ -192,7 +192,7 @@ const UnitDetails = () => {
           <Button
             variant="ghost"
             onClick={() => navigate("/")}
-            className="mb-4 hover:bg-white hover:shadow-sm"
+            className="mb-4 cursor-pointer hover:bg-white hover:shadow-sm"
           >
             <ArrowLeft className="mr-2 size-4" />
             Back to Properties

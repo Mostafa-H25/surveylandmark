@@ -32,7 +32,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { getAllMessagesApi } from "@/api/messages/get-all-messages.api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { sendMessageApi } from "@/api/messages/send-message.api";
 import { getAllUsersApi } from "@/api/user/get-all-users.api";
@@ -62,9 +62,10 @@ const SEND_MESSAGE_MUTATION_KEY = "message_send";
 const MARK_AS_READ_MESSAGE_MUTATION_KEY = "message_mark_as_read";
 
 const MessagingTab = () => {
+  const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
-  const { data: messages, isPending: isPendingMessages } = useQuery({
+  const { data: messages, isFetching: isFetchingMessages } = useQuery({
     queryKey: [MESSAGES_QUERY_KEY],
     queryFn: () => getAllMessagesApi(),
     select: useCallback((data: MessagesQueryResponse) => {
@@ -81,7 +82,7 @@ const MessagingTab = () => {
       }));
     }, []),
   });
-  const { data: users, isPending: isPendingUsers } = useQuery({
+  const { data: users, isFetching: isFetchingUsers } = useQuery({
     queryKey: [USERS_QUERY_KEY],
     queryFn: () => getAllUsersApi(),
     select: useCallback((data: UsersQueryResponse) => {
@@ -113,6 +114,7 @@ const MessagingTab = () => {
         description: `${data.subject} to ${data.to} has been sent successfully.`,
         richColors: true,
       });
+      queryClient.invalidateQueries({ queryKey: [MESSAGES_QUERY_KEY] });
       reset();
     },
     onError: (error) => {
@@ -132,6 +134,7 @@ const MessagingTab = () => {
         description: "Message marked as read.",
         richColors: true,
       });
+      queryClient.invalidateQueries({ queryKey: [MESSAGES_QUERY_KEY] });
     },
     onError: (error) => {
       console.error(error);
@@ -193,7 +196,7 @@ const MessagingTab = () => {
                           <SelectValue placeholder="Select recipient..." />
                         </SelectTrigger>
                         <SelectContent>
-                          {isPendingUsers && (
+                          {isFetchingUsers && users && (
                             <div className="flex h-full w-full items-center justify-center">
                               <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
                             </div>
@@ -337,7 +340,7 @@ const MessagingTab = () => {
               )}
             />
 
-            <Button className="w-40 bg-blue-600 hover:bg-blue-700">
+            <Button className="w-40 cursor-pointer bg-blue-600 hover:bg-blue-700">
               {IsPendingSubmit ? (
                 <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
               ) : (
@@ -386,16 +389,16 @@ const MessagingTab = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isPendingMessages && (
+              {isFetchingMessages && !messages && (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center">
-                    <div className="flex min-h-screen items-center justify-center">
-                      <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+                    <div className="flex h-full w-full items-center justify-center p-8">
+                      <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
                     </div>
                   </TableCell>
                 </TableRow>
               )}
-              {!isPendingMessages && !messages?.length && (
+              {!isFetchingMessages && !messages?.length && (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center">
                     <Empty>
@@ -448,6 +451,7 @@ const MessagingTab = () => {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="cursor-pointer"
                           onClick={() => handleMarkAsRead(message.id)}
                         >
                           <CheckCircle className="mr-1 size-4" />

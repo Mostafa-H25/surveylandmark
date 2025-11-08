@@ -1,11 +1,8 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import {
-  MessageSquare,
-  // AlertTriangle
-} from "lucide-react";
+import { MessageSquare, AlertTriangle } from "lucide-react";
 import MessagingTab from "@/components/pages/notifications/tabs/MessagingTab";
-// import NotificationsTab from "@/components/pages/notifications/tabs/NotificationsTab";
+import NotificationsTab from "@/components/pages/notifications/tabs/NotificationsTab";
 
 const Messages = () => {
   return (

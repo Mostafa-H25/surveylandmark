@@ -63,7 +63,7 @@ const NotificationTab = () => {
           </div>
           <Button
             type="submit"
-            className="self-end bg-blue-600 hover:bg-blue-700"
+            className="cursor-pointer self-end bg-blue-600 hover:bg-blue-700"
             onClick={() => handleSave("notifications")}
           >
             Save Preferences

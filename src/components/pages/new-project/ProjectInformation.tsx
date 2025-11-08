@@ -13,15 +13,18 @@ import { projectStatus } from "@/constants/defaults";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 
 const CLIENTS_QUERY_KEY = "clients";
 
 const ProjectInformation = () => {
-  const { control } = useFormContext();
+  const [searchParams] = useSearchParams();
+  const { control, setValue } = useFormContext();
+  const client = searchParams.get("client");
 
-  const { data: clients, isPending } = useQuery({
+  const { data: clients, isFetching } = useQuery({
     queryKey: [CLIENTS_QUERY_KEY],
     queryFn: () => getAllClientsApi(),
     select: useCallback((data: ClientQueryResponse) => {
@@ -31,6 +34,11 @@ const ProjectInformation = () => {
       }));
     }, []),
   });
+
+  useEffect(() => {
+    if (client && clients?.some((c) => c.id === client))
+      setValue("client", client);
+  }, [client, clients, setValue]);
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6">
@@ -70,7 +78,7 @@ const ProjectInformation = () => {
                       <SelectValue placeholder="Select client" />
                     </SelectTrigger>
                     <SelectContent>
-                      {isPending && (
+                      {isFetching && !clients && (
                         <div className="flex h-full w-full items-center justify-center">
                           <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
                         </div>

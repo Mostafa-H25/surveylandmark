@@ -246,7 +246,7 @@ const Registration = () => {
             />
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700"
               disabled={isLoading}
             >
               {isLoading ? "Loading..." : "Sign Up"}

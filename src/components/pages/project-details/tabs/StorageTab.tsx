@@ -28,15 +28,15 @@ const StorageTab = () => {
         <div className="flex w-full items-center justify-end gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <Button className="bg-blue-100 text-blue-700 hover:bg-blue-200">
+              <Button className="bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer ">
                 <Expand />
               </Button>
               <div>
-                <Button className="rounded-r-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="rounded-r-none bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer ">
                   <Download />
                   Export
                 </Button>
-                <Button className="rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer ">
                   <ChevronDown />
                 </Button>
               </div>
@@ -75,6 +75,7 @@ const StorageTab = () => {
                   <Button
                     variant="outline"
                     size="sm"
+                    className="cursor-pointer "
                     // onClick={() => handleViewMember(member.id)}
                   >
                     View Item

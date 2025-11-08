@@ -10,7 +10,7 @@ type InviteUser = {
 
 export async function inviteUserApi(data: InviteUser) {
   const axiosInstance = getAxiosInstance({ authenticated: true });
-  await axiosInstance.post(API_PATHS.USER.INVITE, data, {
+  await axiosInstance.post(API_PATHS.USER.INVITATION.ADD, data, {
     headers: { "Content-Type": "application/json" },
   });
 }

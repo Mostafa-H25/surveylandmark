@@ -333,6 +333,7 @@ const CompanyTab = () => {
             </div>
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="flex w-52 cursor-pointer justify-center self-end bg-blue-600 hover:bg-blue-700"
             >
               {isSubmitting ? (

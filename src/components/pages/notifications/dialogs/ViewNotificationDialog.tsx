@@ -29,6 +29,7 @@ const ViewNotificationDialog = ({ alert }: Props) => {
         <Button
           variant="outline"
           size="sm"
+          className="cursor-pointer"
           onClick={() => handleViewAlert(alert)}
         >
           <Eye className="mr-1 size-4" />

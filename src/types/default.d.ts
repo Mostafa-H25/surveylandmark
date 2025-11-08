@@ -19,8 +19,8 @@ export type ConstructionTaskFeedback = "accepted" | "refused";
 export type SalesView = "overview" | "members" | "incomes" | "units";
 export type ConstructionView =
   | "overview"
-  | "members"
+  | "team"
   | "payments"
   | "materials"
-  | "contractors"
-  | "items";
+  | "vendors"
+  | "descriptiveItems";

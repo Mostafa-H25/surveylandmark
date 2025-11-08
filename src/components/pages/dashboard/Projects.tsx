@@ -1,4 +1,4 @@
-import { TrendingUp } from "lucide-react";
+import { CircleSlash, TrendingUp } from "lucide-react";
 
 // import { recentProjects } from "@/assets/data";
 import {
@@ -8,8 +8,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
-const Projects = () => {
+type Props = {
+  initialProjects?: { id: string; name: string; progressPercentage: number }[];
+};
+
+const Projects = ({ initialProjects }: Props) => {
+  const projects = initialProjects?.slice(0, 5);
+
   return (
     <Card>
       <CardHeader>
@@ -21,19 +35,33 @@ const Projects = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {/* {recentProjects.map((project) => (
+          {!initialProjects?.length && (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <CircleSlash color="#4a5565 " />
+                </EmptyMedia>
+                <EmptyTitle>No data</EmptyTitle>
+                <EmptyDescription>No data found</EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+            </Empty>
+          )}
+          {projects?.map((project) => (
             <div
               key={project.id}
               className="flex items-center justify-between rounded-lg border p-4"
             >
               <div className="flex-1">
-                <h4 className="font-medium text-gray-900">{project.name}</h4>
-                <p className="text-sm text-gray-600">{project.client}</p>
+                <h4 className="font-medium text-gray-900 capitalize">
+                  {project.name}
+                </h4>
+                {/* <p className="text-sm text-gray-600">{project.client}</p> */}
                 <div className="mt-2 flex items-center gap-2">
-                  <span className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700">
+                  {/* <span className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700">
                     {project.type}
-                  </span>
-                  <span
+                  </span> */}
+                  {/* <span
                     className={`rounded px-2 py-1 text-xs ${
                       project.status === "Completed"
                         ? "bg-green-100 text-green-700"
@@ -43,22 +71,22 @@ const Projects = () => {
                     }`}
                   >
                     {project.status}
-                  </span>
+                  </span> */}
                 </div>
               </div>
               <div className="text-right">
                 <div className="text-sm font-medium text-gray-900">
-                  {project.progress}%
+                  {project.progressPercentage}%
                 </div>
                 <div className="mt-1 h-2 w-16 rounded-full bg-gray-200">
                   <div
                     className="h-2 rounded-full bg-blue-600 transition-all"
-                    style={{ width: `${project.progress}%` }}
+                    style={{ width: `${project.progressPercentage}%` }}
                   ></div>
                 </div>
               </div>
             </div>
-          ))} */}
+          ))}
         </div>
       </CardContent>
     </Card>

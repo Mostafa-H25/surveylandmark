@@ -16,7 +16,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
-const CLIENT_MUTATION_SCOPE = "client_creation";
+const ADD_CLIENT_MUTATION_SCOPE = "client-creation";
 
 type Props = { setIsAddClientOpen: Dispatch<SetStateAction<boolean>> };
 
@@ -32,7 +32,7 @@ const AddClientForm = ({ setIsAddClientOpen }: Props) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: typeof defaultValues) => addClientApi(data),
-    scope: { id: CLIENT_MUTATION_SCOPE },
+    scope: { id: ADD_CLIENT_MUTATION_SCOPE },
     onSuccess: (data) => {
       toast.success("Client Added", {
         description: `${data.name} from ${data.company} has been added successfully.`,
@@ -187,13 +187,18 @@ const AddClientForm = ({ setIsAddClientOpen }: Props) => {
           )}
         />
         <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button
+            type="button"
+            variant="outline"
+            className="cursor-pointer"
+            onClick={onClose}
+          >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={isPending}
-            className={"w-24 bg-blue-600 hover:bg-blue-700"}
+            className={"w-24 cursor-pointer bg-blue-600 hover:bg-blue-700"}
           >
             {isPending ? (
               <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />

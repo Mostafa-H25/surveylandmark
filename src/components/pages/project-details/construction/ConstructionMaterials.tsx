@@ -3,13 +3,22 @@
 import {
   Table,
   TableBody,
-  // TableCell,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const ConstructionMaterials = () => {
+type Props = {
+  data: MaterialsQueryResponse;
+};
+const ConstructionMaterials = ({ data }: Props) => {
+  const materials = data.data.map((material) => ({
+    id: material.id,
+    name: material.name,
+    totalQuantity: material.totalQuantity,
+    availableQuantity: material.availableQuantity,
+    unit: material.unit,
+  }));
   return (
     <Table>
       <TableHeader>
@@ -21,17 +30,38 @@ const ConstructionMaterials = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {/* {constructionMaterialsData.map((material) => (
+        {materials.map((material) => (
           <TableRow key={material.id}>
-            <TableCell className="font-medium">{material.name}</TableCell>
+            <TableCell className="font-medium capitalize">
+              {material.name}
+            </TableCell>
             <TableCell>{material.totalQuantity}</TableCell>
             <TableCell>{material.availableQuantity}</TableCell>
             <TableCell>{material.unit}</TableCell>
           </TableRow>
-        ))} */}
+        ))}
       </TableBody>
     </Table>
   );
 };
 
 export default ConstructionMaterials;
+
+type MaterialsQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      totalQuantity: number;
+      availableQuantity: number;
+      unit: string;
+    },
+  ];
+};

@@ -17,3 +17,7 @@
 5. 4 hrs
 6. 8 hrs
 7. 8 hrs
+8. 8 hrs
+9. 8 hrs
+10. 8 hrs
+11. 8 hrs

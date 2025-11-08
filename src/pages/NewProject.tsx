@@ -58,11 +58,11 @@ const NewProject = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate("/dashboard")}
-              className="rounded-md p-1 hover:bg-gray-100"
+              className="cursor-pointer rounded-md p-1 hover:bg-gray-100"
             >
               <ArrowLeft className="size-5 text-gray-600" />
             </button>
-            <h1 className="text-xl font-semibold text-gray-900">
+            <h1 className="cursor-pointer text-xl font-semibold text-gray-900">
               Create New Project
             </h1>
           </div>
@@ -81,7 +81,7 @@ const NewProject = () => {
           <Button
             type="submit"
             disabled={isPending}
-            className="w-32 bg-blue-600 hover:bg-blue-700"
+            className="w-32 cursor-pointer bg-blue-600 hover:bg-blue-700"
           >
             {isPending ? (
               <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />

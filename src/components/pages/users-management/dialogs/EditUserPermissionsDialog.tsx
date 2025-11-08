@@ -76,11 +76,14 @@ const EditUserPermissionsDialog = ({
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"
+              className="cursor-pointer"
               onClick={() => setIsEditPermissionsOpen(false)}
             >
               Cancel
             </Button>
-            <Button onClick={handlePermissionUpdate}>Update Permissions</Button>
+            <Button className="cursor-pointer" onClick={handlePermissionUpdate}>
+              Update Permissions
+            </Button>
           </div>
         </div>
       </DialogContent>

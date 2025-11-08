@@ -29,6 +29,7 @@ const ViewMessageDialog = ({ message }: Props) => {
         <Button
           variant="outline"
           size="sm"
+          className="cursor-pointer"
           onClick={() => handleViewMessage(message)}
         >
           <Eye className="mr-1 size-4" />
@@ -43,7 +44,7 @@ const ViewMessageDialog = ({ message }: Props) => {
             {/* | To: {selectedMessage?.to} */}&nbsp;|&nbsp;
             {selectedMessage?.createdAt
               ? formatDate(selectedMessage?.createdAt)
-              : selectedMessage?.createdAt}
+              : "-"}
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">

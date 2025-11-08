@@ -26,7 +26,7 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
             <Button
               variant="outline"
               size="sm"
-              className="flex items-center gap-2"
+              className="flex cursor-pointer items-center gap-2"
             >
               <Upload className="size-4" />
               Upload Images
@@ -53,7 +53,11 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
                       >
                         <Eye className="size-4" />
                       </Button>
-                      <Button size="sm" variant="secondary">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="cursor-pointer"
+                      >
                         <Download className="size-4" />
                       </Button>
                     </div>
@@ -65,7 +69,7 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
             <div className="py-8 text-center text-gray-500">
               <Upload className="mx-auto mb-4 size-12 text-gray-300" />
               <p>No images uploaded yet</p>
-              <Button variant="outline" className="mt-4">
+              <Button variant="outline" className="mt-4 cursor-pointer">
                 Upload First Image
               </Button>
             </div>

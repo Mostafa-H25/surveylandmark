@@ -164,7 +164,7 @@ const Standards = () => {
             <Button
               variant="outline"
               onClick={() => navigate(`/project/${projectId}`)}
-              className="flex items-center gap-2"
+              className="flex cursor-pointer items-center gap-2"
             >
               <ArrowLeft className="size-4" />
               Back to Project
@@ -180,7 +180,7 @@ const Standards = () => {
           </div>
           <Button
             onClick={() => setIsAddingStandard(true)}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="cursor-pointer bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="mr-2 size-4" />
             Add Standard
@@ -258,9 +258,12 @@ const Standards = () => {
                 </div>
               </div>
               <div className="mt-6 flex gap-2">
-                <Button onClick={handleAddStandard}>Add Standard</Button>
+                <Button onClick={handleAddStandard} className="cursor-pointer">
+                  Add Standard
+                </Button>
                 <Button
                   variant="outline"
+                  className="cursor-pointer"
                   onClick={() => setIsAddingStandard(false)}
                 >
                   Cancel
@@ -330,15 +333,27 @@ const Standards = () => {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="cursor-pointer"
+                        >
                           <Edit className="size-4" />
                         </Button>
                         {standard.hasDocument ? (
                           <>
-                            <Button variant="outline" size="sm">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="cursor-pointer"
+                            >
                               <Eye className="size-4" />
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="cursor-pointer"
+                            >
                               <Download className="size-4" />
                             </Button>
                           </>
@@ -346,6 +361,7 @@ const Standards = () => {
                           <Button
                             variant="outline"
                             size="sm"
+                            className="cursor-pointer"
                             onClick={() => handleFileUpload(standard.id)}
                           >
                             <Upload className="size-4" />
@@ -354,6 +370,7 @@ const Standards = () => {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="cursor-pointer"
                           onClick={() => handleDeleteStandard(standard.id)}
                         >
                           <Trash2 className="size-4" />

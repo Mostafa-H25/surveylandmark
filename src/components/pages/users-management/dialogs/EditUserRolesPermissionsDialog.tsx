@@ -13,14 +13,12 @@ import type { User } from "@/types/interfaces";
 
 type Props = {
   user: User;
-  onSuccess: () => void;
   isEditUserRolesPermissionsOpen: boolean;
   setIsEditUserRolesPermissionsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const EditUserRolesPermissionsDialog = ({
   user,
-  onSuccess,
   isEditUserRolesPermissionsOpen,
   setIsEditUserRolesPermissionsOpen,
 }: Props) => {
@@ -38,7 +36,6 @@ const EditUserRolesPermissionsDialog = ({
         </DialogHeader>
         <UserRolesPermissionsForm
           user={user}
-          onSuccess={onSuccess}
           setIsEditUserRolesPermissionsOpen={setIsEditUserRolesPermissionsOpen}
         />
       </DialogContent>

@@ -110,7 +110,7 @@ const FileUploadSection = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => setValue("file", null)}
-                    className="size-8 p-0 hover:bg-red-100 hover:text-red-600"
+                    className="size-8 cursor-pointer p-0 hover:bg-red-100 hover:text-red-600"
                   >
                     <X className="size-4" />
                   </Button>

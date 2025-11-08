@@ -89,7 +89,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div> */}
 
         {/* Page content */}
-        <main className="p-6">{children}</main>
+        <main className="h-full min-h-screen p-6">{children}</main>
       </div>
     </div>
   );

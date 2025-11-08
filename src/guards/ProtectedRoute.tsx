@@ -5,6 +5,7 @@ import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
 import type { UserRole } from "@/types/default";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 import { meApi } from "@/api/user/me.api";
+import { roleHierarchy } from "@/constants/defaults";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -20,7 +21,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const setUser = useAuthStore((state) => state.setUser);
   const removeToken = useAuthStore((state) => state.removeToken);
   const [isLoading, setIsLoading] = useState(true);
-
   const fetchUser = async () => {
     try {
       const result = await meApi();
@@ -29,10 +29,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       console.error(error);
       removeToken();
     }
+    setIsLoading(false);
   };
   useEffect(() => {
     if (token) fetchUser();
-    setIsLoading(false);
   }, [token]);
 
   if (isLoading) {

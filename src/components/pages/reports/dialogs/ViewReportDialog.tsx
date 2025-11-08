@@ -154,11 +154,16 @@ const ViewReportDialog = ({
           </div>
         )}
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpenViewDialog(false)}>
+          <Button
+            variant="outline"
+            className="cursor-pointer"
+            onClick={() => setOpenViewDialog(false)}
+          >
             Close
           </Button>
           {selectedReport && (
             <Button
+              className="cursor-pointer"
               onClick={() =>
                 handleDownloadReport(
                   selectedReport.name,

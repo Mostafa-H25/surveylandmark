@@ -194,6 +194,7 @@ const EditProfileForm = ({ user, setIsUpdateProfileOpen, setUser }: Props) => {
         <Button
           type="button"
           variant="outline"
+          className="cursor-pointer"
           onClick={() => setIsUpdateProfileOpen(false)}
         >
           Cancel
@@ -201,12 +202,12 @@ const EditProfileForm = ({ user, setIsUpdateProfileOpen, setUser }: Props) => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="flex w-32 justify-center bg-blue-600 hover:bg-blue-700 disabled:bg-blue-100"
+          className="flex w-32 cursor-pointer justify-center bg-blue-600 hover:bg-blue-700 disabled:bg-blue-100"
         >
           {isSubmitting ? (
             <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
           ) : (
-            <>Save Changes</>
+            <span>Save Changes</span>
           )}
         </Button>
       </div>

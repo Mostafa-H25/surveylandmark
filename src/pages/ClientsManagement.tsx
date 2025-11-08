@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,7 +9,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Tabs,
+  //  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import {
   Empty,
   EmptyContent,
@@ -24,9 +29,9 @@ import {
   Plus,
   Search,
   Eye,
-  Hammer,
+  // Hammer,
   DollarSign,
-  Package,
+  // Package,
   ArrowRight,
   HammerIcon,
   Settings,
@@ -34,105 +39,132 @@ import {
   CircleSlash,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { clientsData } from "@/assets/data";
+// import { clientsData } from "@/assets/data";
 import { getProjectStatusColor } from "@/helpers/getStatusColor";
 import { cn } from "@/lib/utils";
 import AddClientDialog from "@/components/pages/clients/dialogs/add-client/AddClientDialog";
+import { useQuery } from "@tanstack/react-query";
+import { getAllClientsApi } from "@/api/clients/get-all-clients.api";
+import { formatDate } from "@/helpers/formatDate";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 
-interface Department {
-  id: string;
-  name: "construction" | "sales" | "storage";
-  status: "planning" | "in_progress" | "completed" | "on_hold";
-  budget: number;
-  progress: number;
-  manager: string;
-  startDate: string;
-}
+// interface Department {
+//   id: string;
+//   name: "construction" | "sales" | "storage";
+//   status: "planning" | "in_progress" | "completed" | "on_hold";
+//   budget: number;
+//   progress: number;
+//   manager: string;
+//   startDate: string;
+// }
 
-interface Project {
-  id: string;
-  name: string;
-  totalBudget: number;
-  startDate: string;
-  endDate?: string;
-  status: "planning" | "in_progress" | "completed" | "on_hold";
-  departments: Department[];
-}
+// interface Project {
+//   id: string;
+//   name: string;
+//   totalBudget: number;
+//   startDate: string;
+//   endDate?: string;
+//   status: "planning" | "in_progress" | "completed" | "on_hold";
+//   departments: Department[];
+// }
 
-interface Client {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  company: string;
-  projects: Project[];
-  joinDate: string;
-}
+// interface Client {
+//   id: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   company: string;
+//   projects: Project[];
+//   joinDate: string;
+// }
+
+const CLIENTS_QUERY_KEY = "clients";
 
 const ClientsManagement = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
 
-  const [clients] = useState<Client[]>(clientsData);
+  const { data: clients, isFetching } = useQuery({
+    queryKey: [CLIENTS_QUERY_KEY],
+    queryFn: () => getAllClientsApi(),
+    select: useCallback((data: ClientQueryResponse) => {
+      return data.data.map((option) => ({
+        id: option.client.id,
+        name: option.client.name,
+        email: option.client.email,
+        phone: option.client.phone,
+        company: option.client.company,
+        joinDate: option.client.joinDate,
 
-  const filteredClients = clients.filter(
+        projectsCount: option.projects.count,
+        totalBudget: option.projects.totalBudget,
+
+        projects: option.projects.details.map((project) => ({
+          id: project.id,
+          name: project.name,
+          budget: project.budget,
+          status: project.status,
+          startDate: project.startDate,
+          endDate: project.endDate,
+        })),
+      }));
+    }, []),
+  });
+
+  const filteredClients = clients?.filter(
     (client) =>
       client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.email.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const getDepartmentIcon = (department: string) => {
-    switch (department) {
-      case "construction":
-        return Hammer;
-      case "sales":
-        return DollarSign;
-      case "storage":
-        return Package;
-      case "standards":
-        return Settings;
-      default:
-        return Building2;
-    }
-  };
+  // const getDepartmentIcon = (department: string) => {
+  //   switch (department) {
+  //     case "construction":
+  //       return Hammer;
+  //     case "sales":
+  //       return DollarSign;
+  //     case "storage":
+  //       return Package;
+  //     case "standards":
+  //       return Settings;
+  //     default:
+  //       return Building2;
+  //   }
+  // };
 
-  const getDepartmentColor = (department: string) => {
-    switch (department) {
-      case "construction":
-        return "bg-blue-100 text-blue-700";
-      case "sales":
-        return "bg-green-100 text-green-700";
-      case "storage":
-        return "bg-purple-100 text-purple-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
+  // const getDepartmentColor = (department: string) => {
+  //   switch (department) {
+  //     case "construction":
+  //       return "bg-blue-100 text-blue-700";
+  //     case "sales":
+  //       return "bg-green-100 text-green-700";
+  //     case "storage":
+  //       return "bg-purple-100 text-purple-700";
+  //     default:
+  //       return "bg-gray-100 text-gray-700";
+  //   }
+  // };
 
   const handleViewProjects = (clientId: string) => {
     setSelectedClient(selectedClient === clientId ? null : clientId);
   };
 
-  const handleAddNewProject = (clientId: string, clientName: string) => {
-    navigate(
-      `/project/new?clientId=${clientId}&clientName=${encodeURIComponent(
-        clientName,
-      )}`,
-    );
+  const handleAddNewProject = (clientId: string) => {
+    navigate(`/project/new?client=${clientId}`);
   };
 
   const handleExploreProject = (projectId: string) => {
     navigate(`/project/${projectId}`);
   };
 
-  const calculateTotalBudget = (projects: Project[]) => {
-    return projects.reduce((total, project) => total + project.totalBudget, 0);
-  };
+  // const calculateTotalBudget = (projects: Project[]) => {
+  //   return projects.reduce((total, project) => total + project.totalBudget, 0);
+  // };
 
   return (
-    <div className="space-y-6">
+    <div className="flex h-full flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold text-gray-900">
@@ -163,8 +195,13 @@ const ClientsManagement = () => {
       </Card>
 
       {/* Clients List */}
-      <div className="space-y-4">
-        {!filteredClients?.length && (
+      <div className="h-full flex-1 space-y-4">
+        {isFetching && !filteredClients && (
+          <div className="flex h-full w-full items-center justify-center p-8">
+            <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+          </div>
+        )}
+        {!isFetching && !filteredClients?.length && (
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -176,7 +213,8 @@ const ClientsManagement = () => {
             <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
           </Empty>
         )}
-        {filteredClients.map((client) => (
+
+        {filteredClients?.map((client) => (
           <Card key={client.id} className="transition-shadow hover:shadow-md">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -195,20 +233,21 @@ const ClientsManagement = () => {
                         {client.projects.length !== 1 ? "s" : ""}
                       </span>
                       <span className="text-sm text-gray-600">
-                        Total Budget: $
-                        {calculateTotalBudget(client.projects).toLocaleString()}
+                        Total Budget: ${client.totalBudget.toLocaleString()}
                       </span>
-                      <span className="text-sm text-gray-600">
-                        Joined: {new Date(client.joinDate).toLocaleDateString()}
-                      </span>
+                      {client.joinDate && (
+                        <span className="text-sm text-gray-600">
+                          Joined:&nbsp; formatDate(client.joinDate)
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => handleAddNewProject(client.id, client.name)}
+                    onClick={() => handleAddNewProject(client.id)}
                     size="sm"
-                    className="bg-green-600 hover:bg-green-700"
+                    className="cursor-pointer bg-green-600 hover:bg-green-700"
                   >
                     <Plus className="mr-2 size-4" />
                     Add New Project
@@ -216,6 +255,8 @@ const ClientsManagement = () => {
                   <Button
                     variant="outline"
                     size="sm"
+                    disabled={!client.projectsCount}
+                    className="cursor-pointer"
                     onClick={() => handleViewProjects(client.id)}
                   >
                     <Eye className="mr-2 size-4" />
@@ -239,18 +280,24 @@ const ClientsManagement = () => {
                           <h5 className="text-lg font-medium text-gray-900">
                             {project.name}
                           </h5>
-                          <p className="text-sm text-gray-600">
-                            Started:&nbsp;
-                            {new Date(project.startDate).toLocaleDateString()}
-                            {project.endDate &&
-                              ` • Ends: ${new Date(
-                                project.endDate,
-                              ).toLocaleDateString()}`}
+                          <p className="flex items-center gap-4 text-xs text-gray-600">
+                            <span>
+                              Started:&nbsp;
+                              {project.startDate
+                                ? formatDate(project.startDate)
+                                : "-"}
+                            </span>
+                            <span>
+                              Ends:&nbsp;
+                              {project.endDate
+                                ? formatDate(project.endDate)
+                                : "-"}
+                            </span>
                           </p>
                         </div>
                         <div className="space-y-2 text-right">
                           <p className="font-medium text-gray-900">
-                            ${project.totalBudget.toLocaleString()}
+                            ${project.budget.toLocaleString()}
                           </p>
                           <Badge
                             className={cn(
@@ -258,13 +305,13 @@ const ClientsManagement = () => {
                               getProjectStatusColor(project.status),
                             )}
                           >
-                            {project.status.replaceAll("_", " ")}
+                            {formatCamelCaseToText(project.status)}
                           </Badge>
                           <div>
                             <Button
                               onClick={() => handleExploreProject(project.id)}
                               size="sm"
-                              className="bg-blue-600 hover:bg-blue-700"
+                              className="cursor-pointer bg-blue-600 hover:bg-blue-700"
                             >
                               Explore Project
                               <ArrowRight className="ml-1 size-4" />
@@ -273,27 +320,27 @@ const ClientsManagement = () => {
                         </div>
                       </div>
 
-                      <Tabs defaultValue="construction" className="w-full">
-                        <TabsList className="grid w-full grid-cols-4">
-                          <TabsTrigger value="construction">
-                            <HammerIcon className="mr-2 size-4" />
-                            Construction
-                          </TabsTrigger>
-                          <TabsTrigger value="sales">
-                            <DollarSign className="mr-2 size-4" />
-                            Sales
-                          </TabsTrigger>
-                          <TabsTrigger value="storage">
-                            <Box className="mr-2 size-4" />
-                            Storage
-                          </TabsTrigger>
-                          <TabsTrigger value="standards">
-                            <Settings className="mr-2 size-4" />
-                            Standards
-                          </TabsTrigger>
-                        </TabsList>
+                      {/* <Tabs defaultValue="construction" className="w-full">
+                          <TabsList className="grid w-full grid-cols-4">
+                            <TabsTrigger value="construction">
+                              <HammerIcon className="mr-2 size-4" />
+                              Construction
+                            </TabsTrigger>
+                            <TabsTrigger value="sales">
+                              <DollarSign className="mr-2 size-4" />
+                              Sales
+                            </TabsTrigger>
+                            <TabsTrigger value="storage">
+                              <Box className="mr-2 size-4" />
+                              Storage
+                            </TabsTrigger>
+                            <TabsTrigger value="standards">
+                              <Settings className="mr-2 size-4" />
+                              Standards
+                            </TabsTrigger>
+                          </TabsList>
 
-                        {project.departments.map((department) => (
+                          {project.departments.map((department) => (
                           <TabsContent
                             key={department.id}
                             value={department.name}
@@ -382,7 +429,7 @@ const ClientsManagement = () => {
                             </div>
                           </TabsContent>
                         ))}
-                      </Tabs>
+                        </Tabs> */}
                     </div>
                   ))}
                 </div>
@@ -396,3 +443,36 @@ const ClientsManagement = () => {
 };
 
 export default ClientsManagement;
+
+type ClientQueryResponse = {
+  message: string;
+  success: boolean;
+  data: {
+    client: {
+      id: string;
+      name: string;
+      email: string;
+      phone: string;
+      company: string;
+      joinDate: string | null;
+    };
+    projects: {
+      count: number;
+      totalBudget: number;
+      details: {
+        id: string;
+        name: string;
+        budget: number;
+        status: string;
+        startDate: string | null;
+        endDate: string | null;
+        projectManager: {
+          id: string;
+          name: string;
+          title: string;
+        };
+        progressPercentage: number;
+      }[];
+    };
+  }[];
+};

@@ -1,10 +1,10 @@
 // import { constructionItemsData } from "@/assets/data";
 // import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  // TableCell,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -12,8 +12,33 @@ import {
 // import { formatCurrency } from "@/helpers/formatCurrency";
 // import { getProjectStatusColor } from "@/helpers/getStatusColor";
 // import { cn } from "@/lib/utils";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ConstructionItems = () => {
+type Props = {
+  data: ItemsQueryResponse;
+};
+const ConstructionItems = ({ data }: Props) => {
+  const navigate = useNavigate();
+  const { projectId } = useParams();
+  const items = data.data.map((item) => ({
+    id: item.id,
+    name: item.name,
+    type: item.workItems[0].name,
+    progress: item.progress.percentage,
+    // processes: item.processings,
+    // {
+    //   id: item.processings.id,
+    //   name: item.processings.name,
+    //   status: item.processings.status,
+    //   quantity: item.processings.quantity,
+    //   executedQuantity: item.processings.executedQuantity,
+    // },
+  }));
+
+  const handleViewItem = (itemId: string) => {
+    navigate(`/project/${projectId}/item/${itemId}`);
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -21,20 +46,22 @@ const ConstructionItems = () => {
           <TableHead>Name</TableHead>
           <TableHead>Type</TableHead>
           <TableHead>Progress</TableHead>
-          <TableHead>Start Date</TableHead>
-          <TableHead>Contractor</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Site Engineer</TableHead>
-          <TableHead>Material</TableHead>
-          <TableHead>Cost/m</TableHead>
+          {/* <TableHead>Start Date</TableHead> */}
+          {/* <TableHead>Contractor</TableHead> */}
+          {/* <TableHead>Status</TableHead> */}
+          {/* <TableHead>Site Engineer</TableHead> */}
+          {/* <TableHead>Material</TableHead> */}
+          {/* <TableHead>Cost/m</TableHead> */}
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {/* {constructionItemsData.map((item) => (
+        {items.map((item) => (
           <TableRow key={item.id}>
-            <TableCell className="font-medium">{item.name}</TableCell>
-            <TableCell>{item.type}</TableCell>
+            <TableCell className="font-medium capitalize">
+              {item.name}
+            </TableCell>
+            <TableCell className="capitalize">{item.type}</TableCell>
             <TableCell>
               <div className="flex items-center gap-2">
                 <div className="h-2 min-w-20 flex-1 rounded-full bg-gray-200">
@@ -48,11 +75,11 @@ const ConstructionItems = () => {
                 <div className="font-medium">{item.progress}%</div>
               </div>
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
               {new Date(item.startDate).toLocaleDateString()}
             </TableCell>
-            <TableCell>{item.contractor}</TableCell>
-            <TableCell>
+            <TableCell>{item.contractor}</TableCell> */}
+            {/* <TableCell>
               {item.status ? (
                 <Badge
                   className={cn(
@@ -65,26 +92,58 @@ const ConstructionItems = () => {
               ) : (
                 "-"
               )}
-            </TableCell>
-            <TableCell>{item.siteEngineer}</TableCell>
-            <TableCell>{item.material}</TableCell>
+            </TableCell> */}
+            {/* <TableCell>{item.siteEngineer}</TableCell> */}
+            {/* <TableCell>{item.material}</TableCell> */}
 
-            <TableCell>{formatCurrency(item.costPerMeter)}</TableCell>
+            {/* <TableCell>{formatCurrency(item.costPerMeter)}</TableCell> */}
 
             <TableCell>
               <Button
                 variant="outline"
                 size="sm"
-                // onClick={() => handleViewMember(member.id)}
+                className="cursor-pointer"
+                onClick={() => handleViewItem(item.id)}
               >
                 View Item
               </Button>
             </TableCell>
           </TableRow>
-        ))} */}
+        ))}
       </TableBody>
     </Table>
   );
 };
 
 export default ConstructionItems;
+
+type ItemsQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      workItems: [{ id: string; name: string }];
+      processings: [
+        {
+          id: string;
+          name: string;
+          status: string;
+          quantity: number;
+          executedQuantity: number;
+        },
+      ];
+      progress: {
+        totalQuantity: number;
+        executedQuantity: number;
+        percentage: number;
+      };
+    },
+  ];
+};

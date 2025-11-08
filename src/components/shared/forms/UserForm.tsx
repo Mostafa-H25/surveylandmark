@@ -12,25 +12,54 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthStore } from "@/lib/store/use-auth-store";
-import {
-  Controller,
-  useFormContext,
-  type SubmitHandler,
-} from "react-hook-form";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { emailPattern } from "@/constants/regex";
-import type { AuthUser } from "@/types/interfaces";
+import { useMutation } from "@tanstack/react-query";
+import { inviteUserApi } from "@/api/user/invite-user.api";
+import { toast } from "sonner";
+
+const USER_MUTATION_SCOPE = "user_invitation";
 
 type Props = {
-  isSubmitting: boolean;
-  onSubmit: SubmitHandler<AuthUser>;
-  setUserFormOpen: Dispatch<SetStateAction<boolean>>;
+  setUserInvitationDialogOpen?: Dispatch<SetStateAction<boolean>>;
 };
 
-const UserForm = ({ isSubmitting, setUserFormOpen, onSubmit }: Props) => {
-  const { control, handleSubmit } = useFormContext<AuthUser>();
+const UserForm = ({ setUserInvitationDialogOpen }: Props) => {
   const user = useAuthStore((state) => state.user);
+  const defaultValues = {
+    name: "",
+    email: "",
+    role: UserRolesEnum.MEMBER,
+  };
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues,
+    mode: "onBlur",
+  });
+
+  const { mutate, isPending } = useMutation<void, Error, typeof defaultValues>({
+    mutationFn: (data) => inviteUserApi(data),
+    scope: { id: USER_MUTATION_SCOPE },
+    onSuccess: (_data, variables) => {
+      toast.success("User Invited", {
+        description: `User ${variables.name} has been invited successfully.`,
+        richColors: true,
+      });
+      setUserInvitationDialogOpen?.(false);
+      reset();
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("User Invite Failed", {
+        description: "User invitation failed, please try again.",
+        richColors: true,
+      });
+    },
+  });
+  const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
+    mutate(data);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -138,18 +167,25 @@ const UserForm = ({ isSubmitting, setUserFormOpen, onSubmit }: Props) => {
         )}
       />
       <div className="flex justify-end gap-2">
+        {setUserInvitationDialogOpen && (
+          <Button
+            type="button"
+            variant="outline"
+            className="cursor-pointer"
+            onClick={() => setUserInvitationDialogOpen(false)}
+          >
+            Cancel
+          </Button>
+        )}
         <Button
-          type="button"
-          variant="outline"
-          onClick={() => setUserFormOpen(false)}
+          type="submit"
+          disabled={isPending}
+          className={`${setUserInvitationDialogOpen ? "w-18" : "w-full"} cursor-pointer`}
         >
-          Cancel
-        </Button>
-        <Button type="submit" disabled={isSubmitting} className="w-18">
-          {isSubmitting ? (
+          {isPending ? (
             <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
           ) : (
-            <>Submit</>
+            <span>Send Invitation</span>
           )}
         </Button>
       </div>

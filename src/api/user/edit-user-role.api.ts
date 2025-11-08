@@ -3,11 +3,11 @@ import { getAxiosInstance } from "@/lib/api-client";
 import type { UserPermission, UserRole } from "@/types/default";
 
 export async function editUserRoleApi(
-  userId: string,
   data: {
     role: UserRole;
-    permission: UserPermission;
+    // permission: UserPermission;
   },
+  userId: string,
 ) {
   const axiosInstance = getAxiosInstance({ authenticated: true });
 

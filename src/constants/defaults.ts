@@ -1,5 +1,9 @@
 import type {
+  ConstructionView,
+  DepartmentType,
+  PaymentType,
   Priority,
+  SalesView,
   Status,
   UserPermission,
   UserRole,
@@ -8,10 +12,10 @@ import type {
 import {
   LayoutDashboard,
   Building2,
-  // Users,
+  Users,
   Settings,
   MessageSquare,
-  // Banknote,
+  Banknote,
   FileText,
   DollarSign,
   Package,
@@ -98,12 +102,12 @@ interface NavigationItem {
 
 export const navigation: NavigationItem[] = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  // {
-  //   name: "Users Management",
-  //   href: "/users",
-  //   icon: Users,
-  //   requiredRole: UserRolesEnum.ADMIN,
-  // },
+  {
+    name: "Users Management",
+    href: "/users",
+    icon: Users,
+    requiredRole: UserRolesEnum.SUPER_ADMIN,
+  },
   { name: "Clients & Projects", href: "/clients", icon: Building2 },
   {
     name: "Notifications & Messages",
@@ -111,48 +115,57 @@ export const navigation: NavigationItem[] = [
     icon: MessageSquare,
   },
   { name: "Reports", href: "/reports", icon: FileText },
-  // { name: "Payments", href: "/payments", icon: Banknote },
+  { name: "Payments", href: "/payments", icon: Banknote },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
-export type TFileCategories =
-  | "construction"
-  | "sales"
-  | "storage"
-  | "standards";
-
-export const CategoriesEnum: Record<string, TFileCategories> = {
+export const CategoriesEnum: Record<string, DepartmentType> = {
   CONSTRUCTION: "construction",
   SALES: "sales",
   STORAGE: "storage",
-  STANDARDS: "standards",
+  // STANDARDS: "standards",
+};
+
+export const ConstructionTabData: {
+  value: DepartmentType;
+  label: string;
+  options: { value: ConstructionView; label: string }[];
+} = {
+  value: CategoriesEnum.CONSTRUCTION,
+  label: "Construction",
+  options: [
+    { value: "descriptiveItems", label: "Items" },
+    { value: "team", label: "Members" },
+    { value: "vendors", label: "Contractors & Suppliers" },
+    { value: "materials", label: "Materials" },
+    { value: "overview", label: "Overview" },
+  ],
+};
+export const SalesTabData: {
+  value: DepartmentType;
+  label: string;
+  options: { value: SalesView; label: string }[];
+} = {
+  value: CategoriesEnum.SALES,
+  label: "Sales",
+  options: [
+    { value: "overview", label: "Overview" },
+    { value: "units", label: "Units" },
+    { value: "members", label: "Members" },
+    { value: "incomes", label: "Incomes" },
+  ],
+};
+export const StorageTabData = {
+  value: CategoriesEnum.STORAGE,
+  label: "Storage",
+  options: [],
 };
 
 export const fileCategories = [
-  {
-    value: CategoriesEnum.CONSTRUCTION,
-    label: "Construction",
-    options: [
-      { value: "items", label: "Items" },
-      { value: "members", label: "Members" },
-      { value: "contractors-suppliers", label: "Contractors & Suppliers" },
-      { value: "materials", label: "Materials" },
-      { value: "overview", label: "Overview" },
-    ],
-  },
-  {
-    value: CategoriesEnum.SALES,
-    label: "Sales",
-    options: [
-      { value: "overview", label: "Overview" },
-      { value: "units", label: "Units" },
-      { value: "members", label: "Members" },
-      { value: "payments", label: "Payments" },
-    ],
-  },
-  { value: CategoriesEnum.STORAGE, label: "Storage", options: [] },
-  { value: CategoriesEnum.STANDARDS, label: "Standards", options: [] },
-];
+  ConstructionTabData,
+  SalesTabData,
+  StorageTabData,
+] as const;
 
 export type TFileExtensions = "excel" | "csv" | "pdf" | "doc";
 
@@ -220,28 +233,26 @@ export const AlertsEnum = {
 };
 export const Alerts = Object.values(AlertsEnum);
 
-export type TConstructionSection =
-  | "overview"
-  | "members"
-  | "items"
-  | "materials"
-  | "payments"
-  | "contractors_&_suppliers";
-
-export const ConstructionSectionsEnum: Record<string, TConstructionSection> = {
+export const ConstructionSectionsEnum: Record<string, ConstructionView> = {
   OVERVIEW: "overview",
-  MEMBERS: "members",
-  ITEMS: "items",
+  TEAM: "team",
+  ITEMS: "descriptiveItems",
   MATERIALS: "materials",
   PAYMENTS: "payments",
-  CONTRACTORS: "contractors_&_suppliers",
+  VENDORS: "vendors",
 };
 
 export const constructionSections = Object.values(ConstructionSectionsEnum);
 
-export type TSalesSection = "overview" | "members" | "incomes" | "units";
+export const PaymentsSectionsEnum: Record<string, PaymentType> = {
+  PAYMENT: "payment",
+  DEDUCTION: "deduction",
+  SUNDRIES: "sundry",
+};
 
-export const SalesSectionsEnum: Record<string, TSalesSection> = {
+export const paymentsSubSections = Object.values(PaymentsSectionsEnum);
+
+export const SalesSectionsEnum: Record<string, SalesView> = {
   OVERVIEW: "overview",
   MEMBERS: "members",
   INCOMES: "incomes",

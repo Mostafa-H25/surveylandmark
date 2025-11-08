@@ -1,89 +1,338 @@
-// import { ChevronDown, Download, Expand } from "lucide-react";
+import { ChevronDown, Download, Expand } from "lucide-react";
 
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { Button } from "@/components/ui/button";
 import {
-  TabsContent,
-  // TabsList, TabsTrigger
-} from "@/components/ui/tabs";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// import {
-//   constructionSections,
-//   ConstructionSectionsEnum,
-// } from "@/constants/defaults";
-// import ConstructionOverview from "../construction/ConstructionOverview";
-// import ConstructionMembers from "../construction/ConstructionMembers";
-// import ConstructionPayments from "../construction/ConstructionPayments";
-// import ConstructionItems from "../construction/ConstructionItems";
-// import ConstructionMaterials from "../construction/ConstructionMaterials";
-// import ConstructionContractors from "../construction/ConstructionContractors";
+import {
+  CategoriesEnum,
+  constructionSections,
+  ConstructionSectionsEnum,
+  PaymentsSectionsEnum,
+} from "@/constants/defaults";
+import ConstructionOverview from "../construction/ConstructionOverview";
+import { useMemo, useState } from "react";
+import type {
+  ConstructionView,
+  DepartmentType,
+  PaymentType,
+} from "@/types/default";
+import ConstructionMembers from "../construction/ConstructionMembers";
+import ConstructionPayments from "../construction/ConstructionPayments";
+import ConstructionItems from "../construction/ConstructionItems";
+import ConstructionMaterials from "../construction/ConstructionMaterials";
+import ConstructionContractors from "../construction/ConstructionContractors";
+import { useQuery } from "@tanstack/react-query";
+import { getDepartmentSectionByProjectIdApi } from "@/api/projects/get-department-section-by-Project-id.api";
+import { useParams } from "react-router-dom";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {} from "@radix-ui/react-dialog";
 
-const ConstructionTab = () => {
-  const department = {
-    id: "d1",
-    name: "construction",
-    status: "in_progress",
-    budget: 3000000,
-    progress: 65,
-    manager: "John Smith",
-    startDate: "2024-02-15",
-  };
+const DEPARTMENTS_QUERY_KEY = "department-section";
+
+type Props = { selectedDepartment: DepartmentType };
+
+const ConstructionTab = ({ selectedDepartment }: Props) => {
+  const { projectId } = useParams();
+
+  const [selectedOption, setSelectedOption] = useState<ConstructionView>(
+    ConstructionSectionsEnum.OVERVIEW,
+  );
+  const [selectedPaymentType, setSelectedPaymentType] = useState<PaymentType>(
+    PaymentsSectionsEnum.PAYMENT,
+  );
+  const [expand, setExpand] = useState(false);
+
+  const isPaymentsView = ConstructionSectionsEnum.PAYMENTS === selectedOption;
+
+  const isConstructionSelected =
+    selectedDepartment === CategoriesEnum.CONSTRUCTION;
+
+  const { data } = useQuery({
+    queryKey: [
+      DEPARTMENTS_QUERY_KEY,
+      selectedDepartment,
+      selectedOption,
+      selectedPaymentType,
+    ],
+    enabled: isConstructionSelected && !!selectedOption,
+    queryFn: () =>
+      getDepartmentSectionByProjectIdApi(
+        projectId!,
+        selectedDepartment,
+        selectedOption,
+        selectedPaymentType,
+      ),
+  });
+
+  const Section = useMemo(() => {
+    if (!data) return <></>;
+    switch (selectedOption) {
+      case ConstructionSectionsEnum.OVERVIEW:
+        return <ConstructionOverview data={data as OverviewQueryResponse} />;
+      case ConstructionSectionsEnum.TEAM:
+        return <ConstructionMembers data={data as TeamQueryResponse} />;
+      case ConstructionSectionsEnum.ITEMS:
+        return <ConstructionItems data={data as ItemsQueryResponse} />;
+      case ConstructionSectionsEnum.MATERIALS:
+        return <ConstructionMaterials data={data as MaterialsQueryResponse} />;
+      case ConstructionSectionsEnum.PAYMENTS:
+        return (
+          <ConstructionPayments
+            data={data as PaymentsQueryResponse}
+            type={selectedPaymentType}
+          />
+        );
+      case ConstructionSectionsEnum.VENDORS:
+        return <ConstructionContractors data={data as VendorsQueryResponse} />;
+      default:
+        return <></>;
+    }
+  }, [selectedOption, data, selectedPaymentType]);
 
   return (
-    <TabsContent key={department.id} value={department.name}>
+    <TabsContent
+      key={CategoriesEnum.CONSTRUCTION}
+      value={CategoriesEnum.CONSTRUCTION}
+    >
       <div className="space-y-4 rounded-lg border bg-white p-4">
-        {/* <div className="flex w-full items-center justify-between gap-4">
-          <Select defaultValue={ConstructionSectionsEnum.OVERVIEW}>
+        <div className="flex w-full items-center justify-between gap-4">
+          <Select
+            value={selectedOption}
+            onValueChange={(value) =>
+              setSelectedOption(value as ConstructionView)
+            }
+          >
             <SelectTrigger className="w-64 capitalize">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {constructionSections.map((section) => (
-                <SelectItem value={section} className="capitalize">
-                  {section.replaceAll("_", " ")}
+                <SelectItem
+                  key={section}
+                  value={section}
+                  className="capitalize"
+                >
+                  {formatCamelCaseToText(section)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          {false ? (
-            <TabsList className="grid grid-cols-3">
-              <TabsTrigger value="payment">Payments</TabsTrigger>
-              <TabsTrigger value="deduction">Deduction</TabsTrigger>
-              <TabsTrigger value="sundries">Sundries</TabsTrigger>
-            </TabsList>
-          ) : null}
+          {isPaymentsView && (
+            <Tabs
+              value={selectedPaymentType}
+              onValueChange={(value) =>
+                setSelectedPaymentType(value as PaymentType)
+              }
+            >
+              <TabsList className="grid grid-cols-3 capitalize">
+                <TabsTrigger value={PaymentsSectionsEnum.PAYMENT}>
+                  Payments
+                </TabsTrigger>
+                <TabsTrigger value={PaymentsSectionsEnum.DEDUCTION}>
+                  Deduction
+                </TabsTrigger>
+                <TabsTrigger value={PaymentsSectionsEnum.SUNDRIES}>
+                  Sundries
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          )}
           <div>
             <div className="flex items-center gap-2">
-              <Button className="bg-blue-100 text-blue-700 hover:bg-blue-200">
-                <Expand />
-              </Button>
+              <Dialog open={expand} onOpenChange={setExpand}>
+                <DialogTrigger asChild>
+                  <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
+                    <Expand />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="!w-4xl max-w-screen px-4">
+                  <DialogHeader>
+                    <DialogTitle className="capitalize">
+                      {selectedDepartment} - {selectedOption}
+                      {selectedPaymentType ? " - " + selectedPaymentType : ""}
+                    </DialogTitle>
+                  </DialogHeader>
+                  {Section}
+                </DialogContent>
+              </Dialog>
               <div>
-                <Button className="rounded-r-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="cursor-pointer rounded-r-none bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <Download />
                   Export
                 </Button>
-                <Button className="rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <ChevronDown />
                 </Button>
               </div>
             </div>
           </div>
         </div>
-        <ConstructionOverview /> */}
-        {/* <ConstructionMembers /> */}
-        {/* <ConstructionPayments type={"payment"} /> */}
-        {/* <ConstructionItems /> */}
-        {/* <ConstructionMaterials /> */}
-        {/* <ConstructionContractors /> */}
+        {Section}
       </div>
     </TabsContent>
   );
 };
 
 export default ConstructionTab;
+
+// type ConstructionSectionResponse =
+//   | OverviewQueryResponse
+//   | TeamQueryResponse
+//   | ItemsQueryResponse
+//   | MaterialsQueryResponse
+//   | PaymentsQueryResponse
+//   | VendorsQueryResponse;
+
+type OverviewQueryResponse = {
+  message: string;
+  section: DepartmentType;
+  kind: ConstructionView;
+  data: {
+    costTillNow: number;
+    residentialUnitsCount: number;
+    commercialUnitsCount: number;
+    administrativeUnitsCount: number;
+    floorsCount: number;
+    totalArea: string;
+    actualArea: string;
+    greenArea: string;
+    progressPercent: number;
+    processingImages: [];
+    deliveryDate: string;
+  };
+};
+type TeamQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      email: string;
+      phone: string;
+      position: string;
+      projectName: string;
+      salary: string;
+    },
+  ];
+};
+type ItemsQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      workItems: [{ id: string; name: string }];
+      processings: [
+        {
+          id: string;
+          name: string;
+          status: string;
+          quantity: number;
+          executedQuantity: number;
+        },
+      ];
+      progress: {
+        totalQuantity: number;
+        executedQuantity: number;
+        percentage: number;
+      };
+    },
+  ];
+};
+type MaterialsQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      totalQuantity: number;
+      availableQuantity: number;
+      unit: string;
+    },
+  ];
+};
+type VendorsQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      email: string;
+      phone: string;
+      title: string;
+      specialty: string;
+      position: string;
+      projectName: string;
+    },
+  ];
+};
+type PaymentsQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  sub: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  sum: number;
+  data: [
+    {
+      id: string;
+      typeOfPayment: string;
+      item: string;
+      amount: number;
+      date: string;
+      createdAt: string;
+      document: null;
+      dateRecived: string;
+      contractorOrSupplier: {
+        id: string;
+        name: string;
+        role: string;
+        title: string;
+        position: string;
+      };
+      status: string;
+      batchMonth: string;
+    },
+  ];
+};

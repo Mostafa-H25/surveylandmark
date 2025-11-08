@@ -41,11 +41,13 @@ const SystemSettingsDialog = ({
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"
+              className="cursor-pointer"
               onClick={() => setIsSystemSettingsOpen(false)}
             >
               Cancel
             </Button>
             <Button
+              className="cursor-pointer"
               onClick={() => {
                 toast.success("Setting Updated", {
                   description: "System setting has been updated",

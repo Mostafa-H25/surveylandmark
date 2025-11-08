@@ -52,7 +52,7 @@ const Sidebar = () => {
         <UserCard />
         <Button
           variant="ghost"
-          className="w-full justify-start text-red-600 hover:bg-red-50"
+          className="w-full cursor-pointer justify-start text-red-600 hover:bg-red-50"
           onClick={logout}
         >
           <LogOut className="mr-3 size-5" />

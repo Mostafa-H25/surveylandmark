@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -22,11 +22,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ImageGallery from "@/components/ImageGallary";
 import EvaluationSection from "@/components/EvaluationSection";
 import FilterDialog from "@/components/FilterDialog";
+import { useQuery } from "@tanstack/react-query";
+import { getItemByIdApi } from "@/api/projects/get-item-by-id.api";
+
+const ITEM_QUERY_KEY = "item";
 
 const ItemPage = () => {
-  const { id } = useParams();
+  const { projectId, itemId } = useParams();
   const navigate = useNavigate();
   const [showFilter, setShowFilter] = useState(false);
+
+  const { data } = useQuery({
+    queryKey: [ITEM_QUERY_KEY, projectId, itemId],
+    queryFn: () => getItemByIdApi(projectId!, itemId!),
+    select: useCallback((data) => {
+      console.log(data);
+    }, []),
+  });
 
   // Mock data - in real app this would come from API
   const itemData = {
@@ -100,7 +112,7 @@ const ItemPage = () => {
               variant="ghost"
               size="sm"
               onClick={handleBack}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+              className="flex cursor-pointer items-center gap-2 text-blue-600 hover:text-blue-700"
             >
               <ArrowLeft className="size-4" />
               Back to Projects
@@ -109,7 +121,7 @@ const ItemPage = () => {
               <h1 className="text-2xl font-semibold text-gray-900">
                 {itemData.name}
               </h1>
-              <p className="text-sm text-gray-500">Item ID: {id}</p>
+              <p className="text-sm text-gray-500">Item ID: {itemId}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -117,12 +129,15 @@ const ItemPage = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowFilter(true)}
-              className="flex items-center gap-2"
+              className="flex cursor-pointer items-center gap-2"
             >
               <Filter className="size-4" />
               Filter
             </Button>
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+            <Button
+              size="sm"
+              className="cursor-pointer bg-blue-600 hover:bg-blue-700"
+            >
               Edit Item
             </Button>
           </div>

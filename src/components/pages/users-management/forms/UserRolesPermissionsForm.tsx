@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
@@ -6,64 +6,67 @@ import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import type { User } from "@/types/interfaces";
-// import { useAuthStore } from "@/lib/store/use-auth-store";
+import { useAuthStore } from "@/lib/store/use-auth-store";
 import { editUserRoleApi } from "@/api/user/edit-user-role.api";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
-// import { userPermissions, userRoles } from "@/constants/defaults";
+import { userPermissions, userRoles } from "@/constants/defaults";
 import {
   Select,
   SelectContent,
-  // SelectItem,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
+import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const UPDATE_USER_ROLE_MUTATION_KEY = "update-user-role";
+const USERS_QUERY_KEY = "users";
 
 type Props = {
   user: User;
-  onSuccess: () => void;
   setIsEditUserRolesPermissionsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const UserRolesPermissionsForm = ({
   user,
-  onSuccess,
   setIsEditUserRolesPermissionsOpen,
 }: Props) => {
-  // const currentUser = useAuthStore((state) => state.user);
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
+  const currentUser = useAuthStore((state) => state.user);
 
   const defaultValues = {
-    id: user.id,
     role: user?.role || "",
-    permission: user?.permissions || "",
+    // permission: user?.permissions || "",
   };
 
   const form = useForm({ defaultValues, mode: "onBlur" });
   const { control, handleSubmit, reset } = form;
 
-  const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
-    setIsSubmitting(true);
-    const { id, ...rest } = data;
-    console.log(data);
-    try {
-      await editUserRoleApi(id, rest);
-      toast.success("User Updated", {
-        description: "User information has been updated successfully",
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: typeof defaultValues) => editUserRoleApi(data, user.id),
+    scope: { id: UPDATE_USER_ROLE_MUTATION_KEY },
+    onSuccess: () => {
+      toast.success("User's role updated.", {
+        description: `${user.name} role has been updated successfully.`,
         richColors: true,
       });
-      onSuccess();
-      reset();
+      queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEY] });
       setIsEditUserRolesPermissionsOpen(false);
-    } catch (error) {
+      reset();
+    },
+    onError: (error) => {
       console.error(error);
-      toast.error("User Update Failed", {
-        description: "User data update failed, please try again.",
+      toast.error("Error", {
+        description: "An error occurred. Please try again!",
         richColors: true,
       });
-    }
-    setIsSubmitting(false);
+    },
+  });
+
+  const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
+    mutate(data);
   };
 
   return (
@@ -90,19 +93,19 @@ const UserRolesPermissionsForm = ({
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
-                  {/* {userRoles.map((role) => (
+                  {userRoles.map((role) => (
                     <SelectItem
                       key={role}
                       value={role}
                       disabled={
-                        !isRequiredRoleOrHigher(role, user?.role) ||
-                        currentUser?.id === user.id
+                        !isRequiredRoleOrHigher(role, currentUser?.role) ||
+                        currentUser?.email === user.email
                       }
                       className="capitalize"
                     >
-                      {role.replaceAll("_", " ")}
+                      {formatCamelCaseToText(role)}
                     </SelectItem>
-                  ))} */}
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -112,7 +115,7 @@ const UserRolesPermissionsForm = ({
           </div>
         )}
       />
-      <Controller
+      {/* <Controller
         control={control}
         name="permission"
         rules={{
@@ -134,16 +137,16 @@ const UserRolesPermissionsForm = ({
                   <SelectValue placeholder="Select access level" />
                 </SelectTrigger>
                 <SelectContent>
-                  {/* {userPermissions.map((permission) => (
+                  {userPermissions.map((permission) => (
                     <SelectItem
                       key={permission}
                       value={permission}
-                      disabled={currentUser?.id === user.id}
+                      disabled={currentUser?.email === user.email}
                       className="capitalize"
                     >
-                      {permission.replaceAll("_", " ")}
+                      {formatCamelCaseToText(permission)}
                     </SelectItem>
-                  ))} */}
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -152,20 +155,25 @@ const UserRolesPermissionsForm = ({
             )}
           </div>
         )}
-      />
+      /> */}
       <div className="flex justify-end gap-2">
         <Button
           type="button"
           variant="outline"
+          className="cursor-pointer"
           onClick={() => setIsEditUserRolesPermissionsOpen(false)}
         >
           Cancel
         </Button>
-        <Button type="submit" disabled={isSubmitting} className="w-20">
-          {isSubmitting ? (
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-20 cursor-pointer"
+        >
+          {isPending ? (
             <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
           ) : (
-            <>Submit</>
+            <span>Submit</span>
           )}
         </Button>
       </div>

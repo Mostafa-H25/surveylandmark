@@ -39,7 +39,7 @@ const EditProfileSettingsDialog = ({ user, setUser }: Props) => {
       <DialogTrigger asChild>
         <Button
           onClick={handleEditProfile}
-          className="w-32 self-end bg-blue-600 hover:bg-blue-700"
+          className="w-32 cursor-pointer self-end bg-blue-600 hover:bg-blue-700"
         >
           <SquarePen className="size-4" />
           Edit Profile

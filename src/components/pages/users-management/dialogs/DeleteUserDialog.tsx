@@ -10,20 +10,22 @@ import {
 import { toast } from "sonner";
 import type { User } from "@/types/interfaces";
 import type { Dispatch, SetStateAction } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+
+const USERS_QUERY_KEY = "users";
 
 type Props = {
   user: User;
-  onSuccess: () => void;
   isDeleteUserOpen: boolean;
   setIsDeleteUserOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const DeleteUserDialog = ({
   user,
-  onSuccess,
   isDeleteUserOpen,
   setIsDeleteUserOpen,
 }: Props) => {
+  const queryClient = useQueryClient();
   const handleConfirmDelete = async () => {
     try {
       await deleteUserApi(user.id);
@@ -31,7 +33,7 @@ const DeleteUserDialog = ({
         description: `User has been deleted successfully`,
         richColors: true,
       });
-      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEY] });
       setIsDeleteUserOpen(false);
     } catch (error) {
       console.error(error);
@@ -53,13 +55,17 @@ const DeleteUserDialog = ({
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={() => setIsDeleteUserOpen(false)}>
+          <Button
+            variant="outline"
+            className="cursor-pointer"
+            onClick={() => setIsDeleteUserOpen(false)}
+          >
             Cancel
           </Button>
           <Button
             variant="destructive"
             onClick={handleConfirmDelete}
-            className="text-white"
+            className="cursor-pointer text-white"
           >
             Delete User
           </Button>

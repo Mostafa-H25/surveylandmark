@@ -116,7 +116,7 @@ const ProfileTab = () => {
               <Button
                 variant="secondary"
                 size="sm"
-                className="relative flex w-36 items-center justify-center p-2"
+                className="relative flex w-36 cursor-pointer items-center justify-center p-2"
               >
                 {isSubmitting ? (
                   <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>

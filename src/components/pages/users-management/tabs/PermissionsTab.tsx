@@ -92,6 +92,7 @@ const PermissionsTab = ({
                     <Button
                       variant="outline"
                       size="sm"
+                      className="cursor-pointer"
                       onClick={() => handleEditPermissions(permission.id)}
                     >
                       <Edit className="mr-1 size-3" />

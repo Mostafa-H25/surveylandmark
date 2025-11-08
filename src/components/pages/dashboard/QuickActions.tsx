@@ -3,8 +3,6 @@ import { useState } from "react";
 import { Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-// import { toast } from "sonner";
-// import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,15 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "@/components/ui/dialog";
-// import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
+
+import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
 import { ReportTypesEnum, UserRolesEnum } from "@/constants/defaults";
 import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
 import { useAuthStore } from "@/lib/store/use-auth-store";
@@ -41,9 +32,9 @@ const QuickActions = () => {
     navigate("/project/new");
   };
 
-  // const handleManageUsers = () => {
-  //   navigate("/users");
-  // };
+  const handleManageUsers = () => {
+    navigate("/users");
+  };
 
   if (isMember) return null;
   return (
@@ -59,7 +50,7 @@ const QuickActions = () => {
         <div className="space-y-3">
           <Button
             onClick={handleNewProject}
-            className="h-auto w-full justify-start p-4 text-left"
+            className="h-auto w-full cursor-pointer justify-start p-4 text-left"
             variant="outline"
           >
             <div>
@@ -82,7 +73,7 @@ const QuickActions = () => {
               </div>
             </div>
           </Button> */}
-          {/* {isRequiredRoleOrHigher(UserRolesEnum.ADMIN, user?.role) && (
+          {isRequiredRoleOrHigher(UserRolesEnum.ADMIN, user?.role) && (
             <Button
               onClick={handleManageUsers}
               className="h-auto w-full justify-start p-4 text-left"
@@ -95,7 +86,7 @@ const QuickActions = () => {
                 </div>
               </div>
             </Button>
-          )} */}
+          )}
         </div>
       </CardContent>
 

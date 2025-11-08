@@ -10,7 +10,7 @@ const AddClientDialogQuickActions = () => {
     <Dialog open={isAddClientOpen} onOpenChange={setIsAddClientOpen}>
       <DialogTrigger asChild>
         <Button
-          className="h-auto w-full justify-start p-4 text-left"
+          className="h-auto w-full cursor-pointer justify-start p-4 text-left"
           variant="outline"
         >
           <div>
