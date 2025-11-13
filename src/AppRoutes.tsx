@@ -7,20 +7,21 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
-// import ItemPage from "./pages/ItemPage";
-// import Payments from "./pages/Payments";
+import ItemDetails from "./pages/ItemDetails";
+import Payments from "./pages/Payments";
 import Dashboard from "./pages/Dashboard";
 // import Standards from "./pages/Standards";
 import NewProject from "./pages/NewProject";
-// import UnitDetails from "./pages/UnitDetails";
+import UnitDetails from "./pages/UnitDetails";
 import Registration from "./pages/Registration";
-// import MemberProfile from "./pages/MemberProfile";
-// import ProjectDetails from "./pages/ProjectDetails";
-// import UsersManagement from "./pages/UsersManagement";
-// import ContractorProfile from "./pages/ContractorProfile";
+import MemberProfile from "./pages/MemberProfile";
+import ProjectDetails from "./pages/ProjectDetails";
+import UsersManagement from "./pages/UsersManagement";
+import ContractorProfile from "./pages/ContractorProfile";
 import ClientsManagement from "./pages/ClientsManagement";
 
 import { ProtectedRoute } from "./guards/ProtectedRoute";
+import UserInvitation from "./pages/UserInvitation";
 
 let previousUrl = "";
 let currentUrl = "";
@@ -54,46 +55,22 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      {/* <Route
-        path="/unit/:id"
+      <Route
+        path="/invite-team-members"
         element={
           <ProtectedRoute>
-            <UnitDetails />
+            <UserInvitation />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/item/:id"
-        element={
-          <ProtectedRoute>
-            <ItemPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/members/:id"
-        element={
-          <ProtectedRoute>
-            <MemberProfile />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/contractors/:id"
-        element={
-          <ProtectedRoute>
-            <ContractorProfile />
-          </ProtectedRoute>
-        }
-      /> */}
-      {/* <Route
         path="/users"
         element={
           <ProtectedRoute requiredRole="admin">
             <UsersManagement />
           </ProtectedRoute>
         }
-      /> */}
+      />
       <Route
         path="/clients"
         element={
@@ -110,7 +87,39 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      {/* <Route
+      <Route
+        path="/project/:projectId/units/:unitId"
+        element={
+          <ProtectedRoute>
+            <UnitDetails />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/project/:projectId/items/:itemId"
+        element={
+          <ProtectedRoute>
+            <ItemDetails />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/project/:projectId/members/:memberId"
+        element={
+          <ProtectedRoute>
+            <MemberProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/project/:projectId/contractors/:contractorId"
+        element={
+          <ProtectedRoute>
+            <ContractorProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/project/:projectId"
         element={
           <ProtectedRoute>
@@ -118,6 +127,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      {/* 
       <Route
         path="/project/:projectId/standards"
         element={
@@ -142,14 +152,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      {/* <Route
+      <Route
         path="/payments"
         element={
           <ProtectedRoute>
             <Payments />
           </ProtectedRoute>
         }
-      /> */}
+      />
       <Route
         path="/settings"
         element={

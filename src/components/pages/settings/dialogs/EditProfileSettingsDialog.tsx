@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 
 import { SquarePen } from "lucide-react";
 
@@ -16,17 +16,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import type { FormUser, UserProfile } from "@/types/interfaces";
 
 type Props = {
-  user: UserProfile;
-  setUser: Dispatch<SetStateAction<UserProfile | null>>;
+  user: UserProfile | null;
 };
 
-const EditProfileSettingsDialog = ({ user, setUser }: Props) => {
+const EditProfileSettingsDialog = ({ user }: Props) => {
   const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
 
   const defaultValues: FormUser = {
-    name: user.name,
-    // email: user.email,
-    phone: user.phone,
+    name: user?.name || "",
+    phone: user?.phone || "",
     location: user?.location || "",
     department: user?.department || "",
   };
@@ -53,11 +51,7 @@ const EditProfileSettingsDialog = ({ user, setUser }: Props) => {
           </DialogDescription>
         </DialogHeader>
         <FormProvider {...form}>
-          <EditProfileForm
-            user={user}
-            setUser={setUser}
-            setIsUpdateProfileOpen={setIsUpdateProfileOpen}
-          />
+          <EditProfileForm setIsUpdateProfileOpen={setIsUpdateProfileOpen} />
         </FormProvider>
       </DialogContent>
     </Dialog>

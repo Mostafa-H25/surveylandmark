@@ -23,6 +23,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { UserRole } from "@/types/default";
+import { formatCurrency } from "@/helpers/formatCurrency";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 
 interface User {
   id: string;
@@ -86,7 +88,7 @@ const RolesTab = ({
                           : "bg-gray-500 text-gray-700",
                       )}
                     >
-                      {user.role.replaceAll("_", " ").toUpperCase()}
+                      {formatCamelCaseToText(user.role).toUpperCase()}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -103,7 +105,7 @@ const RolesTab = ({
                   </TableCell>
                   <TableCell>
                     {user.financialLimit
-                      ? `$${user.financialLimit.toLocaleString()}`
+                      ? `${formatCurrency(user.financialLimit)}`
                       : "No limit set"}
                   </TableCell>
                   <TableCell>

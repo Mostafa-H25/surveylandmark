@@ -7,116 +7,15 @@ import {
   ArrowLeft,
   Building,
   MapPin,
-  User,
-  FileText,
+  // User,
+  // FileText,
   CreditCard,
   TrendingUp,
 } from "lucide-react";
-
-// Extended sample data with detailed unit information
-const unitsData: { [key: string]: any } = {
-  "1": {
-    id: 1,
-    name: "Sunset Plaza A-101",
-    building: "Sunset Plaza",
-    floor: 1,
-    model: "Studio Deluxe",
-    type: "Residential",
-    category: "Sold",
-    salesManager: "Sarah Johnson",
-    salesAgent: "Mike Chen",
-    income: 85000,
-    paymentMethod: "Installments",
-    downpayment: 25500,
-    installments: [
-      { month: 1, amount: 4958.33, dueDate: "2024-01-15", status: "Paid" },
-      { month: 2, amount: 4958.33, dueDate: "2024-02-15", status: "Paid" },
-      { month: 3, amount: 4958.33, dueDate: "2024-03-15", status: "Paid" },
-      { month: 4, amount: 4958.33, dueDate: "2024-04-15", status: "Pending" },
-      { month: 5, amount: 4958.33, dueDate: "2024-05-15", status: "Pending" },
-      { month: 6, amount: 4958.33, dueDate: "2024-06-15", status: "Pending" },
-      { month: 7, amount: 4958.33, dueDate: "2024-07-15", status: "Pending" },
-      { month: 8, amount: 4958.33, dueDate: "2024-08-15", status: "Pending" },
-      { month: 9, amount: 4958.33, dueDate: "2024-09-15", status: "Pending" },
-      { month: 10, amount: 4958.33, dueDate: "2024-10-15", status: "Pending" },
-      { month: 11, amount: 4958.33, dueDate: "2024-11-15", status: "Pending" },
-      { month: 12, amount: 4958.33, dueDate: "2024-12-15", status: "Pending" },
-    ],
-  },
-  "2": {
-    id: 2,
-    name: "Ocean View B-205",
-    building: "Ocean View Tower",
-    floor: 2,
-    model: "Two Bedroom",
-    type: "Residential",
-    category: "Sold",
-    salesManager: "David Wilson",
-    salesAgent: "Lisa Park",
-    income: 125000,
-    paymentMethod: "Installments",
-    downpayment: 37500,
-    installments: [
-      { month: 1, amount: 7291.67, dueDate: "2024-01-15", status: "Paid" },
-      { month: 2, amount: 7291.67, dueDate: "2024-02-15", status: "Paid" },
-      { month: 3, amount: 7291.67, dueDate: "2024-03-15", status: "Paid" },
-      { month: 4, amount: 7291.67, dueDate: "2024-04-15", status: "Pending" },
-      { month: 5, amount: 7291.67, dueDate: "2024-05-15", status: "Pending" },
-      { month: 6, amount: 7291.67, dueDate: "2024-06-15", status: "Pending" },
-      { month: 7, amount: 7291.67, dueDate: "2024-07-15", status: "Pending" },
-      { month: 8, amount: 7291.67, dueDate: "2024-08-15", status: "Pending" },
-      { month: 9, amount: 7291.67, dueDate: "2024-09-15", status: "Pending" },
-      { month: 10, amount: 7291.67, dueDate: "2024-10-15", status: "Pending" },
-      { month: 11, amount: 7291.67, dueDate: "2024-11-15", status: "Pending" },
-      { month: 12, amount: 7291.67, dueDate: "2024-12-15", status: "Pending" },
-    ],
-  },
-  "3": {
-    id: 3,
-    name: "Commerce Hub C-301",
-    building: "Commerce Hub",
-    floor: 3,
-    model: "Office Suite",
-    type: "Commercial",
-    category: "Rent",
-    salesManager: "Robert Brown",
-    salesAgent: "Emma Davis",
-    income: 95000,
-    paymentMethod: null,
-    downpayment: null,
-    installments: [],
-  },
-  "4": {
-    id: 4,
-    name: "Admin Center D-102",
-    building: "Admin Center",
-    floor: 1,
-    model: "Executive Office",
-    type: "Administrative",
-    category: "Reserved",
-    salesManager: "Jennifer Lee",
-    salesAgent: "Alex Thompson",
-    income: 110000,
-    paymentMethod: null,
-    downpayment: null,
-    installments: [],
-  },
-  "5": {
-    id: 5,
-    name: "Sunset Plaza A-205",
-    building: "Sunset Plaza",
-    floor: 2,
-    model: "One Bedroom",
-    type: "Residential",
-    category: "Sold",
-    salesManager: "Sarah Johnson",
-    salesAgent: "Kevin Rodriguez",
-    income: 75000,
-    paymentMethod: "Cash",
-    downpayment: null,
-    installments: [],
-  },
-};
+import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
+import { getUnitById } from "@/api/projects/get-unit-by-id.api";
+import { formatCurrency } from "@/helpers/formatCurrency";
 
 const getCategoryColor = (category: string) => {
   switch (category.toLowerCase()) {
@@ -146,25 +45,52 @@ const getTypeColor = (type: string) => {
   }
 };
 
-const getInstallmentStatusColor = (status: string) => {
-  switch (status.toLowerCase()) {
-    case "paid":
-      return "bg-green-100 text-green-800 border-green-200";
-    case "pending":
-      return "bg-yellow-100 text-yellow-800 border-yellow-200";
-    case "overdue":
-      return "bg-red-100 text-red-800 border-red-200";
-    default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
-  }
-};
+// const getInstallmentStatusColor = (status: string) => {
+//   switch (status.toLowerCase()) {
+//     case "paid":
+//       return "bg-green-100 text-green-800 border-green-200";
+//     case "pending":
+//       return "bg-yellow-100 text-yellow-800 border-yellow-200";
+//     case "overdue":
+//       return "bg-red-100 text-red-800 border-red-200";
+//     default:
+//       return "bg-gray-100 text-gray-800 border-gray-200";
+//   }
+// };
+
+const UNIT_QUERY_KEY = "unit";
 
 const UnitDetails = () => {
-  const { id } = useParams<{ id: string }>();
+  const { projectId, unitId } = useParams();
   const navigate = useNavigate();
 
-  const unit = id ? unitsData[id] : null;
+  const { data: unit, isFetching } = useQuery({
+    queryKey: [UNIT_QUERY_KEY, projectId, unitId],
+    queryFn: () => getUnitById(projectId!, unitId!),
+    select: useCallback((data: UnitQueryResponse) => {
+      console.log(data);
+      return {
+        id: data.unitInfo.id,
+        name: data.unitInfo.name,
+        type: data.unitInfo.type,
+        status: data.unitInfo.status,
+        building: data.unitInfo.building,
+        floor: data.unitInfo.floor,
+        income: data.paymentInfo.totalPrice,
+        paymentMethod: data.paymentInfo.paymentMethod,
+        downPayment: data.paymentInfo.downPayment,
+        installments: [],
+      };
+    }, []),
+  });
 
+  if (isFetching) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
   if (!unit) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-6">
@@ -173,11 +99,11 @@ const UnitDetails = () => {
             Unit Not Found
           </h1>
           <Button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="flex cursor-pointer items-center gap-2"
           >
             <ArrowLeft className="size-4" />
-            Back to Properties
+            Back
           </Button>
         </div>
       </div>
@@ -187,15 +113,14 @@ const UnitDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="mx-auto max-w-6xl">
-        {/* Header */}
         <div className="mb-8">
           <Button
             variant="ghost"
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="mb-4 cursor-pointer hover:bg-white hover:shadow-sm"
           >
             <ArrowLeft className="mr-2 size-4" />
-            Back to Properties
+            Back
           </Button>
 
           <div className="mb-2 flex items-center gap-3">
@@ -203,14 +128,12 @@ const UnitDetails = () => {
             <h1 className="text-3xl font-bold text-gray-900">{unit.name}</h1>
           </div>
           <p className="text-lg text-gray-600">
-            {unit.building} - {unit.model}
+            {unit.building} - {unit.floor}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Main Details */}
           <div className="space-y-6 lg:col-span-2">
-            {/* Basic Information */}
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
@@ -237,14 +160,14 @@ const UnitDetails = () => {
                         Floor {unit.floor}
                       </p>
                     </div>
-                    <div>
+                    {/* <div>
                       <label className="text-sm font-medium text-gray-500">
                         Model
                       </label>
                       <p className="text-lg font-semibold text-gray-900">
                         {unit.model}
                       </p>
-                    </div>
+                    </div> */}
                     <div>
                       <label className="text-sm font-medium text-gray-500">
                         Unit Name
@@ -271,8 +194,8 @@ const UnitDetails = () => {
                         Status
                       </label>
                       <div className="mt-1">
-                        <Badge className={getCategoryColor(unit.category)}>
-                          {unit.category}
+                        <Badge className={getCategoryColor(unit.status)}>
+                          {unit.status}
                         </Badge>
                       </div>
                     </div>
@@ -281,7 +204,7 @@ const UnitDetails = () => {
                         Income
                       </label>
                       <p className="text-lg font-bold text-green-600">
-                        ${unit.income.toLocaleString()}
+                        {unit?.income ? formatCurrency(unit.income) : ""}
                       </p>
                     </div>
                   </div>
@@ -289,8 +212,7 @@ const UnitDetails = () => {
               </CardContent>
             </Card>
 
-            {/* Sales Team */}
-            <Card className="border-0 bg-white shadow-lg">
+            {/* <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
                   <User className="size-5 text-gray-600" />
@@ -334,51 +256,47 @@ const UnitDetails = () => {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
-            {/* Payment Information */}
-            {unit.category === "Sold" && (
-              <Card className="border-0 bg-white shadow-lg">
-                <CardHeader className="border-b border-gray-200 bg-gray-50/50">
-                  <CardTitle className="flex items-center gap-2">
-                    <CreditCard className="size-5 text-gray-600" />
-                    Payment Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">
-                        Payment Method
-                      </label>
-                      <div className="mt-1">
-                        <Badge
-                          className={
-                            unit.paymentMethod === "Cash"
-                              ? "border-green-200 bg-green-100 text-green-800"
-                              : "border-blue-200 bg-blue-100 text-blue-800"
-                          }
-                        >
-                          {unit.paymentMethod}
-                        </Badge>
-                      </div>
+            <Card className="border-0 bg-white shadow-lg">
+              <CardHeader className="border-b border-gray-200 bg-gray-50/50">
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="size-5 text-gray-600" />
+                  Payment Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">
+                      Payment Method
+                    </label>
+                    <div className="mt-1">
+                      <Badge
+                        className={
+                          unit.paymentMethod === "cash"
+                            ? "border-green-200 bg-green-100 text-green-800"
+                            : "border-blue-200 bg-blue-100 text-blue-800"
+                        }
+                      >
+                        {unit.paymentMethod}
+                      </Badge>
                     </div>
-
-                    {unit.paymentMethod === "Installments" &&
-                      unit.downpayment && (
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">
-                            Down Payment
-                          </label>
-                          <p className="text-lg font-bold text-blue-600">
-                            ${unit.downpayment.toLocaleString()}
-                          </p>
-                        </div>
-                      )}
                   </div>
-                </CardContent>
-              </Card>
-            )}
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">
+                      Down Payment
+                    </label>
+                    <p className="text-lg font-bold text-blue-600">
+                      {unit?.downPayment
+                        ? formatCurrency(unit.downPayment)
+                        : ""}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Sidebar */}
@@ -404,21 +322,20 @@ const UnitDetails = () => {
                 <Separator />
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Current Status</span>
-                  <Badge className={getCategoryColor(unit.category)}>
-                    {unit.category}
+                  <Badge className={getCategoryColor(unit.status)}>
+                    {unit.status}
                   </Badge>
                 </div>
                 <Separator />
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Total Value</span>
                   <span className="font-bold text-green-600">
-                    ${unit.income.toLocaleString()}
+                    {unit?.income ? formatCurrency(unit.income) : ""}
                   </span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Location Info */}
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
@@ -456,10 +373,9 @@ const UnitDetails = () => {
           </div>
         </div>
 
-        {/* Installments Table */}
-        {unit.category === "Sold" &&
-          unit.paymentMethod === "Installments" &&
-          unit.installments.length > 0 && (
+        {/* {unit.status === "Sold" &&
+          unit.paymentMethod === "installments" &&
+          unit?.installments.length > 0 && (
             <Card className="mt-6 border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
@@ -487,7 +403,7 @@ const UnitDetails = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {unit.installments.map((installment: any) => (
+                      {unit?.installments?.map((installment: any) => (
                         <tr
                           key={installment.month}
                           className="hover:bg-gray-50"
@@ -496,7 +412,7 @@ const UnitDetails = () => {
                             Month {installment.month}
                           </td>
                           <td className="px-6 py-4 text-sm font-semibold whitespace-nowrap text-gray-900">
-                            ${installment.amount.toLocaleString()}
+                            {formatCurrency(installment.amount)}
                           </td>
                           <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                             {installment.dueDate}
@@ -517,10 +433,35 @@ const UnitDetails = () => {
                 </div>
               </CardContent>
             </Card>
-          )}
+          )} */}
       </div>
     </div>
   );
 };
 
 export default UnitDetails;
+
+type UnitQueryResponse = {
+  message: string;
+  projectId: string;
+  unitId: string;
+  unitInfo: {
+    id: string;
+    name: string;
+    type: string;
+    status: string;
+    building: string;
+    floor: string;
+  };
+  clientInfo: { name: string; phone: string; email: string };
+  sellers: [];
+  paymentInfo: {
+    paymentMethod: string;
+    totalPrice: number;
+    downPayment: number;
+    maintenanceDeposit: number;
+    installmentsCount: number;
+    installmentValue: number;
+  };
+  schedule: [];
+};

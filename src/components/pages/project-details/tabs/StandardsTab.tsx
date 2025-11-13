@@ -50,7 +50,7 @@ const StandardsTab = () => {
                 <TableCell>{standard.category}</TableCell>
                 <TableCell>{standard.version}</TableCell>
                 <TableCell>
-                  {new Date(standard.lastUpdated).toLocaleDateString()}
+                  {formatDate(standard.lastUpdated)}
                 </TableCell>
                 <TableCell>
                   {standard.status ? (

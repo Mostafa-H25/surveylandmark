@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Building2 } from "lucide-react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -20,10 +20,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { toast } from "sonner";
+import { signupApi } from "@/api/user/sign-up.ts.api";
 
 const Registration = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   const token = useAuthStore((state) => state.token);
-  const [isLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues = {
     username: "",
@@ -36,19 +40,24 @@ const Registration = () => {
   const form = useForm({ defaultValues, mode: "onBlur" });
   const { control, handleSubmit } = form;
 
-  const onSubmit: SubmitHandler<typeof defaultValues> = async () => {
-    // if (true) {
-    //   toast({
-    //     title: "Login successful",
-    //     description: "Welcome back!",
-    //   });
-    // } else {
-    //   toast({
-    //     title: "Login failed",
-    //     description: "Invalid email or password",
-    //     variant: "destructive",
-    //   });
-    // }
+  const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
+    if (!id) return;
+    setIsSubmitting(true);
+    try {
+      await signupApi(data, id);
+      toast.success("User Created", {
+        description: `User account has been created successfully.`,
+        richColors: true,
+      });
+      navigate("/sign-in");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error", {
+        description: "An error occurred. Please try again!",
+        richColors: true,
+      });
+    }
+    setIsSubmitting(false);
   };
 
   if (token) return <Navigate to="/dashboard" replace />;
@@ -247,9 +256,9 @@ const Registration = () => {
             <Button
               type="submit"
               className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700"
-              disabled={isLoading}
+              disabled={isSubmitting}
             >
-              {isLoading ? "Loading..." : "Sign Up"}
+              {isSubmitting ? "Loading..." : "Sign Up"}
             </Button>
           </form>
         </CardContent>

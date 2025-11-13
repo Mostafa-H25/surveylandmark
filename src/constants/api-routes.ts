@@ -10,6 +10,7 @@ export const API_PATHS = {
   USER: {
     LOGIN: "/user/login",
     LOGOUT: "/user/logout",
+    SIGN_UP: (token: string) => `/user/invitations/${token}/accept`,
     ME: "/user/me",
     INVITATION: {
       ADD: "/user/invitations",
@@ -40,6 +41,8 @@ export const API_PATHS = {
       `/dash/department/${projectId}`,
     GET_DEPARTMENT: (projectId: string, department: DepartmentType) =>
       `/dash/department/${department}/${projectId}`,
+    GET_SALES: (projectId: string) => `/dash/sale/projectId/${projectId}`,
+    GET_STORAGE: (projectId: string) => `/dash/materialReport/${projectId}`,
     GET_ALL_BUILDINGS: (projectId: string) => `/dash/buildings/${projectId}`,
     GET_ALL_FLOORS: (projectId: string, buildingId: string) =>
       `/dash/floors/${projectId}/${buildingId}`,
@@ -49,6 +52,8 @@ export const API_PATHS = {
       `/dash/${projectId}/memberProfileDetails/${memberId}`,
     GET_ITEM: (projectId: string, itemId: string) =>
       `/dash/processing/${projectId}/${itemId}`,
+    GET_UNIT: (projectId: string, unitId: string) =>
+      `/dash/unitDetails/projectId/${projectId}/unitId/${unitId}`,
   },
   REPORTS: {
     ADD: (projectId: string) => `reports/project/${projectId}/generate`,

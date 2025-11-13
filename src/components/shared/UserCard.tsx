@@ -3,12 +3,22 @@ import { useAuthStore } from "@/lib/store/use-auth-store";
 
 const UserCard = () => {
   const user = useAuthStore((state) => state.user);
+
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   return (
     <div className="flex h-auto w-full items-center justify-start space-x-3 p-2">
-      <div className="flex size-12 items-center justify-center rounded-full bg-blue-100">
-        <span className="text-sm font-medium text-blue-600">
-          {user?.name.charAt(0)}
-        </span>
+      <div className="flex size-12 items-center justify-center overflow-hidden rounded-full bg-blue-100">
+        {user?.profileImageUrl ? (
+          <img
+            src={baseUrl + "/" + user?.profileImageUrl}
+            alt="profile image"
+            className="object-center"
+          />
+        ) : (
+          <span className="text-sm font-medium text-blue-600">
+            {user?.name.charAt(0)}
+          </span>
+        )}
       </div>
       <div>
         <p className="text-sm font-medium whitespace-nowrap text-gray-900">

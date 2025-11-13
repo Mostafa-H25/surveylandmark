@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { Layout } from "../layouts/Layout";
 import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
 import type { UserRole } from "@/types/default";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 import { meApi } from "@/api/user/me.api";
-import { roleHierarchy } from "@/constants/defaults";
+import { useQuery } from "@tanstack/react-query";
+
+const ME_QUERY_KEY = "me";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -20,22 +22,22 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const token = useAuthStore((state) => state.token);
   const setUser = useAuthStore((state) => state.setUser);
   const removeToken = useAuthStore((state) => state.removeToken);
-  const [isLoading, setIsLoading] = useState(true);
-  const fetchUser = async () => {
-    try {
-      const result = await meApi();
-      setUser({ name: result.name, email: result.email, role: result.role });
-    } catch (error) {
-      console.error(error);
-      removeToken();
-    }
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    if (token) fetchUser();
-  }, [token]);
 
-  if (isLoading) {
+  const { data, error, isFetching, isSuccess, isError } = useQuery({
+    queryKey: [ME_QUERY_KEY],
+    queryFn: () => meApi(),
+  });
+
+  useEffect(() => {
+    if (isSuccess) setUser(data);
+  }, [isSuccess, data]);
+
+  if (isError) {
+    console.error(error);
+    removeToken();
+  }
+
+  if (isFetching) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="aspect-square size-32 h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>

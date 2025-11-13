@@ -719,8 +719,8 @@ const ProjectDetails = () => {
             </TabsList>
 
             <ConstructionTab selectedDepartment={selectedDepartment} />
-            {/* <SalesTab selectedDepartment={selectedDepartment} />
-            <StorageTab selectedDepartment={selectedDepartment} /> */}
+            <SalesTab selectedDepartment={selectedDepartment} />
+            <StorageTab selectedDepartment={selectedDepartment} />
             {/* <StandardsTab /> */}
           </Tabs>
         </CardContent>

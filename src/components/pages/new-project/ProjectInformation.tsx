@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { projectStatus } from "@/constants/defaults";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +29,7 @@ const ProjectInformation = () => {
     queryKey: [CLIENTS_QUERY_KEY],
     queryFn: () => getAllClientsApi(),
     select: useCallback((data: ClientQueryResponse) => {
-      return data.data.map((option) => ({
+      return data.data.clients.map((option) => ({
         id: option.client.id,
         name: option.client.name,
       }));
@@ -162,7 +163,7 @@ const ProjectInformation = () => {
                           value={status}
                           className="capitalize"
                         >
-                          {status.replaceAll("-", " ")}
+                          {formatCamelCaseToText(status)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -294,31 +295,38 @@ type ClientQueryResponse = {
   message: string;
   success: boolean;
   data: {
-    client: {
-      id: string;
-      name: string;
-      email: string;
-      phone: string;
-      company: string;
-      joinDate: string | null;
-    };
-    projects: {
-      count: number;
-      totalBudget: number;
-      details: {
+    totalClients: number;
+    currentPage: number;
+    totalPages: number;
+    pageLimit: number;
+    count: number;
+    clients: {
+      client: {
         id: string;
         name: string;
-        budget: number;
-        status: string;
-        startDate: string | null;
-        endDate: string | null;
-        projectManager: {
+        email: string;
+        phone: string;
+        company: string;
+        joinDate: string | null;
+      };
+      projects: {
+        count: number;
+        totalBudget: number;
+        details: {
           id: string;
           name: string;
-          title: string;
-        };
-        progressPercentage: number;
-      }[];
-    };
-  }[];
+          budget: number;
+          status: string;
+          startDate: string | null;
+          endDate: string | null;
+          projectManager: {
+            id: string;
+            name: string;
+            title: string;
+          };
+          progressPercentage: number;
+        }[];
+      };
+    }[];
+  };
 };

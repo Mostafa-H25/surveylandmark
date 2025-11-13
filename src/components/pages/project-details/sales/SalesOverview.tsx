@@ -1,44 +1,149 @@
 // import { salesOverviewData } from "@/assets/data";
 // import { Button } from "@/components/ui/button";
 import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import {
   Table,
   TableBody,
-  // TableCell,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { CircleSlash } from "lucide-react";
 
-const SalesOverview = () => {
+type Props = {
+  data: OverviewQueryResponse;
+  isFetching: boolean;
+};
+
+const SalesOverview = ({ data, isFetching }: Props) => {
+  const overview = [
+    { label: "Total sales", value: data.data.totalSales },
+    {
+      label: "Construction Ratio",
+      value: data.data.constructionRatio.overallProgress,
+    },
+    {
+      label: "Total Area",
+      value: data.data.totalArea,
+    },
+    {
+      label: "Service Facilities Area",
+      value: data.data.serviceFacilitiesArea,
+    },
+    { label: "Green Area Percentage", value: data.data.greenAreasPercentage },
+    { label: "Delivery Date", value: data.data.deliveryDate },
+    {
+      label: "No. Of Residential Units",
+      value: data.data.counts.residentialUnits,
+    },
+    {
+      label: "No. Of Commercial Units",
+      value: data.data.counts.commercialUnits,
+    },
+    {
+      label: "No. Of Administrative Units",
+      value: data.data.counts.administrativeUnits,
+    },
+    {
+      label: "No. Of Floors",
+      value: data.data.counts.floors,
+    },
+  ];
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Overviews</TableHead>
           <TableHead>Metrics</TableHead>
-          <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {/* {salesOverviewData.map((row) => (
-          <TableRow key={row.id}>
-            <TableCell className="font-medium">{row.overview}</TableCell>
-            <TableCell>{row.metrics}</TableCell>
-
-            <TableCell>
-              <Button
-                variant="outline"
-                size="sm"
-                // onClick={() => handleEditRow(row.id)}
-              >
-                Edit
-              </Button>
+        {isFetching && !data && (
+          <TableRow>
+            <TableCell colSpan={2} className="text-center">
+              <div className="flex h-full w-full items-center justify-center p-8">
+                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              </div>
             </TableCell>
           </TableRow>
-        ))} */}
+        )}
+        {!isFetching && !data && (
+          <TableRow>
+            <TableCell colSpan={2} className="text-center">
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleSlash color="#4a5565 " />
+                  </EmptyMedia>
+                  <EmptyTitle>No data</EmptyTitle>
+                  <EmptyDescription>No data found</EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+              </Empty>
+            </TableCell>
+          </TableRow>
+        )}
+        {overview.map((row) => (
+          <TableRow key={row.label}>
+            <TableCell className="font-medium">{row.label}</TableCell>
+            <TableCell>{row.value}</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
 };
 
 export default SalesOverview;
+
+type OverviewQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  sub: string;
+  range: { from: string | null; to: string | null };
+  data: {
+    totalSales: number;
+    breakdown: { cash: number; installmentsIncome: number; rentIncome: number };
+    constructionRatio: {
+      overallProgress: number;
+      processings: {
+        id: string;
+        name: string;
+        quantity: number;
+        executedQuantity: number;
+        progressPercentage: number;
+        status: string;
+        workItem: { id: string; name: string };
+      }[];
+      workItemImpacts: [
+        {
+          id: string;
+          name: string;
+          percentage: number;
+          averageProgress: number;
+          workItems: { id: string; name: string }[];
+        },
+      ];
+    };
+    totalArea: string;
+    serviceFacilitiesArea: string;
+    greenAreasPercentage: string;
+    deliveryDate: string;
+    counts: {
+      residentialUnits: number;
+      commercialUnits: number;
+      administrativeUnits: number;
+      floors: number;
+    };
+  };
+};

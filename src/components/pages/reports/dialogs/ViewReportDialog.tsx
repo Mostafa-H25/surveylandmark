@@ -92,7 +92,7 @@ const ViewReportDialog = ({
                     Amount
                   </label>
                   <p className="text-sm text-gray-900">
-                    ${selectedReport.amount.toLocaleString()}
+                    {formatCurrency(selectedReport.amount)}
                   </p>
                 </div>
               )}

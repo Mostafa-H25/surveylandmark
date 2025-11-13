@@ -21,6 +21,7 @@ export async function getDepartmentsByProjectIdApi(
   Object.entries(filters).forEach(([Key, value]) => {
     if (value) encodedParams.append(Key, value);
   });
+
   const axiosInstance = getAxiosInstance({ authenticated: true });
   const response = await axiosInstance.get(
     API_PATHS.PROJECTS.GET_DEPARTMENT_GENERAL(id),

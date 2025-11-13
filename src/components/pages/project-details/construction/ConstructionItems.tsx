@@ -2,6 +2,20 @@
 // import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import {
   Table,
   TableBody,
   TableCell,
@@ -9,6 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { CircleSlash } from "lucide-react";
 // import { formatCurrency } from "@/helpers/formatCurrency";
 // import { getProjectStatusColor } from "@/helpers/getStatusColor";
 // import { cn } from "@/lib/utils";
@@ -16,8 +31,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
   data: ItemsQueryResponse;
+  isFetching: boolean;
 };
-const ConstructionItems = ({ data }: Props) => {
+const ConstructionItems = ({ data, isFetching }: Props) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const items = data.data.map((item) => ({
@@ -25,18 +41,20 @@ const ConstructionItems = ({ data }: Props) => {
     name: item.name,
     type: item.workItems[0].name,
     progress: item.progress.percentage,
-    // processes: item.processings,
-    // {
-    //   id: item.processings.id,
-    //   name: item.processings.name,
-    //   status: item.processings.status,
-    //   quantity: item.processings.quantity,
-    //   executedQuantity: item.processings.executedQuantity,
-    // },
+    workItem: {
+      id: item.workItems[0].id,
+    },
+    processes: item.processings.map((process) => ({
+      id: process.id,
+      name: process.name,
+      // status: process.status,
+      // quantity: process.quantity,
+      // executedQuantity: process.executedQuantity,
+    })),
   }));
 
-  const handleViewItem = (itemId: string) => {
-    navigate(`/project/${projectId}/item/${itemId}`);
+  const handleViewItem = (unitId: string) => {
+    navigate(`/project/${projectId}/items/${unitId}`);
   };
 
   return (
@@ -56,6 +74,31 @@ const ConstructionItems = ({ data }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
+        {isFetching && !items && (
+          <TableRow>
+            <TableCell colSpan={4} className="text-center">
+              <div className="flex h-full w-full items-center justify-center p-8">
+                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              </div>
+            </TableCell>
+          </TableRow>
+        )}
+        {!isFetching && !items.length && (
+          <TableRow>
+            <TableCell colSpan={4} className="text-center">
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleSlash color="#4a5565 " />
+                  </EmptyMedia>
+                  <EmptyTitle>No data</EmptyTitle>
+                  <EmptyDescription>No data found</EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+              </Empty>
+            </TableCell>
+          </TableRow>
+        )}
         {items.map((item) => (
           <TableRow key={item.id}>
             <TableCell className="font-medium capitalize">
@@ -76,7 +119,7 @@ const ConstructionItems = ({ data }: Props) => {
               </div>
             </TableCell>
             {/* <TableCell>
-              {new Date(item.startDate).toLocaleDateString()}
+              {formatDate(item.startDate)}
             </TableCell>
             <TableCell>{item.contractor}</TableCell> */}
             {/* <TableCell>
@@ -99,14 +142,28 @@ const ConstructionItems = ({ data }: Props) => {
             {/* <TableCell>{formatCurrency(item.costPerMeter)}</TableCell> */}
 
             <TableCell>
-              <Button
-                variant="outline"
-                size="sm"
-                className="cursor-pointer"
-                onClick={() => handleViewItem(item.id)}
-              >
-                View Item
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer"
+                  >
+                    View Item
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {item.processes.map((process) => (
+                    <DropdownMenuItem
+                      key={process.id}
+                      onClick={() => handleViewItem(process.id)}
+                      className="capitalize"
+                    >
+                      {process.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </TableCell>
           </TableRow>
         ))}

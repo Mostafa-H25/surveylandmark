@@ -47,6 +47,7 @@ import {
 import type { UserRole, UserStatus } from "@/types/default";
 // import { useAuthStore } from "@/lib/store/use-auth-store";
 import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
+import { formatDate } from "@/helpers/formatDate";
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
@@ -227,7 +228,7 @@ const UsersTab = ({
                       : "-"}
                   </TableCell> */}
                   <TableCell className="text-sm text-gray-600">
-                    {new Date(user.joinDate).toLocaleDateString()}
+                    {formatDate(user.joinDate)}
                   </TableCell>
                   <TableCell>
                     {/* <div className="flex justify-center gap-1">

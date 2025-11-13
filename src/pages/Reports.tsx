@@ -1,16 +1,46 @@
-import { useState } from "react";
-
-import SalesTab from "@/components/pages/reports/tabs/SalesTab";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { reportTypes, ReportTypesEnum } from "@/constants/defaults";
-import ProjectsTab from "@/components/pages/reports/tabs/ProjectsTab";
-import FinancialTab from "@/components/pages/reports/tabs/FinancialTab";
-import InventoryTab from "@/components/pages/reports/tabs/InventoryTab";
+import { useCallback, useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import ViewReportDialog from "@/components/pages/reports/dialogs/ViewReportDialog";
-// import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
 import type { Report } from "@/types/interfaces";
+import { useQuery } from "@tanstack/react-query";
+import { getAllReportsApi } from "@/api/reports/get-all-reports.api";
+import { Button } from "@/components/ui/button";
+import { formatDate } from "@/helpers/formatDate";
+import { CircleSlash, Download } from "lucide-react";
+import { downloadReport } from "@/helpers/downloadFile";
+import Paginator from "@/components/shared/Paginator";
+
+const PROJECT_REPORTS_QUERY_KEY = "project_reports";
 
 const Reports = () => {
+  const [paginator, setPaginator] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+  });
+
   // const [openGenerateDialog, setOpenGenerateDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
   // const [currentReportType, setCurrentReportType] = useState<string>(
@@ -23,23 +53,50 @@ const Reports = () => {
   //   setOpenGenerateDialog(true);
   // };
 
-  const handleDownloadReport = (reportName: string, reportUrl: string) => {
-    const a = document.createElement("a");
-    const url = import.meta.env.BASE_URL + reportUrl;
-    const encodedURI = encodeURIComponent(url);
-    a.setAttribute("href", encodedURI);
-    a.setAttribute("download", reportName);
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
   const handleViewReport = (report: Report) => {
     setSelectedReport(report);
     setOpenViewDialog(true);
   };
+  const { data, isFetching } = useQuery({
+    queryKey: [PROJECT_REPORTS_QUERY_KEY, paginator.page],
+    queryFn: () =>
+      getAllReportsApi({
+        pagination: { page: paginator.page, limit: paginator.limit },
+      }),
+    select: useCallback((data: ReportsQueryResponse) => {
+      return {
+        meta: { page: data.pagination.page, total: data.pagination.total },
+        reports: data.reports.map((report) => ({
+          id: report.id,
+          name: report.name,
+          generatedAt: report.generatedAt,
+          description: report.description,
+          downloadUrl: report.downloadUrl,
+          project: report.metadata.projectName,
+          generatedBy: report.metadata.generatedBy,
+        })),
+      };
+    }, []),
+  });
+  const reports = data?.reports;
 
+  useEffect(() => {
+    if (data?.meta.page) {
+      setPaginator((prev) => ({
+        ...prev,
+        page: data?.meta.page ?? 1,
+        total: data?.meta.total ?? 0,
+      }));
+    }
+  }, [data]);
+
+  // if (isFetching) {
+  //   return (
+  //     <div className="flex min-h-screen items-center justify-center">
+  //       <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+  //     </div>
+  //   );
+  // }
   return (
     <div className="space-y-6">
       <div>
@@ -50,44 +107,104 @@ const Reports = () => {
         </p>
       </div>
 
-      <Tabs defaultValue={ReportTypesEnum.PROJECTS.value} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          {reportTypes.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                className="flex items-center gap-2 capitalize"
-              >
-                <Icon className="size-4" />
-                {tab.label}
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
-
-        <ProjectsTab
-          // handleOpenGenerateDialog={handleOpenGenerateDialog}
-          handleViewReport={handleViewReport}
-          handleDownloadReport={handleDownloadReport}
-        />
-        <FinancialTab
-          // handleOpenGenerateDialog={handleOpenGenerateDialog}
-          handleViewReport={handleViewReport}
-          handleDownloadReport={handleDownloadReport}
-        />
-        <SalesTab
-          // handleOpenGenerateDialog={handleOpenGenerateDialog}
-          handleViewReport={handleViewReport}
-          handleDownloadReport={handleDownloadReport}
-        />
-        <InventoryTab
-          // handleOpenGenerateDialog={handleOpenGenerateDialog}
-          handleViewReport={handleViewReport}
-          handleDownloadReport={handleDownloadReport}
-        />
-      </Tabs>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Project Reports</CardTitle>
+              <CardDescription>
+                Progress, timeline, and project analysis reports
+              </CardDescription>
+            </div>
+            {/* <Button
+              onClick={() =>
+                handleOpenGenerateDialog(ReportTypesEnum.PROJECTS.value)
+              }
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <FileText className="mr-2 size-4" />
+              Generate Report
+            </Button> */}
+          </div>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="whitespace-nowrap">Report Name</TableHead>
+                {/* <TableHead>Type</TableHead> */}
+                <TableHead>Project</TableHead>
+                <TableHead className="whitespace-nowrap">
+                  Generated By
+                </TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isFetching && !reports && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">
+                    <div className="flex h-full w-full items-center justify-center p-8">
+                      <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+              {!isFetching && !reports?.length && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <CircleSlash color="#4a5565 " />
+                        </EmptyMedia>
+                        <EmptyTitle>No data</EmptyTitle>
+                        <EmptyDescription>No data found</EmptyDescription>
+                      </EmptyHeader>
+                      <EmptyContent>
+                        {/* <Button>Add data</Button> */}
+                      </EmptyContent>
+                    </Empty>
+                  </TableCell>
+                </TableRow>
+              )}
+              {reports?.map((report) => (
+                <TableRow key={report.id}>
+                  <TableCell className="font-medium">{report.name}</TableCell>
+                  {/* <TableCell>{report?.type}</TableCell> */}
+                  <TableCell>{report.project}</TableCell>
+                  <TableCell>{report.generatedBy}</TableCell>
+                  <TableCell>{formatDate(report.generatedAt)}</TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="cursor-pointer"
+                        onClick={() => handleViewReport(report)}
+                      >
+                        View
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          downloadReport(report.name, report.downloadUrl)
+                        }
+                        className="cursor-pointer"
+                      >
+                        <Download className="size-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Paginator paginator={paginator} setPaginator={setPaginator} />
+        </CardContent>
+      </Card>
 
       {/* <GenerateReportDialog
         currentReportType={currentReportType}
@@ -99,10 +216,32 @@ const Reports = () => {
         selectedReport={selectedReport}
         openViewDialog={openViewDialog}
         setOpenViewDialog={setOpenViewDialog}
-        handleDownloadReport={handleDownloadReport}
+        handleDownloadReport={downloadReport}
       />
     </div>
   );
 };
 
 export default Reports;
+
+type ReportsQueryResponse = {
+  message: string;
+  success: boolean;
+  pagination: { limit: number; page: number; pages: number; total: number };
+  reports: {
+    id: string;
+    name: string;
+    generatedAt: string;
+    description: string;
+    downloadUrl: string;
+    project: {
+      id: string;
+      name: string;
+      status: string;
+    };
+    metadata: {
+      projectName: string;
+      generatedBy: string;
+    };
+  }[];
+};

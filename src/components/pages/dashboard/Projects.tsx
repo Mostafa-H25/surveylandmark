@@ -1,6 +1,5 @@
 import { CircleSlash, TrendingUp } from "lucide-react";
 
-// import { recentProjects } from "@/assets/data";
 import {
   Card,
   CardContent,
@@ -18,11 +17,18 @@ import {
 } from "@/components/ui/empty";
 
 type Props = {
-  initialProjects?: { id: string; name: string; progressPercentage: number }[];
+  initialProjects?: {
+    id: string;
+    name: string;
+    status: string;
+    client: string;
+    company: string;
+    progressPercentage: number;
+  }[];
 };
 
 const Projects = ({ initialProjects }: Props) => {
-  const projects = initialProjects?.slice(0, 5);
+  const projects = initialProjects?.slice(0, 3);
 
   return (
     <Card>
@@ -50,18 +56,20 @@ const Projects = ({ initialProjects }: Props) => {
           {projects?.map((project) => (
             <div
               key={project.id}
-              className="flex items-center justify-between rounded-lg border p-4"
+              className="flex items-end justify-between rounded-lg border p-4"
             >
               <div className="flex-1">
                 <h4 className="font-medium text-gray-900 capitalize">
                   {project.name}
                 </h4>
-                {/* <p className="text-sm text-gray-600">{project.client}</p> */}
+                <p className="text-sm text-gray-600 capitalize">
+                  {project.client} - {project.company}
+                </p>
                 <div className="mt-2 flex items-center gap-2">
                   {/* <span className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700">
-                    {project.type}
+                    {project.company}
                   </span> */}
-                  {/* <span
+                  <span
                     className={`rounded px-2 py-1 text-xs ${
                       project.status === "Completed"
                         ? "bg-green-100 text-green-700"
@@ -71,7 +79,7 @@ const Projects = ({ initialProjects }: Props) => {
                     }`}
                   >
                     {project.status}
-                  </span> */}
+                  </span>
                 </div>
               </div>
               <div className="text-right">

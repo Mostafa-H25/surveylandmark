@@ -2,6 +2,14 @@
 // import { Badge } from "@/components/ui/badge";
 // import { Button } from "@/components/ui/button";
 import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import {
   Table,
   TableBody,
   TableCell,
@@ -10,13 +18,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { ConstructionView, DepartmentType } from "@/types/default";
+import { CircleSlash } from "lucide-react";
 // import { getProjectStatusColor } from "@/helpers/getStatusColor";
 // import { cn } from "@/lib/utils";
 
 type Props = {
   data: OverviewQueryResponse;
+  isFetching: boolean;
 };
-const ConstructionOverview = ({ data }: Props) => {
+const ConstructionOverview = ({ data, isFetching }: Props) => {
   const overview = [
     { label: "cost till now", value: data.data.costTillNow },
     {
@@ -58,6 +68,31 @@ const ConstructionOverview = ({ data }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
+        {isFetching && !data && (
+          <TableRow>
+            <TableCell colSpan={2} className="text-center">
+              <div className="flex h-full w-full items-center justify-center p-8">
+                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              </div>
+            </TableCell>
+          </TableRow>
+        )}
+        {!isFetching && !data && (
+          <TableRow>
+            <TableCell colSpan={2} className="text-center">
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleSlash color="#4a5565 " />
+                  </EmptyMedia>
+                  <EmptyTitle>No data</EmptyTitle>
+                  <EmptyDescription>No data found</EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+              </Empty>
+            </TableCell>
+          </TableRow>
+        )}
         {overview.map((row) => (
           <TableRow key={row.label} className="capitalize">
             <TableCell className="font-medium">{row.label}</TableCell>

@@ -1,25 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  ArrowLeft,
-  Briefcase,
-  CircleSlash,
-  ListTodo,
-  Star,
-  User,
-} from "lucide-react";
+import { ArrowLeft, CircleSlash, ListTodo, User } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { formatCurrency } from "@/helpers/formatCurrency";
-import { useCallback, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { useCallback } from "react";
+
 import {
   Empty,
   EmptyContent,
@@ -284,7 +268,7 @@ const ContractorProfile = () => {
                     <TableCell>{payment.item}</TableCell>
                     <TableCell>{formatCurrency(payment.amount)}</TableCell>
                     <TableCell>
-                      {new Date(payment.date).toLocaleDateString()}
+                      {formatDate(payment.date)}
                     </TableCell>
 
                     <TableCell>

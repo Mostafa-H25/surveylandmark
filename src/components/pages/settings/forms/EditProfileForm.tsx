@@ -8,21 +8,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState, type Dispatch, type SetStateAction } from "react";
-import type { FormUser, UserProfile } from "@/types/interfaces";
+import type { FormUser } from "@/types/interfaces";
 import { cn } from "@/lib/utils";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { phonePattern } from "@/constants/regex";
 import { editProfileApi } from "@/api/user/edit-profile.api";
-import { useAuthStore } from "@/lib/store/use-auth-store";
+import { useQueryClient } from "@tanstack/react-query";
+
+const ME_QUERY_KEY = "me";
 
 type Props = {
-  user: UserProfile;
-  setUser: Dispatch<SetStateAction<UserProfile | null>>;
   setIsUpdateProfileOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const EditProfileForm = ({ user, setIsUpdateProfileOpen, setUser }: Props) => {
-  const setUserGlobal = useAuthStore((state) => state.setUser);
+const EditProfileForm = ({ setIsUpdateProfileOpen }: Props) => {
+  const queryClient = useQueryClient();
   const { control, handleSubmit } = useFormContext<FormUser>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,16 +30,12 @@ const EditProfileForm = ({ user, setIsUpdateProfileOpen, setUser }: Props) => {
     setIsSubmitting(true);
     try {
       await editProfileApi(data);
+      queryClient.invalidateQueries({ queryKey: [ME_QUERY_KEY] });
       toast.success("Profile Updated", {
         description: `${data.name} has been added successfully.`,
         richColors: true,
       });
-      setUserGlobal({
-        name: data.name,
-        email: user.email,
-        role: user.role,
-      });
-      setUser({ ...user, ...data });
+
       setIsUpdateProfileOpen(false);
     } catch (error) {
       console.error(error);

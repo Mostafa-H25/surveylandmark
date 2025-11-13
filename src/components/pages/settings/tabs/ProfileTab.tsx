@@ -3,11 +3,9 @@ import { type ChangeEvent, useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Camera, User as UserIcon } from "lucide-react";
 
-import { meApi } from "@/api/user/me.api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
-import type { UserProfile } from "@/types/interfaces";
 import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
 import { editProfileImageApi } from "@/api/user/edit-profile-image.api";
 import {
@@ -20,25 +18,27 @@ import {
 
 import EditProfileSettingsDialog from "../dialogs/EditProfileSettingsDialog";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "@/lib/store/use-auth-store";
+import { formatDate } from "@/helpers/formatDate";
+
+const ME_QUERY_KEY = "me";
 
 const ProfileTab = () => {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
+
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const profileImageUrl = user?.profileImageUrl
+    ? baseUrl + "/" + user?.profileImageUrl
+    : undefined;
+  const [image, setImage] = useState<string | undefined>(profileImageUrl);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const fetchUser = async () => {
-    try {
-      const result = await meApi();
-      setUser({ ...result });
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
-  };
-
   useEffect(() => {
-    fetchUser();
-  }, []);
+    const profileImageUrl = baseUrl + "/" + user?.profileImageUrl;
+    setImage(profileImageUrl);
+  }, [user?.profileImageUrl]);
 
   const onImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!user) return;
@@ -47,14 +47,10 @@ const ProfileTab = () => {
     const img = e.target.files?.[0];
     if (img) {
       const url = URL.createObjectURL(img);
-
+      setImage(url);
       try {
         await editProfileImageApi(img);
-        setUser({
-          ...user,
-          profileImageUrl: url,
-          profileImage: img,
-        });
+        queryClient.invalidateQueries({ queryKey: [ME_QUERY_KEY] });
         toast.success("Profile Image Updated", {
           description: `Your profile image has been updated successfully.`,
           richColors: true,
@@ -70,13 +66,6 @@ const ProfileTab = () => {
     }
   };
 
-  if (isLoading || !user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
   return (
     <TabsContent value="profile" className="space-y-6">
       <Card>
@@ -92,25 +81,25 @@ const ProfileTab = () => {
         <CardContent className="flex flex-col gap-4">
           <div className="flex h-auto w-full items-center justify-start space-x-3 p-2">
             <div className="relative flex size-20 items-center justify-center overflow-clip rounded-full bg-blue-100">
-              {user.profileImageUrl ? (
+              {user?.profileImageUrl ? (
                 <img
-                  src={user.profileImageUrl}
+                  src={image}
                   alt="profile picture"
                   className="absolute inset-0"
                 />
               ) : (
                 <span className="text-sm font-medium text-blue-600">
-                  {user.name.charAt(0)}
+                  {user?.name.charAt(0)}
                 </span>
               )}
             </div>
             <div className="space-y-2">
               <div>
                 <p className="text-sm font-medium whitespace-nowrap text-gray-900 capitalize">
-                  {user.name}
+                  {user?.name}
                 </p>
                 <p className="text-xs text-gray-500 capitalize">
-                  {formatCamelCaseToText(user.role)}
+                  {user?.role ? formatCamelCaseToText(user.role) : ""}
                 </p>
               </div>
               <Button
@@ -143,7 +132,7 @@ const ProfileTab = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Full Name</p>
-              <p className="text-gray-900 capitalize">{user.name}</p>
+              <p className="text-gray-900 capitalize">{user?.name}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Department</p>
@@ -151,7 +140,7 @@ const ProfileTab = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Email</p>
-              <p className="text-gray-900">{user.email}</p>
+              <p className="text-gray-900">{user?.email}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Location</p>
@@ -160,24 +149,26 @@ const ProfileTab = () => {
             <div>
               <p className="text-sm text-gray-600">Phone</p>
               <p className="text-gray-900 capitalize">
-                {formatPhoneNumber(user.phone)}
+                {user?.phone ? formatPhoneNumber(user?.phone) : ""}
               </p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Member Since</p>
               <p className="text-gray-900">
-                {format(user.createdAt, "do MMM, yyyy")}
+                {user?.createdAt ? formatDate(user?.createdAt) : ""}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-gray-600">Last Login</p>
               <p className="text-gray-900">
-                {format(user.lastLogin, "do MMM, yyyy hh:mm bbb")}
+                {user?.lastLogin
+                  ? format(user?.lastLogin, "do MMM, yyyy hh:mm bbb")
+                  : ""}
               </p>
             </div>
           </div>
-          <EditProfileSettingsDialog user={user} setUser={setUser} />
+          <EditProfileSettingsDialog user={user} />
         </CardContent>
       </Card>
     </TabsContent>

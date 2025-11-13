@@ -25,6 +25,7 @@ export interface AuthUser {
   name: string;
   email: string;
   role: UserRole;
+  profileImageUrl: string;
 }
 
 export type UserProfile = AuthUser & {

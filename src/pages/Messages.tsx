@@ -17,19 +17,19 @@ const Messages = () => {
       </div>
 
       <Tabs defaultValue="messaging" className="w-full">
-        <TabsList className="grid w-full grid-cols-1">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="messaging" className="flex items-center gap-2">
             <MessageSquare className="size-4" />
             Internal Messaging (To Individuals / Teams)
           </TabsTrigger>
-          {/* <TabsTrigger value="alerts" className="flex items-center gap-2">
+          <TabsTrigger value="alerts" className="flex items-center gap-2">
             <AlertTriangle className="size-4" />
             Alerts (Deadlines – Payment Approvals – Inventory Shortage)
-          </TabsTrigger> */}
+          </TabsTrigger>
         </TabsList>
 
         <MessagingTab />
-        {/* <NotificationsTab /> */}
+        <NotificationsTab />
       </Tabs>
     </div>
   );

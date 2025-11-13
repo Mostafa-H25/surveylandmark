@@ -154,7 +154,6 @@ const MessagingTab = () => {
   };
   return (
     <TabsContent value="messaging" className="space-y-6">
-      {/* New Message Card */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

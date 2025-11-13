@@ -1,9 +1,19 @@
 import { API_PATHS } from "@/constants/api-routes";
 import { getAxiosInstance } from "@/lib/api-client";
 
-export async function getAllReportsApi() {
+type Meta = {
+  pagination?: { page: number; limit: number };
+};
+
+export async function getAllReportsApi(meta?: Meta) {
+  const params = {
+    page: meta?.pagination?.page,
+    limit: meta?.pagination?.limit,
+  };
   const axiosInstance = getAxiosInstance({ authenticated: true });
-  const response = await axiosInstance.get(API_PATHS.REPORTS.GET_ALL);
+  const response = await axiosInstance.get(API_PATHS.REPORTS.GET_ALL, {
+    params,
+  });
 
   return response.data;
 }

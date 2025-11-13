@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,12 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  Tabs,
-  //  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+
 import {
   Empty,
   EmptyContent,
@@ -29,17 +24,10 @@ import {
   Plus,
   Search,
   Eye,
-  // Hammer,
-  DollarSign,
-  // Package,
   ArrowRight,
-  HammerIcon,
-  Settings,
-  Box,
   CircleSlash,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-// import { clientsData } from "@/assets/data";
 import { getProjectStatusColor } from "@/helpers/getStatusColor";
 import { cn } from "@/lib/utils";
 import AddClientDialog from "@/components/pages/clients/dialogs/add-client/AddClientDialog";
@@ -47,6 +35,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllClientsApi } from "@/api/clients/get-all-clients.api";
 import { formatDate } from "@/helpers/formatDate";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
+import { formatCurrency } from "@/helpers/formatCurrency";
+import Paginator from "@/components/shared/Paginator";
 
 // interface Department {
 //   id: string;
@@ -83,34 +73,54 @@ const CLIENTS_QUERY_KEY = "clients";
 const ClientsManagement = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [paginator, setPaginator] = useState({ page: 1, limit: 10, total: 0 });
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
 
-  const { data: clients, isFetching } = useQuery({
-    queryKey: [CLIENTS_QUERY_KEY],
-    queryFn: () => getAllClientsApi(),
+  const { data, isFetching } = useQuery({
+    queryKey: [CLIENTS_QUERY_KEY, paginator.page],
+    queryFn: () =>
+      getAllClientsApi({
+        pagination: { page: paginator.page, limit: paginator.limit },
+      }),
     select: useCallback((data: ClientQueryResponse) => {
-      return data.data.map((option) => ({
-        id: option.client.id,
-        name: option.client.name,
-        email: option.client.email,
-        phone: option.client.phone,
-        company: option.client.company,
-        joinDate: option.client.joinDate,
+      return {
+        meta: { page: data.data.currentPage, total: data.data.totalClients },
+        clients: data.data.clients.map((option) => ({
+          id: option.client.id,
+          name: option.client.name,
+          email: option.client.email,
+          phone: option.client.phone,
+          company: option.client.company,
+          joinDate: option.client.joinDate,
 
-        projectsCount: option.projects.count,
-        totalBudget: option.projects.totalBudget,
+          projectsCount: option.projects.count,
+          totalBudget: option.projects.totalBudget,
 
-        projects: option.projects.details.map((project) => ({
-          id: project.id,
-          name: project.name,
-          budget: project.budget,
-          status: project.status,
-          startDate: project.startDate,
-          endDate: project.endDate,
+          projects: option.projects.details.map((project) => ({
+            id: project.id,
+            name: project.name,
+            budget: project.budget,
+            status: project.status,
+            startDate: project.startDate,
+            endDate: project.endDate,
+            manager: project.projectManager.name,
+            progress: project.progressPercentage,
+          })),
         })),
-      }));
+      };
     }, []),
   });
+
+  const clients = data?.clients;
+  useEffect(() => {
+    if (data?.meta.page) {
+      setPaginator((prev) => ({
+        ...prev,
+        page: data?.meta.page ?? 1,
+        total: data?.meta.total ?? 0,
+      }));
+    }
+  }, [data]);
 
   const filteredClients = clients?.filter(
     (client) =>
@@ -233,7 +243,7 @@ const ClientsManagement = () => {
                         {client.projects.length !== 1 ? "s" : ""}
                       </span>
                       <span className="text-sm text-gray-600">
-                        Total Budget: ${client.totalBudget.toLocaleString()}
+                        Total Budget: {formatCurrency(client.totalBudget)}
                       </span>
                       {client.joinDate && (
                         <span className="text-sm text-gray-600">
@@ -275,38 +285,64 @@ const ClientsManagement = () => {
                       key={project.id}
                       className="space-y-4 rounded-lg border bg-gray-50 p-4"
                     >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h5 className="text-lg font-medium text-gray-900">
-                            {project.name}
-                          </h5>
-                          <p className="flex items-center gap-4 text-xs text-gray-600">
-                            <span>
-                              Started:&nbsp;
-                              {project.startDate
-                                ? formatDate(project.startDate)
-                                : "-"}
-                            </span>
-                            <span>
-                              Ends:&nbsp;
-                              {project.endDate
-                                ? formatDate(project.endDate)
-                                : "-"}
-                            </span>
-                          </p>
+                      <div className="flex items-stretch justify-between gap-16">
+                        <div className="flex flex-1 flex-col gap-4">
+                          <div>
+                            <h5 className="text-lg font-medium text-gray-900">
+                              {project.name}
+                            </h5>
+                            <p className="flex items-center gap-4 text-xs text-gray-600">
+                              <span>
+                                Started:&nbsp;
+                                {project.startDate
+                                  ? formatDate(project.startDate)
+                                  : "-"}
+                              </span>
+                              <span>
+                                Ends:&nbsp;
+                                {project.endDate
+                                  ? formatDate(project.endDate)
+                                  : "-"}
+                              </span>
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-600">Manager</p>
+                            <p className="font-medium text-gray-900">
+                              {project.manager}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-600">Progress</p>
+                            <div className="flex items-center gap-2">
+                              <div className="h-2 min-w-20 flex-1 rounded-full bg-gray-200">
+                                <div
+                                  className="h-2 rounded-full bg-blue-600 transition-all"
+                                  style={{
+                                    width: `${project.progress}%`,
+                                  }}
+                                ></div>
+                              </div>
+                              <span className="text-sm font-medium text-gray-900">
+                                {project.progress}%
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="space-y-2 text-right">
-                          <p className="font-medium text-gray-900">
-                            ${project.budget.toLocaleString()}
-                          </p>
-                          <Badge
-                            className={cn(
-                              "capitalize",
-                              getProjectStatusColor(project.status),
-                            )}
-                          >
-                            {formatCamelCaseToText(project.status)}
-                          </Badge>
+                        <div className="flex flex-col justify-between gap-4">
+                          <div className="space-y-2 text-right">
+                            <p className="font-medium text-gray-900">
+                              {formatCurrency(project.budget)}
+                            </p>
+                            <Badge
+                              className={cn(
+                                "capitalize",
+                                getProjectStatusColor(project.status),
+                              )}
+                            >
+                              {formatCamelCaseToText(project.status)}
+                            </Badge>
+                          </div>
                           <div>
                             <Button
                               onClick={() => handleExploreProject(project.id)}
@@ -385,7 +421,7 @@ const ClientsManagement = () => {
                                     Budget
                                   </p>
                                   <p className="font-medium text-gray-900">
-                                    ${department.budget.toLocaleString()}
+                                    {formatCurrency(department.budget)}
                                   </p>
                                 </div>
                                 <div>
@@ -393,9 +429,9 @@ const ClientsManagement = () => {
                                     Start Date
                                   </p>
                                   <p className="font-medium text-gray-900">
-                                    {new Date(
+                                    {formatDate(
                                       department.startDate,
-                                    ).toLocaleDateString()}
+                                    )}
                                   </p>
                                 </div>
                                 <div>
@@ -437,6 +473,7 @@ const ClientsManagement = () => {
             )}
           </Card>
         ))}
+        <Paginator paginator={paginator} setPaginator={setPaginator} />
       </div>
     </div>
   );
@@ -448,31 +485,38 @@ type ClientQueryResponse = {
   message: string;
   success: boolean;
   data: {
-    client: {
-      id: string;
-      name: string;
-      email: string;
-      phone: string;
-      company: string;
-      joinDate: string | null;
-    };
-    projects: {
-      count: number;
-      totalBudget: number;
-      details: {
+    totalClients: number;
+    currentPage: number;
+    totalPages: number;
+    pageLimit: number;
+    count: number;
+    clients: {
+      client: {
         id: string;
         name: string;
-        budget: number;
-        status: string;
-        startDate: string | null;
-        endDate: string | null;
-        projectManager: {
+        email: string;
+        phone: string;
+        company: string;
+        joinDate: string | null;
+      };
+      projects: {
+        count: number;
+        totalBudget: number;
+        details: {
           id: string;
           name: string;
-          title: string;
-        };
-        progressPercentage: number;
-      }[];
-    };
-  }[];
+          budget: number;
+          status: string;
+          startDate: string | null;
+          endDate: string | null;
+          projectManager: {
+            id: string;
+            name: string;
+            title: string;
+          };
+          progressPercentage: number;
+        }[];
+      };
+    }[];
+  };
 };

@@ -17,19 +17,47 @@ import { PaymentsSectionsEnum } from "@/constants/defaults";
 import { getProjectStatusColor } from "@/helpers/getStatusColor";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { formatDate } from "@/helpers/formatDate";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { CircleSlash } from "lucide-react";
 
-type Props = { data: PaymentsQueryResponse; type: PaymentType };
+type Props = {
+  data: PaymentsQueryResponse;
+  type: PaymentType;
+  isFetching: boolean;
+};
 
-const ConstructionPayments = ({ data, type }: Props) => {
+const ConstructionPayments = ({ data, type, isFetching }: Props) => {
   const Section = useMemo(() => {
     if (!data) return <></>;
     switch (type) {
       case PaymentsSectionsEnum.PAYMENT:
-        return <Payments data={data as PaymentsQueryResponse} />;
+        return (
+          <Payments
+            data={data as PaymentsQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case PaymentsSectionsEnum.DEDUCTION:
-        return <Deductions data={data as PaymentsQueryResponse} />;
+        return (
+          <Deductions
+            data={data as PaymentsQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case PaymentsSectionsEnum.SUNDRIES:
-        return <Sundries data={data as PaymentsQueryResponse} />;
+        return (
+          <Sundries
+            data={data as PaymentsQueryResponse}
+            isFetching={isFetching}
+          />
+        );
 
       default:
         return <></>;
@@ -40,9 +68,9 @@ const ConstructionPayments = ({ data, type }: Props) => {
 
 export default ConstructionPayments;
 
-type PaymentProps = { data: PaymentsQueryResponse };
+type PaymentProps = { data: PaymentsQueryResponse; isFetching: boolean };
 
-const Payments = ({ data }: PaymentProps) => {
+const Payments = ({ data, isFetching }: PaymentProps) => {
   const payments = data.data.map((payment) => ({
     id: payment.id,
     typeOfPayment: payment.typeOfPayment,
@@ -76,6 +104,31 @@ const Payments = ({ data }: PaymentProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
+        {isFetching && !payments && (
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              <div className="flex h-full w-full items-center justify-center p-8">
+                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              </div>
+            </TableCell>
+          </TableRow>
+        )}
+        {!isFetching && !payments.length && (
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleSlash color="#4a5565 " />
+                  </EmptyMedia>
+                  <EmptyTitle>No data</EmptyTitle>
+                  <EmptyDescription>No data found</EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+              </Empty>
+            </TableCell>
+          </TableRow>
+        )}
         {payments.map((payment) => (
           <TableRow key={payment.id}>
             <TableCell className="font-medium">
@@ -126,7 +179,7 @@ const Payments = ({ data }: PaymentProps) => {
     </Table>
   );
 };
-const Deductions = ({ data }: PaymentProps) => {
+const Deductions = ({ data, isFetching }: PaymentProps) => {
   const deductions = data.data.map((payment) => ({
     id: payment.id,
     typeOfPayment: payment.typeOfPayment,
@@ -158,6 +211,31 @@ const Deductions = ({ data }: PaymentProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
+        {isFetching && !deductions && (
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              <div className="flex h-full w-full items-center justify-center p-8">
+                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              </div>
+            </TableCell>
+          </TableRow>
+        )}
+        {!isFetching && !deductions.length && (
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleSlash color="#4a5565 " />
+                  </EmptyMedia>
+                  <EmptyTitle>No data</EmptyTitle>
+                  <EmptyDescription>No data found</EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+              </Empty>
+            </TableCell>
+          </TableRow>
+        )}
         {deductions.map((deduction) => (
           <TableRow key={deduction.id}>
             <TableCell className="font-medium capitalize">
@@ -191,7 +269,7 @@ const Deductions = ({ data }: PaymentProps) => {
     </Table>
   );
 };
-const Sundries = ({ data }: PaymentProps) => {
+const Sundries = ({ data, isFetching }: PaymentProps) => {
   const sundries = data.data.map((payment) => ({
     id: payment.id,
     typeOfPayment: payment.typeOfPayment,
@@ -221,6 +299,31 @@ const Sundries = ({ data }: PaymentProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
+        {isFetching && !sundries && (
+          <TableRow>
+            <TableCell colSpan={3} className="text-center">
+              <div className="flex h-full w-full items-center justify-center p-8">
+                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              </div>
+            </TableCell>
+          </TableRow>
+        )}
+        {!isFetching && !sundries.length && (
+          <TableRow>
+            <TableCell colSpan={3} className="text-center">
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleSlash color="#4a5565 " />
+                  </EmptyMedia>
+                  <EmptyTitle>No data</EmptyTitle>
+                  <EmptyDescription>No data found</EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+              </Empty>
+            </TableCell>
+          </TableRow>
+        )}
         {sundries.map((payment) => (
           <TableRow key={payment.id}>
             <TableCell>{formatDate(payment.date)}</TableCell>

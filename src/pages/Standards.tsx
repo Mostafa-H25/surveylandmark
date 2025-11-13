@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { formatDate } from "@/helpers/formatDate";
 
 const Standards = () => {
   const navigate = useNavigate();
@@ -307,9 +308,7 @@ const Standards = () => {
                     </TableCell>
                     <TableCell>{standard.category}</TableCell>
                     <TableCell>{standard.version}</TableCell>
-                    <TableCell>
-                      {new Date(standard.lastUpdated).toLocaleDateString()}
-                    </TableCell>
+                    <TableCell>{formatDate(standard.lastUpdated)}</TableCell>
                     <TableCell>
                       <Badge className={getStatusBadge(standard.status)}>
                         {standard.status}

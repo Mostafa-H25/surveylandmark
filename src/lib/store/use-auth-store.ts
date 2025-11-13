@@ -1,16 +1,16 @@
-import type { AuthUser } from "@/types/interfaces";
+import type { UserProfile } from "@/types/interfaces";
 import { create } from "zustand";
 import { mutative } from "zustand-mutative";
 import { persist } from "zustand/middleware";
 
 type TokenState = {
-  user: AuthUser | null;
+  user: UserProfile | null;
   token: string | null;
   isLoading: boolean;
 };
 
 type TokenActions = {
-  setUser: (user: AuthUser | null) => void;
+  setUser: (user: UserProfile | null) => void;
   setToken: (token: string | null) => void;
   removeToken: () => void;
   setIsLoading: (isLoading: boolean) => void;

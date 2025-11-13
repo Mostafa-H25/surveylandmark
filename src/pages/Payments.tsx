@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Search, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,47 +19,59 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { AddPaymentDialog } from "@/components/pages/payments/AddPaymentDialog";
-// import { paymentData } from "@/assets/data";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import { formatDate } from "@/helpers/formatDate";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllPaymentsApi } from "@/api/payments/get-all-payments.api";
 import { toast } from "sonner";
 import { updatePaymentStatusApi } from "@/api/payments/update-payment-status.api";
+import Paginator from "@/components/shared/Paginator";
 
 const PAYMENTS_QUERY_KEY = "payments";
 const UPDATE_PAYMENT_MUTATION_SCOPE = "update-payment-status";
-
-interface PaymentData {
-  id: number;
-  client: string;
-  project: string;
-  paymentAmount: number;
-  dueDate: string;
-  status: "pending" | "received" | "overdue";
-  isActive: boolean;
-}
 
 const Payments = () => {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [paginator, setPaginator] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+  });
 
-  const { data: payments, isFetching: isFetchingPayments } = useQuery({
-    queryKey: [PAYMENTS_QUERY_KEY],
-    queryFn: () => getAllPaymentsApi(),
+  const { data, isFetching: isFetchingPayments } = useQuery({
+    queryKey: [PAYMENTS_QUERY_KEY, paginator.page],
+    queryFn: () =>
+      getAllPaymentsApi({
+        pagination: { page: paginator.page, limit: paginator.limit },
+      }),
     select: useCallback((data: PaymentsQueryResponse) => {
-      return data.data.map((payment) => ({
-        id: payment.id,
-        amount: payment.amount,
-        dueDate: payment.dueDate,
-        status: payment.statusStored,
-        isActive: payment.isActive,
-        client: { id: payment.client.id, name: payment.client.name },
-        project: { id: payment.project.id, name: payment.project.name },
-      }));
+      return {
+        meta: { page: data.page, count: data.count, total: data.total },
+        payments: data.data.map((payment) => ({
+          id: payment.id,
+          amount: payment.amount,
+          dueDate: payment.dueDate,
+          status: payment.statusStored,
+          isActive: payment.isActive,
+          client: { id: payment.client.id, name: payment.client.name },
+          project: { id: payment.project.id, name: payment.project.name },
+        })),
+      };
     }, []),
   });
+  const payments = data?.payments;
+
+  useEffect(() => {
+    if (data?.meta.page) {
+      setPaginator((prev) => ({
+        ...prev,
+        page: data?.meta.page ?? 1,
+        total: data?.meta.total ?? 0,
+      }));
+    }
+  }, [data]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: {
@@ -92,14 +104,14 @@ const Payments = () => {
     mutate({ projectId, paymentId, status });
   };
 
-  const filteredPayments = payments?.filter((payment) => {
-    const matchesSearch =
-      payment.client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      payment.project.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" || payment.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  // const filteredPayments = payments?.filter((payment) => {
+  //   const matchesSearch =
+  //     payment.client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     payment.project.name.toLowerCase().includes(searchTerm.toLowerCase());
+  //   const matchesStatus =
+  //     statusFilter === "all" || payment.status === statusFilter;
+  //   return matchesSearch && matchesStatus;
+  // });
 
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
@@ -191,7 +203,7 @@ const Payments = () => {
                   </TableCell>
                 </TableRow>
               )}
-              {filteredPayments?.map((payment) => (
+              {payments?.map((payment) => (
                 <TableRow key={payment.id} className="hover:bg-gray-50">
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -292,29 +304,30 @@ const Payments = () => {
               ))}
             </TableBody>
           </Table>
+          <Paginator paginator={paginator} setPaginator={setPaginator} />
         </div>
 
         <div className="border-t border-gray-200 p-6">
           <div className="flex items-center justify-between text-sm text-gray-600">
             <span>
-              Showing {filteredPayments?.length ?? 0} of {payments?.length ?? 0}
+              Showing {data?.meta.count ?? 0} of {paginator.total ?? 0}
               &nbsp;payments
             </span>
             <div className="flex gap-4">
               <span>
                 Total Pending:&nbsp;
-                {filteredPayments &&
+                {payments &&
                   formatCurrency(
-                    filteredPayments
+                    payments
                       .filter((p) => p.status === "pending")
                       .reduce((sum, p) => sum + p.amount, 0),
                   )}
               </span>
               <span>
                 Total Received:&nbsp;
-                {filteredPayments &&
+                {payments &&
                   formatCurrency(
-                    filteredPayments
+                    payments
                       .filter((p) => p.status === "received")
                       .reduce((sum, p) => sum + p.amount, 0),
                   )}

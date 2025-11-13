@@ -1,4 +1,4 @@
-import { ChevronDown, Download, Expand } from "lucide-react";
+import { Download, Expand } from "lucide-react";
 
 import {
   Select,
@@ -17,7 +17,7 @@ import {
   PaymentsSectionsEnum,
 } from "@/constants/defaults";
 import ConstructionOverview from "../construction/ConstructionOverview";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type {
   ConstructionView,
   DepartmentType,
@@ -40,6 +40,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {} from "@radix-ui/react-dialog";
+import Paginator from "@/components/shared/Paginator";
 
 const DEPARTMENTS_QUERY_KEY = "department-section";
 
@@ -48,25 +49,28 @@ type Props = { selectedDepartment: DepartmentType };
 const ConstructionTab = ({ selectedDepartment }: Props) => {
   const { projectId } = useParams();
 
+  const [expand, setExpand] = useState(false);
+  const [paginator, setPaginator] = useState({ page: 1, limit: 10, total: 0 });
+
   const [selectedOption, setSelectedOption] = useState<ConstructionView>(
     ConstructionSectionsEnum.OVERVIEW,
   );
   const [selectedPaymentType, setSelectedPaymentType] = useState<PaymentType>(
     PaymentsSectionsEnum.PAYMENT,
   );
-  const [expand, setExpand] = useState(false);
 
   const isPaymentsView = ConstructionSectionsEnum.PAYMENTS === selectedOption;
 
   const isConstructionSelected =
     selectedDepartment === CategoriesEnum.CONSTRUCTION;
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: [
       DEPARTMENTS_QUERY_KEY,
       selectedDepartment,
       selectedOption,
       selectedPaymentType,
+      paginator.page,
     ],
     enabled: isConstructionSelected && !!selectedOption,
     queryFn: () =>
@@ -75,29 +79,66 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
         selectedDepartment,
         selectedOption,
         selectedPaymentType,
+        { pagination: { page: paginator.page, limit: paginator.limit } },
       ),
   });
+
+  useEffect(() => {
+    if (data?.page) {
+      setPaginator((prev) => ({
+        ...prev,
+        page: data.page ?? 1,
+        total: data.total ?? 0,
+      }));
+    }
+  }, [data]);
 
   const Section = useMemo(() => {
     if (!data) return <></>;
     switch (selectedOption) {
       case ConstructionSectionsEnum.OVERVIEW:
-        return <ConstructionOverview data={data as OverviewQueryResponse} />;
+        return (
+          <ConstructionOverview
+            data={data as OverviewQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case ConstructionSectionsEnum.TEAM:
-        return <ConstructionMembers data={data as TeamQueryResponse} />;
+        return (
+          <ConstructionMembers
+            data={data as TeamQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case ConstructionSectionsEnum.ITEMS:
-        return <ConstructionItems data={data as ItemsQueryResponse} />;
+        return (
+          <ConstructionItems
+            data={data as ItemsQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case ConstructionSectionsEnum.MATERIALS:
-        return <ConstructionMaterials data={data as MaterialsQueryResponse} />;
+        return (
+          <ConstructionMaterials
+            data={data as MaterialsQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case ConstructionSectionsEnum.PAYMENTS:
         return (
           <ConstructionPayments
             data={data as PaymentsQueryResponse}
             type={selectedPaymentType}
+            isFetching={isFetching}
           />
         );
       case ConstructionSectionsEnum.VENDORS:
-        return <ConstructionContractors data={data as VendorsQueryResponse} />;
+        return (
+          <ConstructionContractors
+            data={data as VendorsQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       default:
         return <></>;
     }
@@ -167,21 +208,26 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
                     </DialogTitle>
                   </DialogHeader>
                   {Section}
+                  <Paginator
+                    paginator={paginator}
+                    setPaginator={setPaginator}
+                  />
                 </DialogContent>
               </Dialog>
               <div>
-                <Button className="cursor-pointer rounded-r-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <Download />
                   Export
                 </Button>
-                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                {/* <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <ChevronDown />
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
         </div>
         {Section}
+        <Paginator paginator={paginator} setPaginator={setPaginator} />
       </div>
     </TabsContent>
   );

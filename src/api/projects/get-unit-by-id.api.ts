@@ -1,10 +1,10 @@
 import { API_PATHS } from "@/constants/api-routes";
 import { getAxiosInstance } from "@/lib/api-client";
 
-export async function getItemByIdApi(projectId: string, itemId: string) {
+export async function getUnitById(projectId: string, unitId: string) {
   const axiosInstance = getAxiosInstance({ authenticated: true });
   const response = await axiosInstance.get(
-    API_PATHS.PROJECTS.GET_ITEM(projectId, itemId),
+    API_PATHS.PROJECTS.GET_UNIT(projectId, unitId),
   );
 
   return response.data;

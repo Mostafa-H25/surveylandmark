@@ -1,4 +1,4 @@
-import { ChevronDown, Download, Expand } from "lucide-react";
+import { ChevronDownIcon, Download, Expand } from "lucide-react";
 
 import {
   Select,
@@ -20,45 +20,111 @@ import SalesMembers from "../sales/SalesMembers";
 import SalesIncomes from "../sales/SalesIncomes";
 import SalesUnits from "../sales/SalesUnits";
 import { useParams } from "react-router-dom";
-import { getDepartmentSectionByProjectIdApi } from "@/api/projects/get-department-section-by-Project-id.api";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
-import type { SalesView } from "@/types/default";
+import { useEffect, useMemo, useState } from "react";
+import type { DepartmentType, SalesView } from "@/types/default";
+import { getSalesByProjectIdApi } from "@/api/projects/get-sales-by-project-id.api";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Paginator from "@/components/shared/Paginator";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { formatDate } from "@/helpers/formatDate";
+import type { DateRange } from "react-day-picker";
 
-const DEPARTMENTS_QUERY_KEY = "department-section";
+const DEPARTMENTS_QUERY_KEY = "sales-section";
 
 type Props = { selectedDepartment: DepartmentType };
 
 const SalesTab = ({ selectedDepartment }: Props) => {
   const { projectId } = useParams();
+
+  const [open, setOpen] = useState(false);
+  const [expand, setExpand] = useState(false);
+  const [paginator, setPaginator] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+  });
+  const [range, setRange] = useState<DateRange | undefined>({
+    from: new Date(Date.now()),
+    to: undefined,
+  });
+
   const [selectedOption, setSelectedOption] = useState<SalesView>(
     SalesSectionsEnum.OVERVIEW,
   );
-
   const isSalesSelected = selectedDepartment === CategoriesEnum.SALES;
+  const isIncomesView = SalesSectionsEnum.INCOMES === selectedOption;
 
-  const { data } = useQuery({
-    queryKey: [DEPARTMENTS_QUERY_KEY, selectedDepartment],
+  const { data, isFetching } = useQuery({
+    queryKey: [
+      DEPARTMENTS_QUERY_KEY,
+      selectedDepartment,
+      selectedOption,
+      paginator.page,
+      range,
+    ],
     enabled: isSalesSelected && !!selectedOption,
     queryFn: () =>
-      getDepartmentSectionByProjectIdApi(
-        projectId!,
-        selectedDepartment,
-        // selectedOption,
-      ),
+      getSalesByProjectIdApi(projectId!, selectedDepartment, selectedOption, {
+        pagination: { page: paginator.page, limit: paginator.limit },
+        range,
+      }),
   });
-  // console.log(data);
+
+  useEffect(() => {
+    if (data?.page) {
+      setPaginator((prev) => ({
+        ...prev,
+        page: data.page ?? 1,
+        total: data.total ?? 0,
+      }));
+    }
+  }, [data]);
+
   const Section = useMemo(() => {
     if (!data) return <></>;
     switch (selectedOption) {
       case SalesSectionsEnum.OVERVIEW:
-        return <SalesOverview data={data as OverviewQueryResponse} />;
+        return (
+          <SalesOverview
+            data={data as OverviewQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case SalesSectionsEnum.MEMBERS:
-        return <SalesMembers data={data as TeamQueryResponse} />;
+        return (
+          <SalesMembers
+            data={data as MembersQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case SalesSectionsEnum.INCOMES:
-        return <SalesIncomes data={data as ItemsQueryResponse} />;
+        return (
+          <SalesIncomes
+            data={data as IncomesQueryResponse}
+            isFetching={isFetching}
+          />
+        );
       case SalesSectionsEnum.UNITS:
-        return <SalesUnits data={data as ItemsQueryResponse} />;
+        return (
+          <SalesUnits
+            data={data as UnitsQueryResponse}
+            isFetching={isFetching}
+          />
+        );
 
       default:
         return <></>;
@@ -78,33 +144,199 @@ const SalesTab = ({ selectedDepartment }: Props) => {
             </SelectTrigger>
             <SelectContent>
               {salesSections.map((section) => (
-                <SelectItem value={section} className="capitalize">
-                  {section.replaceAll("_", " ")}
+                <SelectItem
+                  key={section}
+                  value={section}
+                  className="capitalize"
+                >
+                  {formatCamelCaseToText(section)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+          {isIncomesView && (
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="date-picker" className="px-1">
+                  Date Range
+                </Label>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      id="date-picker"
+                      className="w-32 justify-between font-normal"
+                    >
+                      {range?.from
+                        ? formatDate(range.from.toString())
+                        : "Select date"}
+                      <ChevronDownIcon />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-auto overflow-hidden p-0"
+                    align="start"
+                  >
+                    <Calendar
+                      mode="range"
+                      defaultMonth={range?.from}
+                      selected={range}
+                      onSelect={setRange}
+                      numberOfMonths={2}
+                      className="rounded-lg border shadow-sm"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+          )}
           <div>
             <div className="flex items-center gap-2">
-              <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
-                <Expand />
-              </Button>
+              <Dialog open={expand} onOpenChange={setExpand}>
+                <DialogTrigger asChild>
+                  <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
+                    <Expand />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="!w-4xl max-w-screen px-4">
+                  <DialogHeader>
+                    <DialogTitle className="capitalize">
+                      {selectedDepartment} - {selectedOption}
+                    </DialogTitle>
+                  </DialogHeader>
+                  {Section}
+                  <Paginator
+                    paginator={paginator}
+                    setPaginator={setPaginator}
+                  />
+                </DialogContent>
+              </Dialog>
               <div>
-                <Button className="cursor-pointer rounded-r-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <Download />
                   Export
                 </Button>
-                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                {/* <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <ChevronDown />
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
         </div>
         {Section}
+        <Paginator paginator={paginator} setPaginator={setPaginator} />
       </div>
     </TabsContent>
   );
 };
 
 export default SalesTab;
+
+type OverviewQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  sub: string;
+  range: { from: string | null; to: string | null };
+  data: {
+    totalSales: number;
+    breakdown: { cash: number; installmentsIncome: number; rentIncome: number };
+    constructionRatio: {
+      overallProgress: number;
+      processings: {
+        id: string;
+        name: string;
+        quantity: number;
+        executedQuantity: number;
+        progressPercentage: number;
+        status: string;
+        workItem: { id: string; name: string };
+      }[];
+      workItemImpacts: [
+        {
+          id: string;
+          name: string;
+          percentage: number;
+          averageProgress: number;
+          workItems: { id: string; name: string }[];
+        },
+      ];
+    };
+    totalArea: string;
+    serviceFacilitiesArea: string;
+    greenAreasPercentage: string;
+    deliveryDate: string;
+    counts: {
+      residentialUnits: number;
+      commercialUnits: number;
+      administrativeUnits: number;
+      floors: number;
+    };
+  };
+};
+
+type MembersQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  sub: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    position: string;
+    projectName: string;
+    salary: string;
+    commission: number;
+  }[];
+};
+
+type IncomesQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  sub: string;
+  range: {
+    from: string | null;
+    to: string | null;
+  };
+  table: [
+    {
+      type: string;
+      incomeTillNow: number;
+      no: number;
+    },
+  ];
+  totals: {
+    totalIncome: number;
+    cashIncome: number;
+    installmentsIncome: number;
+    rentIncome: number;
+    downpayment: number;
+  };
+};
+
+type UnitsQueryResponse = {
+  message: string;
+  section: string;
+  kind: string;
+  sub: string;
+  page: number;
+  limit: number;
+  total: number;
+  count: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      type: string;
+      unitStatus: string;
+      paymentMethod: string;
+    },
+  ];
+};
