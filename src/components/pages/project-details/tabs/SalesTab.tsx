@@ -1,4 +1,4 @@
-import { ChevronDownIcon, Download, Expand } from "lucide-react";
+import { ChevronDownIcon, CircleSlash, Expand } from "lucide-react";
 
 import {
   Select,
@@ -42,6 +42,14 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { formatDate } from "@/helpers/formatDate";
 import type { DateRange } from "react-day-picker";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 const DEPARTMENTS_QUERY_KEY = "sales-section";
 
@@ -98,33 +106,13 @@ const SalesTab = ({ selectedDepartment }: Props) => {
     if (!data) return <></>;
     switch (selectedOption) {
       case SalesSectionsEnum.OVERVIEW:
-        return (
-          <SalesOverview
-            data={data as OverviewQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <SalesOverview data={data as OverviewQueryResponse} />;
       case SalesSectionsEnum.MEMBERS:
-        return (
-          <SalesMembers
-            data={data as MembersQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <SalesMembers data={data as MembersQueryResponse} />;
       case SalesSectionsEnum.INCOMES:
-        return (
-          <SalesIncomes
-            data={data as IncomesQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <SalesIncomes data={data as IncomesQueryResponse} />;
       case SalesSectionsEnum.UNITS:
-        return (
-          <SalesUnits
-            data={data as UnitsQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <SalesUnits data={data as UnitsQueryResponse} />;
 
       default:
         return <></>;
@@ -211,18 +199,35 @@ const SalesTab = ({ selectedDepartment }: Props) => {
                   />
                 </DialogContent>
               </Dialog>
-              <div>
+              {/* <div>
                 <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <Download />
                   Export
                 </Button>
-                {/* <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <ChevronDown />
-                </Button> */}
-              </div>
+                </Button>
+              </div> */}
             </div>
           </div>
         </div>
+        {isFetching && !data && (
+          <div className="flex h-full w-full items-center justify-center p-8">
+            <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+          </div>
+        )}
+        {!isFetching && !data && (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <CircleSlash color="#4a5565 " />
+              </EmptyMedia>
+              <EmptyTitle>No data</EmptyTitle>
+              <EmptyDescription>No data found</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+          </Empty>
+        )}
         {Section}
         <Paginator paginator={paginator} setPaginator={setPaginator} />
       </div>

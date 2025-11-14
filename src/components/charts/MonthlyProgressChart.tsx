@@ -9,7 +9,6 @@ import {
   YAxis,
 } from "recharts";
 
-import { monthlyData } from "@/assets/data";
 import {
   Card,
   CardContent,
@@ -32,7 +31,7 @@ const MonthlyProgressChart = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={monthlyData}>
+          <BarChart data={[]}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
             <YAxis />

@@ -9,7 +9,6 @@ import {
   YAxis,
 } from "recharts";
 
-import { departmentData } from "@/assets/data";
 import {
   Card,
   CardContent,
@@ -30,7 +29,7 @@ const DepartmentOverviewChart = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={departmentData} layout="horizontal">
+          <BarChart data={[]} layout="horizontal">
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" />
             <YAxis dataKey="department" type="category" width={80} />

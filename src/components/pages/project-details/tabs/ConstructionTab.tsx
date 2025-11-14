@@ -1,4 +1,4 @@
-import { Download, Expand } from "lucide-react";
+import { CircleSlash, Expand } from "lucide-react";
 
 import {
   Select,
@@ -41,6 +41,14 @@ import {
 } from "@/components/ui/dialog";
 import {} from "@radix-ui/react-dialog";
 import Paginator from "@/components/shared/Paginator";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 const DEPARTMENTS_QUERY_KEY = "department-section";
 
@@ -97,48 +105,22 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
     if (!data) return <></>;
     switch (selectedOption) {
       case ConstructionSectionsEnum.OVERVIEW:
-        return (
-          <ConstructionOverview
-            data={data as OverviewQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <ConstructionOverview data={data as OverviewQueryResponse} />;
       case ConstructionSectionsEnum.TEAM:
-        return (
-          <ConstructionMembers
-            data={data as TeamQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <ConstructionMembers data={data as TeamQueryResponse} />;
       case ConstructionSectionsEnum.ITEMS:
-        return (
-          <ConstructionItems
-            data={data as ItemsQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <ConstructionItems data={data as ItemsQueryResponse} />;
       case ConstructionSectionsEnum.MATERIALS:
-        return (
-          <ConstructionMaterials
-            data={data as MaterialsQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <ConstructionMaterials data={data as MaterialsQueryResponse} />;
       case ConstructionSectionsEnum.PAYMENTS:
         return (
           <ConstructionPayments
             data={data as PaymentsQueryResponse}
             type={selectedPaymentType}
-            isFetching={isFetching}
           />
         );
       case ConstructionSectionsEnum.VENDORS:
-        return (
-          <ConstructionContractors
-            data={data as VendorsQueryResponse}
-            isFetching={isFetching}
-          />
-        );
+        return <ConstructionContractors data={data as VendorsQueryResponse} />;
       default:
         return <></>;
     }
@@ -214,18 +196,35 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
                   />
                 </DialogContent>
               </Dialog>
-              <div>
+              {/* <div>
                 <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <Download />
                   Export
                 </Button>
-                {/* <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <ChevronDown />
-                </Button> */}
-              </div>
+                </Button>
+              </div> */}
             </div>
           </div>
         </div>
+        {isFetching && !data && (
+          <div className="flex h-full w-full items-center justify-center p-8">
+            <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+          </div>
+        )}
+        {!isFetching && !data && (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <CircleSlash color="#4a5565 " />
+              </EmptyMedia>
+              <EmptyTitle>No data</EmptyTitle>
+              <EmptyDescription>No data found</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+          </Empty>
+        )}
         {Section}
         <Paginator paginator={paginator} setPaginator={setPaginator} />
       </div>

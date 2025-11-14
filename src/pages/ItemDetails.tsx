@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
-  Filter,
   User,
   Building,
   CheckCircle,

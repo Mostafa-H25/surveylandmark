@@ -7,7 +7,6 @@ import {
   Tooltip,
 } from "recharts";
 
-import { projectStatusData } from "@/assets/data";
 import {
   Card,
   CardContent,
@@ -30,7 +29,7 @@ const ProjectStatusChart = () => {
         <ResponsiveContainer width="100%" height={300}>
           <RechartsPieChart>
             <Pie
-              data={projectStatusData}
+              data={[]}
               cx="50%"
               cy="50%"
               outerRadius={80}

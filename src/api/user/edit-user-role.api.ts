@@ -1,6 +1,6 @@
 import { API_PATHS } from "@/constants/api-routes";
 import { getAxiosInstance } from "@/lib/api-client";
-import type { UserPermission, UserRole } from "@/types/default";
+import type { UserRole } from "@/types/default";
 
 export async function editUserRoleApi(
   data: {

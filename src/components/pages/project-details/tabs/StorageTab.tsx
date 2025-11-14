@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CircleSlash, Download, Expand } from "lucide-react";
+import { CircleSlash, Expand } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { getStorageByProjectIdApi } from "@/api/projects/get-storage-by-project-id.api";
 import { useCallback, useState } from "react";
@@ -73,15 +73,15 @@ const StorageTab = ({ selectedDepartment }: Props) => {
                   {/* {Section} */}
                 </DialogContent>
               </Dialog>
-              <div>
+              {/* <div>
                 <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <Download />
                   Export
                 </Button>
-                {/* <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
                   <ChevronDown />
-                </Button> */}
-              </div>
+                </Button>
+              </div> */}
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ import type { User } from "@/types/interfaces";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 import { editUserRoleApi } from "@/api/user/edit-user-role.api";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
-import { userPermissions, userRoles } from "@/constants/defaults";
+import { userRoles } from "@/constants/defaults";
 import {
   Select,
   SelectContent,

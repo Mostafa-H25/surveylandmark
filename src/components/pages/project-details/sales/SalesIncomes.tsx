@@ -1,12 +1,3 @@
-// import { salesIncomesData } from "@/assets/data";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
 import {
   Table,
   TableBody,
@@ -16,14 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/helpers/formatCurrency";
-import { CircleSlash } from "lucide-react";
 
 type Props = {
   data: IncomesQueryResponse;
-  isFetching: boolean;
 };
 
-const SalesIncomes = ({ data, isFetching }: Props) => {
+const SalesIncomes = ({ data }: Props) => {
   return (
     <Table>
       <TableHeader>
@@ -36,31 +25,6 @@ const SalesIncomes = ({ data, isFetching }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {isFetching && !data && (
-          <TableRow>
-            <TableCell colSpan={2} className="text-center">
-              <div className="flex h-full w-full items-center justify-center p-8">
-                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-              </div>
-            </TableCell>
-          </TableRow>
-        )}
-        {!isFetching && !data && (
-          <TableRow>
-            <TableCell colSpan={2} className="text-center">
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <CircleSlash color="#4a5565 " />
-                  </EmptyMedia>
-                  <EmptyTitle>No data</EmptyTitle>
-                  <EmptyDescription>No data found</EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
-              </Empty>
-            </TableCell>
-          </TableRow>
-        )}
         {data.table.map((row, index) => (
           <TableRow key={index}>
             <TableCell className="font-medium">{row.type}</TableCell>

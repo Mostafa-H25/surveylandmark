@@ -1,5 +1,3 @@
-// import { constructionItemsData } from "@/assets/data";
-// import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,14 +6,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
-import {
   Table,
   TableBody,
   TableCell,
@@ -23,17 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CircleSlash } from "lucide-react";
-// import { formatCurrency } from "@/helpers/formatCurrency";
-// import { getProjectStatusColor } from "@/helpers/getStatusColor";
-// import { cn } from "@/lib/utils";
+
 import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
   data: ItemsQueryResponse;
-  isFetching: boolean;
 };
-const ConstructionItems = ({ data, isFetching }: Props) => {
+const ConstructionItems = ({ data }: Props) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const items = data.data.map((item) => ({
@@ -74,31 +60,6 @@ const ConstructionItems = ({ data, isFetching }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {isFetching && !items && (
-          <TableRow>
-            <TableCell colSpan={4} className="text-center">
-              <div className="flex h-full w-full items-center justify-center p-8">
-                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-              </div>
-            </TableCell>
-          </TableRow>
-        )}
-        {!isFetching && !items.length && (
-          <TableRow>
-            <TableCell colSpan={4} className="text-center">
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <CircleSlash color="#4a5565 " />
-                  </EmptyMedia>
-                  <EmptyTitle>No data</EmptyTitle>
-                  <EmptyDescription>No data found</EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
-              </Empty>
-            </TableCell>
-          </TableRow>
-        )}
         {items.map((item) => (
           <TableRow key={item.id}>
             <TableCell className="font-medium capitalize">

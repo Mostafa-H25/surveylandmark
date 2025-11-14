@@ -25,16 +25,13 @@ import {
 import {
   Filter,
   ArrowLeft,
-  SquarePen,
   Hammer,
   DollarSign,
   Calendar,
   Package,
   HammerIcon,
   Box,
-  Settings,
   CircleSlash,
-  Plus,
   DollarSignIcon,
   BoxIcon,
 } from "lucide-react";

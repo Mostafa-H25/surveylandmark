@@ -1,13 +1,3 @@
-// import { salesOverviewData } from "@/assets/data";
-// import { Button } from "@/components/ui/button";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
 import {
   Table,
   TableBody,
@@ -16,14 +6,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CircleSlash } from "lucide-react";
 
 type Props = {
   data: OverviewQueryResponse;
-  isFetching: boolean;
 };
 
-const SalesOverview = ({ data, isFetching }: Props) => {
+const SalesOverview = ({ data }: Props) => {
   const overview = [
     { label: "Total sales", value: data.data.totalSales },
     {
@@ -67,31 +55,6 @@ const SalesOverview = ({ data, isFetching }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {isFetching && !data && (
-          <TableRow>
-            <TableCell colSpan={2} className="text-center">
-              <div className="flex h-full w-full items-center justify-center p-8">
-                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-              </div>
-            </TableCell>
-          </TableRow>
-        )}
-        {!isFetching && !data && (
-          <TableRow>
-            <TableCell colSpan={2} className="text-center">
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <CircleSlash color="#4a5565 " />
-                  </EmptyMedia>
-                  <EmptyTitle>No data</EmptyTitle>
-                  <EmptyDescription>No data found</EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
-              </Empty>
-            </TableCell>
-          </TableRow>
-        )}
         {overview.map((row) => (
           <TableRow key={row.label}>
             <TableCell className="font-medium">{row.label}</TableCell>

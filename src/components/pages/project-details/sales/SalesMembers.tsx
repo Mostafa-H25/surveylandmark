@@ -1,14 +1,6 @@
 // import { salesMembersData } from "@/assets/data";
 import { Button } from "@/components/ui/button";
 import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
-import {
   Table,
   TableBody,
   TableCell,
@@ -18,15 +10,13 @@ import {
 } from "@/components/ui/table";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
-import { CircleSlash } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
   data: MembersQueryResponse;
-  isFetching: boolean;
 };
 
-const SalesMembers = ({ data, isFetching }: Props) => {
+const SalesMembers = ({ data }: Props) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const members = data.data.map((member) => member);
@@ -49,31 +39,6 @@ const SalesMembers = ({ data, isFetching }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {isFetching && !members && (
-          <TableRow>
-            <TableCell colSpan={8} className="text-center">
-              <div className="flex h-full w-full items-center justify-center p-8">
-                <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-              </div>
-            </TableCell>
-          </TableRow>
-        )}
-        {!isFetching && !members.length && (
-          <TableRow>
-            <TableCell colSpan={8} className="text-center">
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <CircleSlash color="#4a5565 " />
-                  </EmptyMedia>
-                  <EmptyTitle>No data</EmptyTitle>
-                  <EmptyDescription>No data found</EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
-              </Empty>
-            </TableCell>
-          </TableRow>
-        )}
         {members.map((member) => (
           <TableRow key={member.id}>
             <TableCell className="font-medium">{member.name}</TableCell>
