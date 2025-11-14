@@ -82,7 +82,7 @@ const SalesTab = ({ selectedDepartment }: Props) => {
       selectedDepartment,
       selectedOption,
       paginator.page,
-      range,
+      range?.from && range?.to ? range : undefined,
     ],
     enabled: isSalesSelected && !!selectedOption,
     queryFn: () =>
