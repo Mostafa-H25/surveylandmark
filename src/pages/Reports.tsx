@@ -90,13 +90,6 @@ const Reports = () => {
     }
   }, [data]);
 
-  // if (isFetching) {
-  //   return (
-  //     <div className="flex min-h-screen items-center justify-center">
-  //       <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-  //     </div>
-  //   );
-  // }
   return (
     <div className="space-y-6">
       <div>

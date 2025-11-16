@@ -196,7 +196,7 @@ const ProjectDetails = () => {
   };
 
   // const handleEdit = () => {};
-  if (isFetching) {
+  if (isFetching && !project) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
@@ -535,28 +535,32 @@ const ProjectDetails = () => {
                         {departments?.construction.costTillNow}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between gap-2 text-sm capitalize">
+                    {/* <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Manager</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        { }
                       </span>
-                    </div>
+                    </div> */}
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Building</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {buildings?.find(
+                          (building) => building.id === selectedBuilding,
+                        )?.name || "N/A"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Floor</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {floors?.find((floor) => floor.id === selectedFloor)
+                          ?.name || "N/A"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Unit Type</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {units?.find((unit) => unit.id === selectedUnit)
+                          ?.name || "N/A"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
@@ -607,28 +611,32 @@ const ProjectDetails = () => {
                         {departments?.sales.revenues}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between gap-2 text-sm capitalize">
+                    {/* <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Manager</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {}
                       </span>
-                    </div>
+                    </div> */}
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Building</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {buildings?.find(
+                          (building) => building.id === selectedBuilding,
+                        )?.name || "N/A"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Floor</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {floors?.find((floor) => floor.id === selectedFloor)
+                          ?.name || "N/A"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Unit Type</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {units?.find((unit) => unit.id === selectedUnit)
+                          ?.name || "N/A"}
                       </span>
                     </div>
                   </div>
@@ -672,12 +680,12 @@ const ProjectDetails = () => {
                         {departments?.storage.costTillNow}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between gap-2 text-sm">
+                    {/* <div className="flex items-center justify-between gap-2 text-sm">
                       <span className="text[#4B5563]">Manager</span>
                       <span className="font-semibold text-[#020817]">
-                        {/* {departments?.construction.progressPct} */}
+                        {departments?.construction.progressPct}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </CardContent>

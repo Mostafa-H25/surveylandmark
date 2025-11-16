@@ -55,6 +55,7 @@ import { useAuthStore } from "@/lib/store/use-auth-store";
 import type { Priority } from "@/types/default";
 import { markMessageAsReadApi } from "@/api/messages/mark-message-as-read.api";
 import { formatDate } from "@/helpers/formatDate";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 
 const USERS_QUERY_KEY = "users";
 const MESSAGES_QUERY_KEY = "messages";
@@ -119,10 +120,7 @@ const MessagingTab = () => {
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
   const { mutate: markAsRead } = useMutation({
@@ -138,10 +136,7 @@ const MessagingTab = () => {
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
 

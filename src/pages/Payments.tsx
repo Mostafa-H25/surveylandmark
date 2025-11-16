@@ -26,6 +26,7 @@ import { getAllPaymentsApi } from "@/api/payments/get-all-payments.api";
 import { toast } from "sonner";
 import { updatePaymentStatusApi } from "@/api/payments/update-payment-status.api";
 import Paginator from "@/components/shared/Paginator";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 
 const PAYMENTS_QUERY_KEY = "payments";
 const UPDATE_PAYMENT_MUTATION_SCOPE = "update-payment-status";
@@ -89,10 +90,7 @@ const Payments = () => {
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
 

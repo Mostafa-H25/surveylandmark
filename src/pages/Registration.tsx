@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { signupApi } from "@/api/user/sign-up.ts.api";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -52,10 +53,7 @@ const Registration = () => {
       navigate("/sign-in");
     } catch (error) {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast((error as Error).message);
     }
     setIsSubmitting(false);
   };

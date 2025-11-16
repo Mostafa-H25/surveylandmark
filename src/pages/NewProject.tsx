@@ -9,6 +9,7 @@ import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { addProjectApi } from "@/api/projects/add-project.api";
 import { PROJECT_STATUS_ENUM } from "@/constants/defaults";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 
 const PROJECT_MUTATION_SCOPE = "project_creation";
 
@@ -40,10 +41,7 @@ const NewProject = () => {
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
 

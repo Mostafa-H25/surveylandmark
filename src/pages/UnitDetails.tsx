@@ -7,15 +7,18 @@ import {
   ArrowLeft,
   Building,
   MapPin,
-  // User,
-  // FileText,
+  FileText,
   CreditCard,
   TrendingUp,
+  User,
+  UserCog,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { getUnitById } from "@/api/projects/get-unit-by-id.api";
 import { formatCurrency } from "@/helpers/formatCurrency";
+import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
+import { formatDate } from "@/helpers/formatDate";
 
 const getCategoryColor = (category: string) => {
   switch (category.toLowerCase()) {
@@ -45,18 +48,18 @@ const getTypeColor = (type: string) => {
   }
 };
 
-// const getInstallmentStatusColor = (status: string) => {
-//   switch (status.toLowerCase()) {
-//     case "paid":
-//       return "bg-green-100 text-green-800 border-green-200";
-//     case "pending":
-//       return "bg-yellow-100 text-yellow-800 border-yellow-200";
-//     case "overdue":
-//       return "bg-red-100 text-red-800 border-red-200";
-//     default:
-//       return "bg-gray-100 text-gray-800 border-gray-200";
-//   }
-// };
+const getInstallmentStatusColor = (status: string) => {
+  switch (status.toLowerCase()) {
+    case "paid":
+      return "bg-green-100 text-green-800 border-green-200";
+    case "pending":
+      return "bg-yellow-100 text-yellow-800 border-yellow-200";
+    case "overdue":
+      return "bg-red-100 text-red-800 border-red-200";
+    default:
+      return "bg-gray-100 text-gray-800 border-gray-200";
+  }
+};
 
 const UNIT_QUERY_KEY = "unit";
 
@@ -68,7 +71,6 @@ const UnitDetails = () => {
     queryKey: [UNIT_QUERY_KEY, projectId, unitId],
     queryFn: () => getUnitById(projectId!, unitId!),
     select: useCallback((data: UnitQueryResponse) => {
-      console.log(data);
       return {
         id: data.unitInfo.id,
         name: data.unitInfo.name,
@@ -79,12 +81,14 @@ const UnitDetails = () => {
         income: data.paymentInfo.totalPrice,
         paymentMethod: data.paymentInfo.paymentMethod,
         downPayment: data.paymentInfo.downPayment,
-        installments: [],
+        salesTeam: data.sellers,
+        client: data.clientInfo,
+        installments: data.schedule,
       };
     }, []),
   });
 
-  if (isFetching) {
+  if (isFetching && !unit) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
@@ -212,7 +216,7 @@ const UnitDetails = () => {
               </CardContent>
             </Card>
 
-            {/* <Card className="border-0 bg-white shadow-lg">
+            <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
                   <User className="size-5 text-gray-600" />
@@ -221,42 +225,29 @@ const UnitDetails = () => {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-500">
-                      Sales Manager
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <div className="flex size-10 items-center justify-center rounded-full bg-blue-100">
-                        <User className="size-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">
-                          {unit.salesManager}
-                        </p>
-                        <p className="text-sm text-gray-500">Manager</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-500">
-                      Sales Agent
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <div className="flex size-10 items-center justify-center rounded-full bg-green-100">
-                        <User className="size-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">
-                          {unit.salesAgent}
-                        </p>
-                        <p className="text-sm text-gray-500">Agent</p>
+                  {unit.salesTeam.map((member) => (
+                    <div key={member.id} className="space-y-2">
+                      {/* <label className="text-sm font-medium text-gray-500">
+                        Sales Manager
+                      </label> */}
+                      <div className="flex items-center gap-3">
+                        <div className="flex size-10 items-center justify-center rounded-full bg-blue-100">
+                          <User className="size-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">
+                            {member.name}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {member.email}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
-            </Card> */}
+            </Card>
 
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
@@ -297,11 +288,40 @@ const UnitDetails = () => {
                 </div>
               </CardContent>
             </Card>
+            <Card className="border-0 bg-white shadow-lg">
+              <CardHeader className="border-b border-gray-200 bg-gray-50/50">
+                <CardTitle className="flex items-center gap-2">
+                  <UserCog className="size-5 text-gray-600" />
+                  Client Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">
+                      Name
+                    </label>
+                    <p>{unit.client.name}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">
+                      Email
+                    </label>
+                    <p>{unit.client.email}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">
+                      Phone
+                    </label>
+                    <p>{formatPhoneNumber(unit.client.phone)}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Quick Stats */}
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
                 <CardTitle className="flex items-center gap-2">
@@ -373,8 +393,7 @@ const UnitDetails = () => {
           </div>
         </div>
 
-        {/* {unit.status === "Sold" &&
-          unit.paymentMethod === "installments" &&
+        {unit.paymentMethod === "installments" &&
           unit?.installments.length > 0 && (
             <Card className="mt-6 border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">
@@ -403,7 +422,7 @@ const UnitDetails = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {unit?.installments?.map((installment: any) => (
+                      {unit?.installments?.map((installment) => (
                         <tr
                           key={installment.month}
                           className="hover:bg-gray-50"
@@ -415,7 +434,7 @@ const UnitDetails = () => {
                             {formatCurrency(installment.amount)}
                           </td>
                           <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                            {installment.dueDate}
+                            {formatDate(installment.dueDate)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <Badge
@@ -433,7 +452,7 @@ const UnitDetails = () => {
                 </div>
               </CardContent>
             </Card>
-          )} */}
+          )}
       </div>
     </div>
   );
@@ -454,7 +473,7 @@ type UnitQueryResponse = {
     floor: string;
   };
   clientInfo: { name: string; phone: string; email: string };
-  sellers: [];
+  sellers: { id: string; name: string; email: string }[];
   paymentInfo: {
     paymentMethod: string;
     totalPrice: number;
@@ -463,5 +482,10 @@ type UnitQueryResponse = {
     installmentsCount: number;
     installmentValue: number;
   };
-  schedule: [];
+  schedule: {
+    month: number;
+    amount: number;
+    dueDate: string;
+    status: string;
+  }[];
 };

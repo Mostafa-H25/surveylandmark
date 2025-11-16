@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { emailPattern, phonePattern } from "@/constants/regex";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
@@ -43,10 +44,7 @@ const AddClientForm = ({ setIsAddClientOpen }: Props) => {
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
 

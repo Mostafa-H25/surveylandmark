@@ -38,7 +38,8 @@ const DeleteUserDialog = ({
     } catch (error) {
       console.error(error);
       toast.error("User Delete Failed", {
-        description: `User delete failed, please try again.`,
+        description:
+          (error as Error)?.message || `User delete failed, please try again.`,
         richColors: true,
       });
     }

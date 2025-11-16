@@ -54,7 +54,7 @@ const ContractorProfile = () => {
     }, []),
   });
 
-  if (isFetching) {
+  if (isFetching && !contractor) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>

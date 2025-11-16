@@ -52,7 +52,8 @@ const UserForm = ({ setUserInvitationDialogOpen }: Props) => {
     onError: (error) => {
       console.error(error);
       toast.error("User Invite Failed", {
-        description: "User invitation failed, please try again.",
+        description:
+          error.message || "User invitation failed, please try again.",
         richColors: true,
       });
     },

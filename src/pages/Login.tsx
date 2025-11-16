@@ -49,7 +49,7 @@ const Login = () => {
     } catch (error) {
       console.error(error);
       toast.error("Login Failed", {
-        description: "Invalid email or password",
+        description: (error as Error)?.message || "Invalid email or password",
         richColors: true,
       });
     }

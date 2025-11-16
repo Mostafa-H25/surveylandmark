@@ -20,6 +20,7 @@ import { getAllClientsApi } from "@/api/clients/get-all-clients.api";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { updateAssignedProjectsToUsersApi } from "@/api/user/assign-projects-to-user.api";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 
 const USERS_QUERY_KEY = "users";
 const CLIENTS_QUERY_KEY = "clients";
@@ -68,10 +69,7 @@ const AssignProjectToUserDialog = ({
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
 

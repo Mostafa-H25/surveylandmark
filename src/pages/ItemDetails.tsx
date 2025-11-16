@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import FilterDialog from "@/components/FilterDialog";
+import FilterDialog from "@/components/pages/project-details/FilterDialog";
 import { useQuery } from "@tanstack/react-query";
 import { getItemByIdApi } from "@/api/projects/get-item-by-id.api";
 import { formatCurrency } from "@/helpers/formatCurrency";
@@ -55,7 +55,7 @@ const ItemDetails = () => {
   const handleBack = () => {
     navigate(-1);
   };
-  if (isFetching) {
+  if (isFetching && !item) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>

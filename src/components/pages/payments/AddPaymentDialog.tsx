@@ -26,6 +26,7 @@ import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { addPaymentApi } from "@/api/payments/add-payment.api";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 
 const CLIENTS_QUERY_KEY = "clients";
 const PAYMENTS_QUERY_KEY = "payments";
@@ -88,10 +89,7 @@ export function AddPaymentDialog() {
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
 

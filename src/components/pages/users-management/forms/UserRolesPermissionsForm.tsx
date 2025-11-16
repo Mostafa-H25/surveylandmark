@@ -20,6 +20,7 @@ import {
 import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 
 const UPDATE_USER_ROLE_MUTATION_KEY = "update-user-role";
 const USERS_QUERY_KEY = "users";
@@ -58,10 +59,7 @@ const UserRolesPermissionsForm = ({
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error", {
-        description: "An error occurred. Please try again!",
-        richColors: true,
-      });
+      defaultErrorToast(error.message);
     },
   });
 

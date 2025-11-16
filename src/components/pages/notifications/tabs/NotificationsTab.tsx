@@ -38,6 +38,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import Paginator from "@/components/shared/Paginator";
+import { formatDate } from "@/helpers/formatDate";
 
 // import ViewNotificationDialog from "../dialogs/ViewNotificationDialog";
 
@@ -172,7 +173,7 @@ const NotificationsTab = () => {
                       </Badge>
                     </TableCell> */}
                     <TableCell className="text-sm text-gray-500">
-                      {notification.createdAt}
+                      {formatDate(notification.createdAt)}
                     </TableCell>
                     <TableCell>
                       <Badge
