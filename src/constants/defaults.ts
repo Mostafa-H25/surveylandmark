@@ -261,6 +261,14 @@ export const SalesSectionsEnum: Record<string, SalesView> = {
 
 export const salesSections = Object.values(SalesSectionsEnum);
 
+export const ItemTabsEnum: Record<string, string> = {
+  OVERVIEW: "overview",
+  FINANCIAL: "financial",
+  PROGRESS: "progress",
+  CONFIRMATION: "confirmation",
+};
+export const itemSections = Object.values(ItemTabsEnum);
+
 export const MESSAGE_PRIORITY_ENUM: Record<string, Priority> = {
   NORMAL: "normal",
   HIGH: "high",

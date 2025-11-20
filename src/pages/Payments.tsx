@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Search, Check, X } from "lucide-react";
+import { Search, Check, X, CircleSlash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,6 +27,15 @@ import { toast } from "sonner";
 import { updatePaymentStatusApi } from "@/api/payments/update-payment-status.api";
 import Paginator from "@/components/shared/Paginator";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
+import { useDebounce } from "@/hooks/use-debounce";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 const PAYMENTS_QUERY_KEY = "payments";
 const UPDATE_PAYMENT_MUTATION_SCOPE = "update-payment-status";
@@ -40,12 +49,23 @@ const Payments = () => {
     limit: 10,
     total: 0,
   });
+  const debouncedSearchTerm = useDebounce(searchTerm);
+  const debouncedStatus = useDebounce(statusFilter);
 
   const { data, isFetching: isFetchingPayments } = useQuery({
-    queryKey: [PAYMENTS_QUERY_KEY, paginator.page],
+    queryKey: [
+      PAYMENTS_QUERY_KEY,
+      paginator.page,
+      debouncedSearchTerm,
+      debouncedStatus,
+    ],
     queryFn: () =>
       getAllPaymentsApi({
         pagination: { page: paginator.page, limit: paginator.limit },
+        filters: {
+          search: debouncedSearchTerm,
+          status: debouncedStatus === "all" ? undefined : debouncedStatus,
+        },
       }),
     select: useCallback((data: PaymentsQueryResponse) => {
       return {
@@ -198,6 +218,24 @@ const Payments = () => {
                     <div className="flex h-full w-full items-center justify-center p-8">
                       <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
                     </div>
+                  </TableCell>
+                </TableRow>
+              )}
+              {!isFetchingPayments && !payments?.length && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center">
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <CircleSlash color="#4a5565 " />
+                        </EmptyMedia>
+                        <EmptyTitle>No data</EmptyTitle>
+                        <EmptyDescription>No data found</EmptyDescription>
+                      </EmptyHeader>
+                      <EmptyContent>
+                        {/* <Button>Add data</Button> */}
+                      </EmptyContent>
+                    </Empty>
                   </TableCell>
                 </TableRow>
               )}

@@ -38,6 +38,7 @@ const NewProject = () => {
         richColors: true,
       });
       reset();
+      navigate(`/project/${data.project._id}`);
     },
     onError: (error) => {
       console.error(error);

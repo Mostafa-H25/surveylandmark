@@ -37,36 +37,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import Paginator from "@/components/shared/Paginator";
-
-// interface Department {
-//   id: string;
-//   name: "construction" | "sales" | "storage";
-//   status: "planning" | "in_progress" | "completed" | "on_hold";
-//   budget: number;
-//   progress: number;
-//   manager: string;
-//   startDate: string;
-// }
-
-// interface Project {
-//   id: string;
-//   name: string;
-//   totalBudget: number;
-//   startDate: string;
-//   endDate?: string;
-//   status: "planning" | "in_progress" | "completed" | "on_hold";
-//   departments: Department[];
-// }
-
-// interface Client {
-//   id: string;
-//   name: string;
-//   email: string;
-//   phone: string;
-//   company: string;
-//   projects: Project[];
-//   joinDate: string;
-// }
+import { useDebounce } from "@/hooks/use-debounce";
 
 const CLIENTS_QUERY_KEY = "clients";
 
@@ -75,12 +46,14 @@ const ClientsManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [paginator, setPaginator] = useState({ page: 1, limit: 10, total: 0 });
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
+  const debouncedSearchTerm = useDebounce(searchTerm);
 
   const { data, isFetching } = useQuery({
-    queryKey: [CLIENTS_QUERY_KEY, paginator.page],
+    queryKey: [CLIENTS_QUERY_KEY, paginator.page, debouncedSearchTerm],
     queryFn: () =>
       getAllClientsApi({
         pagination: { page: paginator.page, limit: paginator.limit },
+        filters: { search: debouncedSearchTerm },
       }),
     select: useCallback((data: ClientQueryResponse) => {
       return {
@@ -121,41 +94,6 @@ const ClientsManagement = () => {
       }));
     }
   }, [data]);
-
-  const filteredClients = clients?.filter(
-    (client) =>
-      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.email.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
-
-  // const getDepartmentIcon = (department: string) => {
-  //   switch (department) {
-  //     case "construction":
-  //       return Hammer;
-  //     case "sales":
-  //       return DollarSign;
-  //     case "storage":
-  //       return Package;
-  //     case "standards":
-  //       return Settings;
-  //     default:
-  //       return Building2;
-  //   }
-  // };
-
-  // const getDepartmentColor = (department: string) => {
-  //   switch (department) {
-  //     case "construction":
-  //       return "bg-blue-100 text-blue-700";
-  //     case "sales":
-  //       return "bg-green-100 text-green-700";
-  //     case "storage":
-  //       return "bg-purple-100 text-purple-700";
-  //     default:
-  //       return "bg-gray-100 text-gray-700";
-  //   }
-  // };
 
   const handleViewProjects = (clientId: string) => {
     setSelectedClient(selectedClient === clientId ? null : clientId);
@@ -206,12 +144,12 @@ const ClientsManagement = () => {
 
       {/* Clients List */}
       <div className="h-full flex-1 space-y-4">
-        {isFetching && !filteredClients && (
+        {isFetching && !clients && (
           <div className="flex h-full w-full items-center justify-center p-8">
             <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
           </div>
         )}
-        {!isFetching && !filteredClients?.length && (
+        {!isFetching && !clients?.length && (
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -224,7 +162,7 @@ const ClientsManagement = () => {
           </Empty>
         )}
 
-        {filteredClients?.map((client) => (
+        {clients?.map((client) => (
           <Card key={client.id} className="transition-shadow hover:shadow-md">
             <CardHeader>
               <div className="flex items-start justify-between">

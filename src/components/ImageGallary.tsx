@@ -34,7 +34,7 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
           </div>
         </CardHeader>
         <CardContent>
-          {images.length > 0 ? (
+          {images?.length > 0 ? (
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
               {images.map((image, index) => (
                 <div key={index} className="group relative">

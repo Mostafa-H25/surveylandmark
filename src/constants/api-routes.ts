@@ -26,6 +26,7 @@ export const API_PATHS = {
       UPDATE: "/user/update-company",
     },
     GET_ALL: "/user/get-Users-Info",
+    GET_ALL_FILTERED: "/user/user-search",
     UPDATE: "/user/editRole",
     ASSIGN_PROJECTS: (userId: string) => `/user/assigned-project/${userId}`,
     DELETE: "/user/delete-user",
@@ -33,6 +34,7 @@ export const API_PATHS = {
   CLIENTS: {
     ADD: "/client/add",
     GET_ALL: "/dash/clients/all",
+    GET_ALL_FILTERED: "/dash/search/clients",
   },
   PROJECTS: {
     ADD: "/project/excel",

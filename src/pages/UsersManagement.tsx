@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditUserRolesPermissionsDialog from "@/components/pages/users-management/dialogs/EditUserRolesPermissionsDialog";
@@ -69,6 +69,8 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { UserPermission, UserRole, UserStatus } from "@/types/default";
+import { useDebounce } from "@/hooks/use-debounce";
+import Paginator from "@/components/shared/Paginator";
 
 const USERS_QUERY_KEY = "users";
 
@@ -80,14 +82,33 @@ const UsersManagement = () => {
   const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
 
   const [user, setUser] = useState<User | null>(null);
-  const [usersCount] = useState<number>(0);
+  const [usersCount, setUserCount] = useState<number>(0);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("all");
+  const [paginator, setPaginator] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+  });
+  const debouncedSearchTerm = useDebounce(searchTerm);
+  const debouncedRole = useDebounce(selectedRole);
 
   const { data: users, isFetching } = useQuery({
-    queryKey: [USERS_QUERY_KEY],
-    queryFn: () => getAllUsersApi(),
+    queryKey: [
+      USERS_QUERY_KEY,
+      paginator.page,
+      debouncedSearchTerm,
+      debouncedRole,
+    ],
+    queryFn: () =>
+      getAllUsersApi({
+        pagination: { page: paginator.page, limit: paginator.limit },
+        filters: {
+          search: debouncedSearchTerm,
+          role: debouncedRole === "all" ? undefined : debouncedRole,
+        },
+      }),
     select: useCallback((data: UsersQueryResponse) => {
       return data.users.map((user) => ({
         id: user.id,
@@ -104,6 +125,12 @@ const UsersManagement = () => {
       }));
     }, []),
   });
+
+  useEffect(() => {
+    if (users) {
+      setUserCount(users.length);
+    }
+  }, [users]);
 
   const handleAssignProject = (userId: string) => {
     if (!users) return;
@@ -131,14 +158,6 @@ const UsersManagement = () => {
       setIsEditUserRolesPermissionsOpen(true);
     }
   };
-
-  const filteredUsers = users?.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = selectedRole === "all" || user.role === selectedRole;
-    return matchesSearch && matchesRole;
-  });
 
   return (
     <div className="space-y-6">
@@ -203,7 +222,7 @@ const UsersManagement = () => {
                   </div>
                 </div>
                 <Select value={selectedRole} onValueChange={setSelectedRole}>
-                  <SelectTrigger className="w-full sm:w-48">
+                  <SelectTrigger className="w-full capitalize sm:w-48">
                     <SelectValue placeholder="Filter by role" />
                   </SelectTrigger>
                   <SelectContent>
@@ -248,7 +267,7 @@ const UsersManagement = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {isFetching && !filteredUsers && (
+                  {isFetching && !users && (
                     <TableRow>
                       <TableCell colSpan={7} className="text-center">
                         <div className="flex h-full w-full items-center justify-center p-8">
@@ -257,26 +276,25 @@ const UsersManagement = () => {
                       </TableCell>
                     </TableRow>
                   )}
-                  {!filteredUsers ||
-                    (!filteredUsers?.length && (
-                      <TableRow>
-                        <TableCell colSpan={8} className="text-center">
-                          <Empty>
-                            <EmptyHeader>
-                              <EmptyMedia variant="icon">
-                                <CircleSlash color="#4a5565 " />
-                              </EmptyMedia>
-                              <EmptyTitle>No data</EmptyTitle>
-                              <EmptyDescription>No data found</EmptyDescription>
-                            </EmptyHeader>
-                            <EmptyContent>
-                              {/* <Button>Add data</Button> */}
-                            </EmptyContent>
-                          </Empty>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  {filteredUsers?.map((user) => (
+                  {!isFetching && !users?.length && (
+                    <TableRow>
+                      <TableCell colSpan={8} className="text-center">
+                        <Empty>
+                          <EmptyHeader>
+                            <EmptyMedia variant="icon">
+                              <CircleSlash color="#4a5565 " />
+                            </EmptyMedia>
+                            <EmptyTitle>No data</EmptyTitle>
+                            <EmptyDescription>No data found</EmptyDescription>
+                          </EmptyHeader>
+                          <EmptyContent>
+                            {/* <Button>Add data</Button> */}
+                          </EmptyContent>
+                        </Empty>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {users?.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell>
                         <div className="flex items-center space-x-3">
@@ -392,6 +410,7 @@ const UsersManagement = () => {
                   ))}
                 </TableBody>
               </Table>
+              <Paginator paginator={paginator} setPaginator={setPaginator} />
             </CardContent>
           </Card>
         </TabsContent>
