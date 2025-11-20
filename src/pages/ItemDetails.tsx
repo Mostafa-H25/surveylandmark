@@ -8,6 +8,8 @@ import {
   DollarSign,
   TrendingUp,
   CircleSlash,
+  Users,
+  XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +27,11 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { ItemTabsEnum } from "@/constants/defaults";
+import { Progress } from "@/components/ui/progress";
+import ImageGallery from "@/components/ImageGallary";
+import { formatDate } from "@/helpers/formatDate";
+import { formatTime } from "@/helpers/formatTime";
 
 const ITEM_QUERY_KEY = "item";
 
@@ -32,22 +39,30 @@ const ItemDetails = () => {
   const { projectId, itemId } = useParams();
   const navigate = useNavigate();
   const [showFilter, setShowFilter] = useState(false);
+  const [section, setSection] = useState(ItemTabsEnum.OVERVIEW);
 
   const { data: item, isFetching } = useQuery({
-    queryKey: [ITEM_QUERY_KEY, projectId, itemId],
-    queryFn: () => getItemByIdApi(projectId!, itemId!),
+    queryKey: [ITEM_QUERY_KEY, projectId, itemId, section],
+    queryFn: () => getItemByIdApi(projectId!, itemId!, section),
     select: useCallback((data: ItemQueryResponse) => {
       return {
-        name: data.name,
-        status: data.status,
-        totalQuantity: data.quantity,
-        implementedQuantity: data.executedQuantity,
-        contractor: data.contractor.name,
-        siteEngineer: data.assignedTo.name,
-        netCosts: data.financial.totalFinancial,
-        payments: data.financial.totalPayments,
-        deductions: data.financial.totalDeductions,
-        sundries: data.financial.totalSundries,
+        name: data?.name,
+        status: data?.status,
+        totalQuantity: data?.quantity,
+        implementedQuantity: data?.executedQuantity,
+        contractor: data?.contractor?.name,
+        siteEngineer: data?.assignedTo?.name,
+        netCosts: data?.netCosts ?? data?.financial?.totalFinancial,
+        payments: data?.payments ?? data?.financial?.totalPayments,
+        deductions: data?.deductions ?? data?.financial?.totalDeductions,
+        sundries: data?.sundries ?? data?.financial?.totalSundries,
+        achievementPercentage: data?.progress?.progressPercentage,
+        acceptedImages: data?.progress?.acceptedSubmissions,
+        refusedImages: data?.progress?.rejectedSubmissions,
+        confirmations: [
+          ...(data?.confirmation?.accepted ?? []),
+          ...(data?.confirmation?.rejected ?? []),
+        ],
       };
     }, []),
   });
@@ -55,10 +70,11 @@ const ItemDetails = () => {
   const handleBack = () => {
     navigate(-1);
   };
+
   if (isFetching && !item) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+        <div className="aspect-square h-full max-h-32 w-full max-w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -93,7 +109,7 @@ const ItemDetails = () => {
             </Button>
             <div>
               <h1 className="text-2xl font-semibold text-gray-900">
-                {item.name}
+                {item?.name}
               </h1>
               <p className="text-sm text-gray-500">Item ID: {itemId}</p>
             </div>
@@ -118,9 +134,7 @@ const ItemDetails = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="mx-auto max-w-7xl p-6">
-        {/* Quick Stats */}
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="h-full w-full p-6">
@@ -131,7 +145,7 @@ const ItemDetails = () => {
                     variant="secondary"
                     className="mt-1 bg-yellow-100 text-yellow-800"
                   >
-                    {item.status}
+                    {item?.status}
                   </Badge>
                 </div>
                 <TrendingUp className="size-8 text-blue-600" />
@@ -147,7 +161,7 @@ const ItemDetails = () => {
                     Total Quantity
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {item.totalQuantity}
+                    {item?.totalQuantity}
                   </p>
                 </div>
                 <CheckCircle className="size-8 text-green-600" />
@@ -163,7 +177,7 @@ const ItemDetails = () => {
                     Implemented Quantity
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {item.implementedQuantity}
+                    {item?.implementedQuantity}
                   </p>
                 </div>
                 <CheckCircle className="size-8 text-green-600" />
@@ -178,7 +192,7 @@ const ItemDetails = () => {
                     Costs till now
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {formatCurrency(item.payments)}
+                    {formatCurrency(item?.payments)}
                   </p>
                 </div>
                 <DollarSign className="size-8 text-green-600" />
@@ -187,16 +201,24 @@ const ItemDetails = () => {
           </Card>
         </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            {/* <TabsTrigger value="progress">Progress & Images</TabsTrigger> */}
-            {/* <TabsTrigger value="confirmations">Confirmations</TabsTrigger> */}
-            <TabsTrigger value="financial">Financial</TabsTrigger>
+        <Tabs
+          defaultValue={section}
+          onValueChange={(value) => setSection(value)}
+          className="space-y-6"
+        >
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value={ItemTabsEnum.OVERVIEW}>Overview</TabsTrigger>
+            <TabsTrigger value={ItemTabsEnum.PROGRESS}>
+              Progress & Images
+            </TabsTrigger>
+            <TabsTrigger value={ItemTabsEnum.CONFIRMATION}>
+              Confirmations
+            </TabsTrigger>
+            <TabsTrigger value={ItemTabsEnum.FINANCIAL}>Financial</TabsTrigger>
             {/* <TabsTrigger value="evaluation">Evaluation</TabsTrigger> */}
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value={ItemTabsEnum.OVERVIEW} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
                 <CardHeader>
@@ -214,7 +236,7 @@ const ItemDetails = () => {
                       <div className="mt-1 flex items-center gap-2">
                         <User className="size-4 text-gray-400" />
                         <span className="text-gray-900">
-                          {item.siteEngineer}
+                          {item?.siteEngineer}
                         </span>
                       </div>
                     </div>
@@ -222,7 +244,7 @@ const ItemDetails = () => {
                       <label className="text-sm font-medium text-gray-500">
                         Contractor
                       </label>
-                      <p className="mt-1 text-gray-900">{item.contractor}</p>
+                      <p className="mt-1 text-gray-900">{item?.contractor}</p>
                     </div>
                     {/* <div>
                       <label className="text-sm font-medium text-gray-500">
@@ -230,14 +252,14 @@ const ItemDetails = () => {
                       </label>
                       <div className="mt-1 flex items-center gap-2">
                         <Calendar className="size-4 text-gray-400" />
-                        <span className="text-gray-900">{item.startDate}</span>
+                        <span className="text-gray-900">{item?.startDate}</span>
                       </div>
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-500">
                         Type
                       </label>
-                      <p className="mt-1 text-gray-900">{item.type}</p>
+                      <p className="mt-1 text-gray-900">{item?.type}</p>
                     </div> */}
                   </div>
                 </CardContent>
@@ -255,20 +277,20 @@ const ItemDetails = () => {
                     <label className="text-sm font-medium text-gray-500">
                       Material
                     </label>
-                    <p className="mt-1 text-gray-900">{item.material}</p>
+                    <p className="mt-1 text-gray-900">{item?.material}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500">
                       Dimensions
                     </label>
-                    <p className="mt-1 text-gray-900">{item.dimensions}</p>
+                    <p className="mt-1 text-gray-900">{item?.dimensions}</p>
                   </div>
                 </CardContent>
               </Card> */}
             </div>
           </TabsContent>
 
-          <TabsContent value="financial" className="space-y-6">
+          <TabsContent value={ItemTabsEnum.FINANCIAL} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <Card>
                 <CardHeader>
@@ -276,7 +298,7 @@ const ItemDetails = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold text-green-600">
-                    {formatCurrency(item.payments)}
+                    {formatCurrency(item?.payments)}
                   </p>
                   <p className="mt-2 text-sm text-gray-500">
                     Total payments made
@@ -290,7 +312,7 @@ const ItemDetails = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold text-red-600">
-                    {formatCurrency(item.deductions)}
+                    {formatCurrency(item?.deductions)}
                   </p>
                   <p className="mt-2 text-sm text-gray-500">Total deductions</p>
                 </CardContent>
@@ -302,7 +324,7 @@ const ItemDetails = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold text-blue-600">
-                    {formatCurrency(item.netCosts)}
+                    {formatCurrency(item?.netCosts)}
                   </p>
                   <p className="mt-2 text-sm text-gray-500">After deductions</p>
                 </CardContent>
@@ -314,15 +336,15 @@ const ItemDetails = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold text-yellow-600">
-                    {formatCurrency(item.sundries)}
+                    {formatCurrency(item?.sundries)}
                   </p>
                   <p className="mt-2 text-sm text-gray-500">Total Sundries</p>
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
-          {/* 
-          <TabsContent value="progress" className="space-y-6">
+
+          <TabsContent value={ItemTabsEnum.PROGRESS} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
                 <CardHeader>
@@ -332,10 +354,10 @@ const ItemDetails = () => {
                   <div>
                     <div className="mb-2 flex justify-between text-sm">
                       <span>Overall Progress</span>
-                      <span>{item.achievementPercentage}%</span>
+                      <span>{item?.achievementPercentage}%</span>
                     </div>
                     <Progress
-                      value={item.achievementPercentage}
+                      value={item?.achievementPercentage}
                       className="h-2"
                     />
                   </div>
@@ -343,14 +365,14 @@ const ItemDetails = () => {
                     <div className="rounded-lg bg-green-50 p-4 text-center">
                       <CheckCircle className="mx-auto mb-2 size-8 text-green-600" />
                       <p className="text-lg font-semibold text-green-600">
-                        {item.acceptedImages.length}
+                        {item?.acceptedImages?.length}
                       </p>
                       <p className="text-sm text-gray-600">Accepted Items</p>
                     </div>
                     <div className="rounded-lg bg-red-50 p-4 text-center">
                       <XCircle className="mx-auto mb-2 size-8 text-red-600" />
                       <p className="text-lg font-semibold text-red-600">
-                        {item.refusedItems}
+                        {item?.refusedImages?.length}
                       </p>
                       <p className="text-sm text-gray-600">Refused Items</p>
                     </div>
@@ -358,7 +380,7 @@ const ItemDetails = () => {
                 </CardContent>
               </Card>
 
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle>Acceptance Details</CardTitle>
                 </CardHeader>
@@ -370,7 +392,7 @@ const ItemDetails = () => {
                     <div className="mt-1 flex items-center gap-2">
                       <Calendar className="size-4 text-gray-400" />
                       <span className="text-gray-900">
-                        {item.dateOfAcceptance}
+                        {item?.dateOfAcceptance}
                       </span>
                     </div>
                   </div>
@@ -381,39 +403,56 @@ const ItemDetails = () => {
                     <div className="mt-1 flex items-center gap-2">
                       <Factory className="size-4 text-gray-400" />
                       <span className="text-gray-900">
-                        {formatCurrency(item.manufacturerCostPerDay)}/day
+                        {item?.manufacturerCostPerDay
+                          ? formatCurrency(item?.manufacturerCostPerDay)
+                          : ""}
+                        /day
                       </span>
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
 
             <div className="space-y-6">
               <ImageGallery
                 title="Accepted Item Images"
-                images={item.acceptedImages}
+                images={item?.acceptedImages}
                 type="accepted"
               />
               <ImageGallery
                 title="Refused Item Images"
-                images={item.refusedImages}
+                images={item?.refusedImages}
                 type="refused"
               />
             </div>
           </TabsContent>
 
-          <TabsContent value="confirmations" className="space-y-6">
+          <TabsContent value={ItemTabsEnum.CONFIRMATION} className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="size-5" />
-                  Project Confirmations ({item.confirmations.length})
+                  Project Confirmations ({item?.confirmations?.length})
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {item.confirmations.map((confirmation, index) => (
+                  {!isFetching && item?.confirmations?.length === 0 && (
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <CircleSlash color="#4a5565 " />
+                        </EmptyMedia>
+                        <EmptyTitle>No data</EmptyTitle>
+                        <EmptyDescription>No data found</EmptyDescription>
+                      </EmptyHeader>
+                      <EmptyContent>
+                        {/* <Button>Add data</Button> */}
+                      </EmptyContent>
+                    </Empty>
+                  )}
+                  {item?.confirmations?.map((confirmation, index) => (
                     <div
                       key={index}
                       className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 p-4"
@@ -422,19 +461,23 @@ const ItemDetails = () => {
                         <CheckCircle className="size-5 text-green-600" />
                         <div>
                           <p className="font-semibold text-gray-900">
-                            {confirmation.name}
+                            {confirmation?.name}
                           </p>
                           <p className="text-sm text-gray-600">
-                            {confirmation.role}
+                            {confirmation?.role}
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
                         <p className="text-sm font-medium text-gray-900">
-                          {confirmation.date}
+                          {confirmation?.date
+                            ? formatDate(confirmation.date)
+                            : ""}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {confirmation.time}
+                          {confirmation?.time
+                            ? formatTime(confirmation.time)
+                            : ""}
                         </p>
                       </div>
                     </div>
@@ -444,10 +487,10 @@ const ItemDetails = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="evaluation">
+          {/* <TabsContent value="evaluation">
             <EvaluationSection
-              rating={item.contractorEvaluation}
-              contractor={item.contractor}
+              rating={item?.contractorEvaluation}
+              contractor={item?.contractor}
             />
           </TabsContent> */}
         </Tabs>
@@ -467,6 +510,10 @@ type ItemQueryResponse = {
   quantity: number;
   executedQuantity: number;
   status: string;
+  netCosts: number;
+  payments: number;
+  deductions: number;
+  sundries: number;
   workItem: { id: string; name: string };
   // descriptiveItem: {};
   contractor: {
@@ -486,5 +533,16 @@ type ItemQueryResponse = {
     totalDeductions: number;
     totalSundries: number;
     totalFinancial: number;
+  };
+  confirmation: {
+    accepted: { name: string; role: string; date: string; time: string }[];
+    rejected: { name: string; role: string; date: string; time: string }[];
+  };
+  progress: {
+    totalQuantity: number;
+    executedQuantity: number;
+    progressPercentage: number;
+    acceptedSubmissions: [];
+    rejectedSubmissions: [];
   };
 };

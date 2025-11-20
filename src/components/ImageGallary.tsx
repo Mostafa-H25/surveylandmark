@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Upload, Eye, Download } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface ImageGalleryProps {
@@ -13,6 +12,8 @@ interface ImageGalleryProps {
 const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
   const colorClass =
     type === "accepted" ? "border-green-200" : "border-red-200";
   const headerColor = type === "accepted" ? "text-green-600" : "text-red-600";
@@ -23,14 +24,14 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className={headerColor}>{title}</CardTitle>
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               className="flex cursor-pointer items-center gap-2"
             >
               <Upload className="size-4" />
               Upload Images
-            </Button>
+            </Button> */}
           </div>
         </CardHeader>
         <CardContent>
@@ -39,12 +40,12 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
               {images.map((image, index) => (
                 <div key={index} className="group relative">
                   <img
-                    src={image}
+                    src={baseUrl + "/" + image}
                     alt={`${type} item ${index + 1}`}
                     className="h-32 w-full cursor-pointer rounded-lg border object-cover transition-opacity hover:opacity-80"
                     onClick={() => setSelectedImage(image)}
                   />
-                  <div className="bg-opacity-0 group-hover:bg-opacity-30 absolute inset-0 flex items-center justify-center rounded-lg bg-black transition-all">
+                  {/* <div className="bg-opacity-0 group-hover:bg-opacity-30 absolute inset-0 flex items-center justify-center rounded-lg bg-black transition-all">
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100">
                       <Button
                         size="sm"
@@ -61,7 +62,7 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
                         <Download className="size-4" />
                       </Button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>
@@ -69,9 +70,9 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
             <div className="py-8 text-center text-gray-500">
               <Upload className="mx-auto mb-4 size-12 text-gray-300" />
               <p>No images uploaded yet</p>
-              <Button variant="outline" className="mt-4 cursor-pointer">
+              {/* <Button variant="outline" className="mt-4 cursor-pointer">
                 Upload First Image
-              </Button>
+              </Button> */}
             </div>
           )}
         </CardContent>
@@ -85,7 +86,7 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
         <DialogContent className="max-w-4xl">
           {selectedImage && (
             <img
-              src={selectedImage}
+              src={baseUrl + "/" + selectedImage}
               alt="Preview"
               className="h-auto max-h-[80vh] w-full object-contain"
             />

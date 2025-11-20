@@ -34,7 +34,6 @@ const FilterDialog = ({ open, onOpenChange }: FilterDialogProps) => {
   };
 
   const handleApplyFilters = () => {
-    console.log("Applied filters:", filters);
     onOpenChange(false);
   };
 
