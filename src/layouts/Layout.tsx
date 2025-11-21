@@ -23,7 +23,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         />
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white shadow-xl">
           <div className="flex h-16 items-center justify-between px-6 border-b">
-            <h1 className="text-xl font-bold text-blue-600">Survey LANDMARK</h1>
+            <h1 className="text-xl font-bold text-blue-600">LANDMARK Projects</h1>
             <Button
               variant="ghost"
               size="sm"
@@ -82,7 +82,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Menu className="size-5" />
             </Button>
             <h1 className="text-lg font-semibold text-blue-600">
-              Survey LANDMARK
+              LANDMARK Projects
             </h1>
             <div className="w-8" />
           </div>

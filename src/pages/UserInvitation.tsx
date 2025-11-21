@@ -56,7 +56,7 @@ const UserInvitation = () => {
               <p className="text-2xl font-bold whitespace-nowrap text-gray-900">
                 Invite Team Members
               </p>
-              <p className="text-gray-500 capitalize">Survey LANDMARK</p>
+              <p className="text-gray-500 capitalize">LANDMARK Projects</p>
             </div>
           </div>
         </div>

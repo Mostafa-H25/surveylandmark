@@ -27,7 +27,7 @@ const Sidebar = () => {
   return (
     <div className="hidden border-r border-gray-200 bg-white lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
       <div className="flex h-16 items-center border-b px-6">
-        <h1 className="text-xl font-bold text-blue-600">Survey LANDMARK</h1>
+        <h1 className="text-xl font-bold text-blue-600">LANDMARK Projects</h1>
       </div>
       <nav className="flex-1 space-y-2 px-4 py-6">
         {filteredNavigation.map((item) => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Building2, Eye, EyeClosed } from "lucide-react";
+import { Eye, EyeClosed } from "lucide-react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
@@ -66,12 +66,21 @@ const Registration = () => {
       <Card className="w-full max-w-xl">
         <CardHeader className="space-y-4 px-8 text-center">
           <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-600">
-            <Building2 className="size-8 text-white" />
+            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-blue-600/20">
+              <img
+                src="/landmark-projects-icon.png"
+                alt="logo"
+                className="size-full p-2"
+              />
+            </div>
           </div>
           <div>
             <CardTitle className="text-3xl text-gray-900">Welcome To</CardTitle>
             <div className="mt-2">
-              <h1 className="text-2xl text-blue-600">Survey LANDMARK</h1>
+              <h1 className="flex items-center justify-center gap-2 text-2xl text-blue-600">
+                <span className="font-bold">LANDMARK</span>
+                <span>Projects</span>
+              </h1>
               <p className="text-base text-gray-600">
                 Precision Surveys, Building tomorrow
               </p>
@@ -209,17 +218,13 @@ const Registration = () => {
                         className={cn("border", { "border-red-500": error })}
                         required
                       />
-                      {isVisible ? (
-                        <Eye
-                          onClick={() => setIsVisible(false)}
-                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
-                        />
-                      ) : (
-                        <EyeClosed
-                          onClick={() => setIsVisible(true)}
-                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
-                        />
-                      )}
+                      <div
+                        onMouseUp={() => setIsVisible(false)}
+                        onMouseDown={() => setIsVisible(true)}
+                        className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                      >
+                        {isVisible ? <Eye /> : <EyeClosed />}
+                      </div>
                     </div>
                   </div>
                   {error && (
@@ -257,17 +262,13 @@ const Registration = () => {
                         className={cn("border", { "border-red-500": error })}
                         required
                       />
-                      {isVisible ? (
-                        <Eye
-                          onClick={() => setIsVisible(false)}
-                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
-                        />
-                      ) : (
-                        <EyeClosed
-                          onClick={() => setIsVisible(true)}
-                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
-                        />
-                      )}
+                      <div
+                        onMouseUp={() => setIsVisible(false)}
+                        onMouseDown={() => setIsVisible(true)}
+                        className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                      >
+                        {isVisible ? <Eye /> : <EyeClosed />}
+                      </div>
                     </div>
                   </div>
                   {error && (
