@@ -1,4 +1,4 @@
-import { Building2 } from "lucide-react";
+import { Building2, Eye, EyeClosed } from "lucide-react";
 import { Navigate } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
@@ -19,9 +19,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { loginApi } from "@/api/auth/login.api";
+import { useState } from "react";
 
 const Login = () => {
   const { token, isLoading, setToken, setIsLoading } = useAuthStore();
+  const [isVisible, setIsVisible] = useState(false);
 
   const keepAlive = parseBoolean(localStorage.getItem("keepAlive")) ?? false;
   const defaultValues = {
@@ -125,14 +127,27 @@ const Login = () => {
                 <div>
                   <div className="space-y-4">
                     <Label htmlFor={field.name}>Password</Label>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="password"
-                      placeholder="Enter your password"
-                      className={cn("border", { "border-red-500": error })}
-                      required
-                    />
+                    <div className="relative">
+                      <Input
+                        {...field}
+                        id={field.name}
+                        type={isVisible ? "text" : "password"}
+                        placeholder="Enter your password"
+                        className={cn("border", { "border-red-500": error })}
+                        required
+                      />
+                      {isVisible ? (
+                        <Eye
+                          onClick={() => setIsVisible(false)}
+                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                        />
+                      ) : (
+                        <EyeClosed
+                          onClick={() => setIsVisible(true)}
+                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                        />
+                      )}
+                    </div>
                   </div>
                   {error && (
                     <span className="text-sm text-red-500">

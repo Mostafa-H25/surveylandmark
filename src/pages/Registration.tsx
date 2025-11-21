@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Building2 } from "lucide-react";
+import { Building2, Eye, EyeClosed } from "lucide-react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
@@ -28,6 +28,7 @@ const Registration = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const token = useAuthStore((state) => state.token);
+  const [isVisible, setIsVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues = {
@@ -199,14 +200,27 @@ const Registration = () => {
                 <div>
                   <div className="space-y-4">
                     <Label htmlFor={field.name}>Password</Label>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="password"
-                      placeholder="Enter your password"
-                      className={cn("border", { "border-red-500": error })}
-                      required
-                    />
+                    <div className="relative">
+                      <Input
+                        {...field}
+                        id={field.name}
+                        type={isVisible ? "text" : "password"}
+                        placeholder="Enter your password"
+                        className={cn("border", { "border-red-500": error })}
+                        required
+                      />
+                      {isVisible ? (
+                        <Eye
+                          onClick={() => setIsVisible(false)}
+                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                        />
+                      ) : (
+                        <EyeClosed
+                          onClick={() => setIsVisible(true)}
+                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                        />
+                      )}
+                    </div>
                   </div>
                   {error && (
                     <span className="text-sm text-red-500">
@@ -233,15 +247,28 @@ const Registration = () => {
               render={({ field, fieldState: { error } }) => (
                 <div>
                   <div className="space-y-4">
-                    <Label htmlFor={field.name}>Password</Label>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="password"
-                      placeholder="Enter your password"
-                      className={cn("border", { "border-red-500": error })}
-                      required
-                    />
+                    <Label htmlFor={field.name}>Confirm Password</Label>
+                    <div className="relative">
+                      <Input
+                        {...field}
+                        id={field.name}
+                        type={isVisible ? "text" : "password"}
+                        placeholder="Enter your password"
+                        className={cn("border", { "border-red-500": error })}
+                        required
+                      />
+                      {isVisible ? (
+                        <Eye
+                          onClick={() => setIsVisible(false)}
+                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                        />
+                      ) : (
+                        <EyeClosed
+                          onClick={() => setIsVisible(true)}
+                          className="absolute top-1/2 right-3 size-5 -translate-y-1/2 text-gray-400 hover:cursor-pointer"
+                        />
+                      )}
+                    </div>
                   </div>
                   {error && (
                     <span className="text-sm text-red-500">
