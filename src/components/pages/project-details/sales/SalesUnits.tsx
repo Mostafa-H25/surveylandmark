@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ROUTES } from "@/constants/routes";
 import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
@@ -25,7 +26,7 @@ const SalesUnits = ({ data }: Props) => {
   }));
 
   const handleViewUnit = (unitId: string) => {
-    navigate(`/project/${projectId}/units/${unitId}`);
+    navigate(ROUTES.UNIT(projectId, unitId));
   };
 
   return (

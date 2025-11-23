@@ -19,7 +19,7 @@ import SalesOverview from "../sales/SalesOverview";
 import SalesMembers from "../sales/SalesMembers";
 import SalesIncomes from "../sales/SalesIncomes";
 import SalesUnits from "../sales/SalesUnits";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import type { DepartmentType, SalesView } from "@/types/default";
@@ -57,6 +57,8 @@ type Props = { selectedDepartment: DepartmentType };
 
 const SalesTab = ({ selectedDepartment }: Props) => {
   const { projectId } = useParams();
+  const [URLSearchParams, setURLSearchParams] = useSearchParams();
+  const urlSection = URLSearchParams.get("section") as SalesView | null;
 
   const [open, setOpen] = useState(false);
   const [expand, setExpand] = useState(false);
@@ -71,7 +73,7 @@ const SalesTab = ({ selectedDepartment }: Props) => {
   });
 
   const [selectedOption, setSelectedOption] = useState<SalesView>(
-    SalesSectionsEnum.OVERVIEW,
+    urlSection ?? SalesSectionsEnum.OVERVIEW,
   );
   const isSalesSelected = selectedDepartment === CategoriesEnum.SALES;
   const isIncomesView = SalesSectionsEnum.INCOMES === selectedOption;
@@ -125,7 +127,13 @@ const SalesTab = ({ selectedDepartment }: Props) => {
         <div className="flex w-full items-center justify-between gap-4">
           <Select
             value={selectedOption}
-            onValueChange={(value) => setSelectedOption(value as SalesView)}
+            onValueChange={(value) => {
+              setSelectedOption(value as SalesView);
+              setURLSearchParams((prev) => {
+                prev.set("section", value);
+                return prev;
+              });
+            }}
           >
             <SelectTrigger className="w-64 capitalize">
               <SelectValue />

@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { addProjectApi } from "@/api/projects/add-project.api";
 import { PROJECT_STATUS_ENUM } from "@/constants/defaults";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
+import { ROUTES } from "@/constants/routes";
 
 const PROJECT_MUTATION_SCOPE = "project_creation";
 
@@ -38,7 +39,7 @@ const NewProject = () => {
         richColors: true,
       });
       reset();
-      navigate(`/project/${data.project._id}`);
+      navigate(ROUTES.PROJECT(data.project._id));
     },
     onError: (error) => {
       console.error(error);
@@ -56,7 +57,7 @@ const NewProject = () => {
         <header className="rounded-md border border-gray-200 bg-white px-6 py-4">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate(ROUTES.DASHBOARD)}
               className="cursor-pointer rounded-md p-1 hover:bg-gray-100"
             >
               <ArrowLeft className="size-5 text-gray-600" />
@@ -72,7 +73,7 @@ const NewProject = () => {
         <div className="flex justify-end space-x-3">
           <Button
             type="button"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate(ROUTES.DASHBOARD)}
             variant="outline"
           >
             Cancel

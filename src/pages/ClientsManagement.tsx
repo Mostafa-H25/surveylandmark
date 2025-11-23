@@ -38,6 +38,7 @@ import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import Paginator from "@/components/shared/Paginator";
 import { useDebounce } from "@/hooks/use-debounce";
+import { ROUTES } from "@/constants/routes";
 
 const CLIENTS_QUERY_KEY = "clients";
 
@@ -104,7 +105,7 @@ const ClientsManagement = () => {
   };
 
   const handleExploreProject = (projectId: string) => {
-    navigate(`/project/${projectId}`);
+    navigate(ROUTES.PROJECT(projectId));
   };
 
   // const calculateTotalBudget = (projects: Project[]) => {

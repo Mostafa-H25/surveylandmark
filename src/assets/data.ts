@@ -447,7 +447,7 @@ export const paymentData: PaymentData[] = [
 ];
 
 export const companyInfo = {
-  name: "Survey LANDMARK",
+  name: "LANDMARK Projects",
   address: "123 Construction Ave, Building City, BC 12345",
   phone: "+1-555-0123",
   email: "info@surveylandmark.com",

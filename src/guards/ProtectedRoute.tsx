@@ -6,6 +6,7 @@ import type { UserRole } from "@/types/default";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 import { meApi } from "@/api/user/me.api";
 import { useQuery } from "@tanstack/react-query";
+import { ROUTES } from "@/constants/routes";
 
 const ME_QUERY_KEY = "me";
 
@@ -46,13 +47,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (!token) {
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to={ROUTES.SIGN_IN} replace />;
   }
 
   // Check role permissions
   if (requiredRole) {
     if (!isRequiredRoleOrHigher(requiredRole, user?.role)) {
-      return <Navigate to="/dashboard" replace />;
+      return <Navigate to={ROUTES.DASHBOARD} replace />;
     }
   }
 

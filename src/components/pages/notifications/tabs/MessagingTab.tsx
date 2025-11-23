@@ -56,6 +56,8 @@ import type { Priority } from "@/types/default";
 import { markMessageAsReadApi } from "@/api/messages/mark-message-as-read.api";
 import { formatDate } from "@/helpers/formatDate";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
+import { useDebounce } from "@/hooks/use-debounce";
+import Paginator from "@/components/shared/Paginator";
 
 const USERS_QUERY_KEY = "users";
 const MESSAGES_QUERY_KEY = "messages";
@@ -65,10 +67,20 @@ const MARK_AS_READ_MESSAGE_MUTATION_KEY = "message_mark_as_read";
 const MessagingTab = () => {
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
+  const [paginator, setPaginator] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+  });
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm);
   const { data: messages, isFetching: isFetchingMessages } = useQuery({
-    queryKey: [MESSAGES_QUERY_KEY],
-    queryFn: () => getAllMessagesApi(),
+    queryKey: [MESSAGES_QUERY_KEY, paginator.page, debouncedSearchTerm],
+    queryFn: () =>
+      getAllMessagesApi({
+        pagination: { page: paginator.page, limit: paginator.limit },
+        filters: { search: debouncedSearchTerm },
+      }),
     select: useCallback((data: MessagesQueryResponse) => {
       return data.messages.map((message) => ({
         id: message._id,
@@ -148,7 +160,7 @@ const MessagingTab = () => {
     markAsRead({ id: messageId, isRead: true });
   };
   return (
-    <TabsContent value="messaging" className="space-y-6">
+    <TabsContent value="messages" className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -458,6 +470,7 @@ const MessagingTab = () => {
               ))}
             </TableBody>
           </Table>
+          <Paginator paginator={paginator} setPaginator={setPaginator} />
         </CardContent>
       </Card>
     </TabsContent>

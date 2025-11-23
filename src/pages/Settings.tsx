@@ -3,9 +3,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileTab from "@/components/pages/settings/tabs/ProfileTab";
 import CompanyTab from "@/components/pages/settings/tabs/CompanyTab";
 import SecurityTab from "@/components/pages/settings/tabs/SecurityTab";
+import { useSearchParams } from "react-router-dom";
 // import NotificationTab from "@/components/pages/settings/tabs/NotificationTab";
 
 const Settings = () => {
+  const [URLSearchParams, setURLSearchParams] = useSearchParams();
+  const tab = URLSearchParams.get("tab") || "profile";
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -16,7 +19,16 @@ const Settings = () => {
         </p>
       </div>
 
-      <Tabs defaultValue="profile" className="w-full">
+      <Tabs
+        defaultValue={tab}
+        onValueChange={(value) => {
+          setURLSearchParams((prev) => {
+            prev.set("tab", value);
+            return prev;
+          });
+        }}
+        className="w-full"
+      >
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="profile">Profile Information</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>

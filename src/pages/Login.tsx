@@ -1,5 +1,5 @@
 import { Eye, EyeClosed } from "lucide-react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -20,8 +20,10 @@ import {
 } from "@/components/ui/card";
 import { loginApi } from "@/api/auth/login.api";
 import { useState } from "react";
+import { ROUTES } from "@/constants/routes";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { token, isLoading, setToken, setIsLoading } = useAuthStore();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -48,6 +50,7 @@ const Login = () => {
         description: "Welcome back!",
         richColors: true,
       });
+      navigate(ROUTES.DASHBOARD);
     } catch (error) {
       console.error(error);
       toast.error("Login Failed", {
@@ -59,7 +62,7 @@ const Login = () => {
     setIsLoading(false);
   };
 
-  if (token) return <Navigate to="/dashboard" replace />;
+  if (token) return <Navigate to={ROUTES.DASHBOARD} replace />;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 px-4">
@@ -67,9 +70,9 @@ const Login = () => {
         <CardHeader className="space-y-4 px-8 text-center">
           <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-blue-600/20">
             <img
-              src="/landmark-projects-icon.png"
+              src="/landmark-icon.jpg"
               alt="logo"
-              className="size-full p-2"
+              className="size-full rounded-full object-cover"
             />
           </div>
           <div>

@@ -1,12 +1,17 @@
+import { ROUTES } from "@/constants/routes";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { useAuthStore } from "@/lib/store/use-auth-store";
+import { Link } from "react-router-dom";
 
 const UserCard = () => {
   const user = useAuthStore((state) => state.user);
 
   const baseUrl = import.meta.env.VITE_BASE_URL;
   return (
-    <div className="flex h-auto w-full items-center justify-start space-x-3 p-2">
+    <Link
+      to={ROUTES.SETTINGS}
+      className="flex h-auto w-full cursor-pointer items-center justify-start space-x-3 rounded-lg px-4 py-2 hover:bg-blue-50"
+    >
       <div className="flex size-12 items-center justify-center overflow-hidden rounded-full bg-blue-100">
         {user?.profileImageUrl ? (
           <img
@@ -28,7 +33,7 @@ const UserCard = () => {
           {formatCamelCaseToText(user?.role || "")}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

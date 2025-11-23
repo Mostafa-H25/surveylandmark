@@ -3,8 +3,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, AlertTriangle } from "lucide-react";
 import MessagingTab from "@/components/pages/notifications/tabs/MessagingTab";
 import NotificationsTab from "@/components/pages/notifications/tabs/NotificationsTab";
+import { useSearchParams } from "react-router-dom";
 
 const Messages = () => {
+  const [URLSearchParams, setURLSearchParams] = useSearchParams();
+  const tab = URLSearchParams.get("tab") || "messages";
   return (
     <div className="space-y-6">
       <div>
@@ -16,13 +19,25 @@ const Messages = () => {
         </p>
       </div>
 
-      <Tabs defaultValue="messaging" className="w-full">
+      <Tabs
+        defaultValue={tab}
+        onValueChange={(value) => {
+          setURLSearchParams((prev) => {
+            prev.set("tab", value);
+            return prev;
+          });
+        }}
+        className="w-full"
+      >
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="messaging" className="flex items-center gap-2">
+          <TabsTrigger value="messages" className="flex items-center gap-2">
             <MessageSquare className="size-4" />
             Internal Messaging (To Individuals / Teams)
           </TabsTrigger>
-          <TabsTrigger value="alerts" className="flex items-center gap-2">
+          <TabsTrigger
+            value="notifications"
+            className="flex items-center gap-2"
+          >
             <AlertTriangle className="size-4" />
             Alerts (Deadlines – Payment Approvals – Inventory Shortage)
           </TabsTrigger>

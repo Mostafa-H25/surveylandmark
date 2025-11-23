@@ -31,6 +31,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { formatDate } from "@/helpers/formatDate";
+import { ROUTES } from "@/constants/routes";
 
 const Standards = () => {
   const navigate = useNavigate();
@@ -164,7 +165,7 @@ const Standards = () => {
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
-              onClick={() => navigate(`/project/${projectId}`)}
+              onClick={() => navigate(ROUTES.PROJECT(projectId))}
               className="flex cursor-pointer items-center gap-2"
             >
               <ArrowLeft className="size-4" />

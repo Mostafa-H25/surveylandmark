@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ROUTES } from "@/constants/routes";
 import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
@@ -29,7 +30,8 @@ const ConstructionContractors = ({ data }: Props) => {
   }));
 
   const handleViewContractor = (id: string) =>
-    navigate(`/project/${projectId}/contractors/${id}`);
+    navigate(ROUTES.CONTRACTOR(projectId, id));
+
   return (
     <Table>
       <TableHeader>

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -61,6 +61,7 @@ import EmptyDepartmentCard from "@/components/pages/project-details/EmptyDepartm
 import { getBuildingsByProjectIdApi } from "@/api/projects/get-buildings-by-project-id.api";
 import { getFloorsByBuildingIdApi } from "@/api/projects/get-floors-by-building-id.api";
 import { getUnitsByFloorIdApi } from "@/api/projects/get-units-by-floors-id.api";
+import { ROUTES } from "@/constants/routes";
 
 const PROJECT_QUERY_KEY = "project";
 const DEPARTMENTS_QUERY_KEY = "departments";
@@ -71,9 +72,11 @@ const UNITS_QUERY_KEY = "units";
 const ProjectDetails = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const [URLSearchParams, setURLSearchParams] = useSearchParams();
+  const urlMain = URLSearchParams.get("main") as DepartmentType | null;
 
   const [selectedDepartment, setSelectedDepartment] = useState<DepartmentType>(
-    CategoriesEnum.CONSTRUCTION,
+    urlMain ?? CategoriesEnum.CONSTRUCTION,
   );
 
   const [selectedBuilding, setSelectedBuilding] = useState<string>("");
@@ -192,7 +195,7 @@ const ProjectDetails = () => {
   };
 
   const handleBack = () => {
-    navigate("/clients");
+    navigate(ROUTES.CLIENTS);
   };
 
   // const handleEdit = () => {};
@@ -693,9 +696,15 @@ const ProjectDetails = () => {
           </div>
           <Tabs
             value={selectedDepartment}
-            onValueChange={(value) =>
-              setSelectedDepartment(value as DepartmentType)
-            }
+            onValueChange={(value) => {
+              setSelectedDepartment(value as DepartmentType);
+              setURLSearchParams((prev) => {
+                prev.set("main", value);
+                prev.delete("section");
+                prev.delete("sub-section");
+                return prev;
+              });
+            }}
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-3">

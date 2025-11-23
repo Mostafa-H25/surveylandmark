@@ -22,6 +22,8 @@ import ClientsManagement from "./pages/ClientsManagement";
 
 import { ProtectedRoute } from "./guards/ProtectedRoute";
 import UserInvitation from "./pages/UserInvitation";
+import { ROUTES } from "./constants/routes";
+import { UserRolesEnum } from "./constants/defaults";
 
 let previousUrl = "";
 let currentUrl = "";
@@ -44,11 +46,11 @@ const AppRoutes = () => {
   }, [pathname]);
   return (
     <Routes>
-      <Route path="/sign-up" element={<Registration />} />
-      <Route path="/sign-in" element={<Login />} />
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path={ROUTES.SIGN_UP} element={<Registration />} />
+      <Route path={ROUTES.SIGN_IN} element={<Login />} />
+      <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
       <Route
-        path="/dashboard"
+        path={ROUTES.DASHBOARD}
         element={
           <ProtectedRoute>
             <Dashboard />
@@ -56,7 +58,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/invite-team-members"
+        path={ROUTES.INVITE}
         element={
           <ProtectedRoute>
             <UserInvitation />
@@ -64,15 +66,15 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/users"
+        path={ROUTES.USERS}
         element={
-          <ProtectedRoute requiredRole="admin">
+          <ProtectedRoute requiredRole={UserRolesEnum.SUPER_ADMIN}>
             <UsersManagement />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/clients"
+        path={ROUTES.CLIENTS}
         element={
           <ProtectedRoute>
             <ClientsManagement />
@@ -80,7 +82,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/project/new"
+        path={ROUTES.NEW_PROJECT}
         element={
           <ProtectedRoute>
             <NewProject />
@@ -88,7 +90,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/project/:projectId/units/:unitId"
+        path={ROUTES.UNIT()}
         element={
           <ProtectedRoute>
             <UnitDetails />
@@ -96,7 +98,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/project/:projectId/items/:itemId"
+        path={ROUTES.ITEM()}
         element={
           <ProtectedRoute>
             <ItemDetails />
@@ -104,7 +106,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/project/:projectId/members/:memberId"
+        path={ROUTES.MEMBER()}
         element={
           <ProtectedRoute>
             <MemberProfile />
@@ -112,7 +114,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/project/:projectId/contractors/:contractorId"
+        path={ROUTES.CONTRACTOR()}
         element={
           <ProtectedRoute>
             <ContractorProfile />
@@ -120,24 +122,15 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/project/:projectId"
+        path={ROUTES.PROJECT()}
         element={
           <ProtectedRoute>
             <ProjectDetails />
           </ProtectedRoute>
         }
       />
-      {/* 
       <Route
-        path="/project/:projectId/standards"
-        element={
-          <ProtectedRoute>
-            <Standards />
-          </ProtectedRoute>
-        }
-      /> */}
-      <Route
-        path="/messages"
+        path={ROUTES.MESSAGES}
         element={
           <ProtectedRoute>
             <Messages />
@@ -145,7 +138,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/reports"
+        path={ROUTES.REPORTS}
         element={
           <ProtectedRoute>
             <Reports />
@@ -153,7 +146,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/payments"
+        path={ROUTES.PAYMENTS}
         element={
           <ProtectedRoute>
             <Payments />
@@ -161,7 +154,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/settings"
+        path={ROUTES.SETTINGS}
         element={
           <ProtectedRoute>
             <Settings />

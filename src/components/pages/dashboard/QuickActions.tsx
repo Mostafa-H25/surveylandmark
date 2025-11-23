@@ -17,6 +17,7 @@ import { ReportTypesEnum, UserRolesEnum } from "@/constants/defaults";
 import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 import AddClientDialogQuickActions from "../clients/dialogs/add-client/AddClientDialogQuickActions";
+import { ROUTES } from "@/constants/routes";
 
 const QuickActions = () => {
   const user = useAuthStore((state) => state.user);
@@ -29,11 +30,11 @@ const QuickActions = () => {
   const [openGenerateDialog, setOpenGenerateDialog] = useState(false);
 
   const handleNewProject = () => {
-    navigate("/project/new");
+    navigate(ROUTES.NEW_PROJECT);
   };
 
   const handleManageUsers = () => {
-    navigate("/users");
+    navigate(ROUTES.USERS);
   };
 
   if (isMember) return null;

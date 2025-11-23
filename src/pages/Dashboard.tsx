@@ -25,6 +25,7 @@ import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboardApi } from "@/api/dashboard/get-dashboard.api";
 import { useCallback } from "react";
+import { ROUTES } from "@/constants/routes";
 
 const DASHBOARD_QUERY_KEY = "dashboard";
 
@@ -58,7 +59,7 @@ const Dashboard = () => {
         </div>
         <div className="flex items-center gap-4">
           <Button
-            onClick={() => navigate("/messages")}
+            onClick={() => navigate(`${ROUTES.MESSAGES}?tab=notifications`)}
             variant={"ghost"}
             className="cursor-pointer rounded-full p-2 text-blue-500 hover:bg-blue-100"
           >
@@ -91,7 +92,7 @@ const Dashboard = () => {
               Start by inviting team members to collaborate on survey projects.
             </p>
             <Button
-              onClick={() => navigate("/invite-team-members")}
+              onClick={() => navigate(ROUTES.INVITE)}
               className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
             >
               <Plus className="size-5" />

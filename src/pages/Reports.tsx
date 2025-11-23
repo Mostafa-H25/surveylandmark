@@ -28,9 +28,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllReportsApi } from "@/api/reports/get-all-reports.api";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/helpers/formatDate";
-import { CircleSlash, Download } from "lucide-react";
+import { CircleSlash, Download, Search } from "lucide-react";
 import { downloadReport } from "@/helpers/downloadFile";
 import Paginator from "@/components/shared/Paginator";
+import { useDebounce } from "@/hooks/use-debounce";
+import { Input } from "@/components/ui/input";
 
 const PROJECT_REPORTS_QUERY_KEY = "project_reports";
 
@@ -40,6 +42,8 @@ const Reports = () => {
     limit: 10,
     total: 0,
   });
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm);
 
   // const [openGenerateDialog, setOpenGenerateDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
@@ -58,10 +62,11 @@ const Reports = () => {
     setOpenViewDialog(true);
   };
   const { data, isFetching } = useQuery({
-    queryKey: [PROJECT_REPORTS_QUERY_KEY, paginator.page],
+    queryKey: [PROJECT_REPORTS_QUERY_KEY, paginator.page, debouncedSearchTerm],
     queryFn: () =>
       getAllReportsApi({
         pagination: { page: paginator.page, limit: paginator.limit },
+        filters: { search: debouncedSearchTerm },
       }),
     select: useCallback((data: ReportsQueryResponse) => {
       return {
@@ -121,6 +126,17 @@ const Reports = () => {
           </div>
         </CardHeader>
         <CardContent>
+          <div className="border-b border-gray-200 pb-6">
+            <div className="relative flex-1">
+              <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 transform text-gray-400" />
+              <Input
+                placeholder="Search by client or project..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
           <Table>
             <TableHeader>
               <TableRow>

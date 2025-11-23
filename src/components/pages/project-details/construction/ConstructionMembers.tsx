@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ROUTES } from "@/constants/routes";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -28,7 +29,7 @@ const ConstructionMembers = ({ data }: Props) => {
   }));
 
   const handleViewMember = (id: string) =>
-    navigate(`/project/${projectId}/members/${id}`);
+    navigate(ROUTES.MEMBER(projectId, id));
 
   return (
     <Table>

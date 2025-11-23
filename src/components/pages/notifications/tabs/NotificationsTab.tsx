@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   CircleSlash,
+  Search,
   // CheckCircle
 } from "lucide-react";
 
@@ -39,6 +40,8 @@ import {
 } from "@/components/ui/empty";
 import Paginator from "@/components/shared/Paginator";
 import { formatDate } from "@/helpers/formatDate";
+import { useDebounce } from "@/hooks/use-debounce";
+import { Input } from "@/components/ui/input";
 
 // import ViewNotificationDialog from "../dialogs/ViewNotificationDialog";
 
@@ -50,12 +53,16 @@ const NotificationsTab = () => {
     limit: 10,
     total: 0,
   });
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const debouncedSearchTerm = useDebounce(searchTerm);
 
   const { data, isFetching: isFetchingNotifications } = useQuery({
-    queryKey: [NOTIFICATIONS_QUERY_KEY, paginator.page],
+    queryKey: [NOTIFICATIONS_QUERY_KEY, paginator.page, debouncedSearchTerm],
     queryFn: () =>
       getAllNotificationsApi({
         pagination: { page: paginator.page, limit: paginator.limit },
+        filters: { search: debouncedSearchTerm },
       }),
     select: useCallback((data: NotificationsQueryResponse) => {
       return {
@@ -92,7 +99,7 @@ const NotificationsTab = () => {
   // };
 
   return (
-    <TabsContent value="alerts" className="space-y-6">
+    <TabsContent value="notifications" className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -104,6 +111,17 @@ const NotificationsTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="border-b border-gray-200 pb-6">
+            <div className="relative flex-1">
+              <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 transform text-gray-400" />
+              <Input
+                placeholder="Search by client or project..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
           <Table>
             <TableHeader>
               <TableRow>

@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ROUTES } from "@/constants/routes";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import { formatPhoneNumber } from "@/helpers/formatPhoneNumber";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,7 +23,7 @@ const SalesMembers = ({ data }: Props) => {
   const members = data.data.map((member) => member);
 
   const handleViewMember = (id: string) =>
-    navigate(`/project/${projectId}/members/${id}`);
+    navigate(ROUTES.MEMBER(projectId, id));
 
   return (
     <Table>

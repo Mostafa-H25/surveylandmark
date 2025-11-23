@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ROUTES } from "@/constants/routes";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -40,7 +41,7 @@ const ConstructionItems = ({ data }: Props) => {
   }));
 
   const handleViewItem = (unitId: string) => {
-    navigate(`/project/${projectId}/items/${unitId}`);
+    navigate(ROUTES.UNIT(projectId, unitId));
   };
 
   return (

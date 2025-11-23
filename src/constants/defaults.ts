@@ -22,6 +22,7 @@ import {
   AlertTriangle,
   Calendar,
 } from "lucide-react";
+import { ROUTES } from "./routes";
 
 export const KILOBYTE = 1024 as const;
 export const SIZES = ["Bytes", "KB", "MB", "GB"] as const;
@@ -101,22 +102,22 @@ interface NavigationItem {
 }
 
 export const navigation: NavigationItem[] = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
   {
     name: "Users Management",
-    href: "/users",
+    href: ROUTES.USERS,
     icon: Users,
     requiredRole: UserRolesEnum.SUPER_ADMIN,
   },
-  { name: "Clients & Projects", href: "/clients", icon: Building2 },
+  { name: "Clients & Projects", href: ROUTES.CLIENTS, icon: Building2 },
   {
     name: "Notifications & Messages",
-    href: "/messages",
+    href: ROUTES.MESSAGES,
     icon: MessageSquare,
   },
-  { name: "Reports", href: "/reports", icon: FileText },
-  { name: "Payments", href: "/payments", icon: Banknote },
-  { name: "Settings", href: "/settings", icon: Settings },
+  { name: "Reports", href: ROUTES.REPORTS, icon: FileText },
+  { name: "Payments", href: ROUTES.PAYMENTS, icon: Banknote },
+  { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
 ];
 
 export const CategoriesEnum: Record<string, DepartmentType> = {

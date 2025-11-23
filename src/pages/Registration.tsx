@@ -23,6 +23,7 @@ import {
 import { toast } from "sonner";
 import { signupApi } from "@/api/user/sign-up.ts.api";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
+import { ROUTES } from "@/constants/routes";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Registration = () => {
         description: `User account has been created successfully.`,
         richColors: true,
       });
-      navigate("/sign-in");
+      navigate(ROUTES.SIGN_IN);
     } catch (error) {
       console.error(error);
       defaultErrorToast((error as Error).message);
@@ -59,7 +60,7 @@ const Registration = () => {
     setIsSubmitting(false);
   };
 
-  if (token) return <Navigate to="/dashboard" replace />;
+  if (token) return <Navigate to={ROUTES.DASHBOARD} replace />;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 px-4">
@@ -68,9 +69,9 @@ const Registration = () => {
           <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-600">
             <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-blue-600/20">
               <img
-                src="/landmark-projects-icon.png"
+                src="/landmark-icon.jpg"
                 alt="logo"
-                className="size-full p-2"
+                className="size-full rounded-full object-cover"
               />
             </div>
           </div>
@@ -292,7 +293,7 @@ const Registration = () => {
           <p className="w-full text-center text-base text-gray-600">
             <span>Already have an account?&nbsp;</span>
             <Link
-              to="/sign-in"
+              to={ROUTES.SIGN_IN}
               className="text-blue-600 underline-offset-2 hover:underline"
             >
               Sign in

@@ -30,7 +30,7 @@ import ConstructionMaterials from "../construction/ConstructionMaterials";
 import ConstructionContractors from "../construction/ConstructionContractors";
 import { useQuery } from "@tanstack/react-query";
 import { getDepartmentSectionByProjectIdApi } from "@/api/projects/get-department-section-by-Project-id.api";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import {
   Dialog,
@@ -56,18 +56,23 @@ type Props = { selectedDepartment: DepartmentType };
 
 const ConstructionTab = ({ selectedDepartment }: Props) => {
   const { projectId } = useParams();
+  const [URLSearchParams, setURLSearchParams] = useSearchParams();
+  const urlSection = URLSearchParams.get("section") as ConstructionView | null;
+  const urlSubSection = URLSearchParams.get(
+    "sub-section",
+  ) as PaymentType | null;
 
   const [expand, setExpand] = useState(false);
   const [paginator, setPaginator] = useState({ page: 1, limit: 10, total: 0 });
 
-  const [selectedOption, setSelectedOption] = useState<ConstructionView>(
-    ConstructionSectionsEnum.OVERVIEW,
+  const [selectedSection, setSelectedSection] = useState<ConstructionView>(
+    urlSection ?? ConstructionSectionsEnum.OVERVIEW,
   );
   const [selectedPaymentType, setSelectedPaymentType] = useState<PaymentType>(
-    PaymentsSectionsEnum.PAYMENT,
+    urlSubSection ?? PaymentsSectionsEnum.PAYMENT,
   );
 
-  const isPaymentsView = ConstructionSectionsEnum.PAYMENTS === selectedOption;
+  const isPaymentsView = ConstructionSectionsEnum.PAYMENTS === selectedSection;
 
   const isConstructionSelected =
     selectedDepartment === CategoriesEnum.CONSTRUCTION;
@@ -76,16 +81,16 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
     queryKey: [
       DEPARTMENTS_QUERY_KEY,
       selectedDepartment,
-      selectedOption,
+      selectedSection,
       selectedPaymentType,
       paginator.page,
     ],
-    enabled: isConstructionSelected && !!selectedOption,
+    enabled: isConstructionSelected && !!selectedSection,
     queryFn: () =>
       getDepartmentSectionByProjectIdApi(
         projectId!,
         selectedDepartment,
-        selectedOption,
+        selectedSection,
         selectedPaymentType,
         { pagination: { page: paginator.page, limit: paginator.limit } },
       ),
@@ -103,7 +108,7 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
 
   const Section = useMemo(() => {
     if (!data) return <></>;
-    switch (selectedOption) {
+    switch (selectedSection) {
       case ConstructionSectionsEnum.OVERVIEW:
         return <ConstructionOverview data={data as OverviewQueryResponse} />;
       case ConstructionSectionsEnum.TEAM:
@@ -124,7 +129,7 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
       default:
         return <></>;
     }
-  }, [selectedOption, data, selectedPaymentType]);
+  }, [selectedSection, data, selectedPaymentType]);
 
   return (
     <TabsContent
@@ -134,10 +139,15 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
       <div className="space-y-4 rounded-lg border bg-white p-4">
         <div className="flex w-full items-center justify-between gap-4">
           <Select
-            value={selectedOption}
-            onValueChange={(value) =>
-              setSelectedOption(value as ConstructionView)
-            }
+            value={selectedSection}
+            onValueChange={(value) => {
+              setSelectedSection(value as ConstructionView);
+              setURLSearchParams((prev) => {
+                prev.set("section", value);
+                prev.delete("sub-section");
+                return prev;
+              });
+            }}
           >
             <SelectTrigger className="w-64 capitalize">
               <SelectValue />
@@ -157,9 +167,13 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
           {isPaymentsView && (
             <Tabs
               value={selectedPaymentType}
-              onValueChange={(value) =>
-                setSelectedPaymentType(value as PaymentType)
-              }
+              onValueChange={(value) => {
+                setSelectedPaymentType(value as PaymentType);
+                setURLSearchParams((prev) => {
+                  prev.set("sub-section", value);
+                  return prev;
+                });
+              }}
             >
               <TabsList className="grid grid-cols-3 capitalize">
                 <TabsTrigger value={PaymentsSectionsEnum.PAYMENT}>
@@ -185,7 +199,7 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
                 <DialogContent className="!w-4xl max-w-screen px-4">
                   <DialogHeader>
                     <DialogTitle className="capitalize">
-                      {selectedDepartment} - {selectedOption}
+                      {selectedDepartment} - {selectedSection}
                       {selectedPaymentType ? " - " + selectedPaymentType : ""}
                     </DialogTitle>
                   </DialogHeader>
