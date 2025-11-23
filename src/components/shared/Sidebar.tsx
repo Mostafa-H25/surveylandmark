@@ -25,7 +25,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="fixed inset-y-0 flex w-64 flex-col border-r border-gray-200 bg-white">
+    <div className="fixed inset-y-0 z-10 flex w-64 flex-col border-r border-gray-200 bg-white">
       <div className="flex h-16 items-center border-b px-6">
         <h1 className="text-xl font-bold text-blue-600">LANDMARK Projects</h1>
       </div>
