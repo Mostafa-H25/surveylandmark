@@ -164,14 +164,6 @@ const UnitDetails = () => {
                         Floor {unit.floor}
                       </p>
                     </div>
-                    {/* <div>
-                      <label className="text-sm font-medium text-gray-500">
-                        Model
-                      </label>
-                      <p className="text-lg font-semibold text-gray-900">
-                        {unit.model}
-                      </p>
-                    </div> */}
                     <div>
                       <label className="text-sm font-medium text-gray-500">
                         Unit Name
@@ -227,9 +219,6 @@ const UnitDetails = () => {
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   {unit.salesTeam.map((member) => (
                     <div key={member.id} className="space-y-2">
-                      {/* <label className="text-sm font-medium text-gray-500">
-                        Sales Manager
-                      </label> */}
                       <div className="flex items-center gap-3">
                         <div className="flex size-10 items-center justify-center rounded-full bg-blue-100">
                           <User className="size-5 text-blue-600" />
@@ -320,7 +309,6 @@ const UnitDetails = () => {
             </Card>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
             <Card className="border-0 bg-white shadow-lg">
               <CardHeader className="border-b border-gray-200 bg-gray-50/50">

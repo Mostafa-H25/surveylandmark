@@ -39,7 +39,6 @@ const UserRolesPermissionsForm = ({
 
   const defaultValues = {
     role: user?.role || "",
-    // permission: user?.permissions || "",
   };
 
   const form = useForm({ defaultValues, mode: "onBlur" });
@@ -113,47 +112,7 @@ const UserRolesPermissionsForm = ({
           </div>
         )}
       />
-      {/* <Controller
-        control={control}
-        name="permission"
-        rules={{
-          required: "Permission field is required.",
-          validate: {
-            isEmpty: (value) => validateEmptyAfterTrim(value, "Permission"),
-          },
-        }}
-        render={({ field, fieldState: { error } }) => (
-          <div>
-            <div>
-              <Label htmlFor={field.name}>Access Level</Label>
-              <Select
-                {...field}
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select access level" />
-                </SelectTrigger>
-                <SelectContent>
-                  {userPermissions.map((permission) => (
-                    <SelectItem
-                      key={permission}
-                      value={permission}
-                      disabled={currentUser?.email === user.email}
-                      className="capitalize"
-                    >
-                      {formatCamelCaseToText(permission)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {error && (
-              <span className="text-sm text-red-500">{error?.message}</span>
-            )}
-          </div>
-        )}
-      /> */}
+
       <div className="flex justify-end gap-2">
         <Button
           type="button"

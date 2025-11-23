@@ -1,17 +1,8 @@
-import {
-  AlertTriangle,
-  CircleSlash,
-  Search,
-  // CheckCircle
-} from "lucide-react";
+import { AlertTriangle, CircleSlash, Search } from "lucide-react";
 
-// import { alerts as notifications } from "@/assets/data";
-// import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Alerts } from "@/constants/defaults";
-// import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
-// import { getPriorityColor } from "@/helpers/getPriorityColor";
 import {
   Card,
   CardContent,
@@ -42,8 +33,6 @@ import Paginator from "@/components/shared/Paginator";
 import { formatDate } from "@/helpers/formatDate";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Input } from "@/components/ui/input";
-
-// import ViewNotificationDialog from "../dialogs/ViewNotificationDialog";
 
 const NOTIFICATIONS_QUERY_KEY = "notifications";
 
@@ -91,12 +80,6 @@ const NotificationsTab = () => {
       }));
     }
   }, [data]);
-  // const handleResolveAlert = (alertId: string) => {
-  //   toast.success("Alert Resolved", {
-  //     description: "Alert has been marked as resolved.",
-  //     richColors: true,
-  //   });
-  // };
 
   return (
     <TabsContent value="notifications" className="space-y-6">
@@ -128,10 +111,8 @@ const NotificationsTab = () => {
                 <TableHead>Type</TableHead>
                 <TableHead>Alert</TableHead>
                 <TableHead>Project</TableHead>
-                {/* <TableHead>Priority</TableHead> */}
                 <TableHead>Timestamp</TableHead>
                 <TableHead>Status</TableHead>
-                {/* <TableHead>Actions</TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -155,9 +136,7 @@ const NotificationsTab = () => {
                         <EmptyTitle>No data</EmptyTitle>
                         <EmptyDescription>No data found</EmptyDescription>
                       </EmptyHeader>
-                      <EmptyContent>
-                        {/* <Button>Add data</Button> */}
-                      </EmptyContent>
+                      <EmptyContent></EmptyContent>
                     </Empty>
                   </TableCell>
                 </TableRow>
@@ -183,13 +162,6 @@ const NotificationsTab = () => {
                       </div>
                     </TableCell>
                     <TableCell>{notification?.project?.name}</TableCell>
-                    {/* <TableCell>
-                      <Badge
-                        className={getPriorityColor(notification.priority)}
-                      >
-                        {notification.priority}
-                      </Badge>
-                    </TableCell> */}
                     <TableCell className="text-sm text-gray-500">
                       {formatDate(notification.createdAt)}
                     </TableCell>
@@ -204,19 +176,6 @@ const NotificationsTab = () => {
                         {notification.status}
                       </Badge>
                     </TableCell>
-                    {/* <TableCell>
-                      <div className="flex gap-2">
-                        <ViewNotificationDialog alert={notification} />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleResolveAlert(notification.id)}
-                        >
-                          <CheckCircle className="mr-1 size-4" />
-                          Resolve
-                        </Button>
-                      </div>
-                    </TableCell> */}
                   </TableRow>
                 );
               })}

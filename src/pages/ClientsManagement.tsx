@@ -108,10 +108,6 @@ const ClientsManagement = () => {
     navigate(ROUTES.PROJECT(projectId));
   };
 
-  // const calculateTotalBudget = (projects: Project[]) => {
-  //   return projects.reduce((total, project) => total + project.totalBudget, 0);
-  // };
-
   return (
     <div className="flex h-full flex-col gap-6">
       <div className="flex items-center justify-between">
@@ -128,7 +124,6 @@ const ClientsManagement = () => {
         <AddClientDialog />
       </div>
 
-      {/* Search */}
       <Card>
         <CardContent className="pt-6">
           <div className="relative">
@@ -143,7 +138,6 @@ const ClientsManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Clients List */}
       <div className="h-full flex-1 space-y-4">
         {isFetching && !clients && (
           <div className="flex h-full w-full items-center justify-center p-8">
@@ -159,7 +153,7 @@ const ClientsManagement = () => {
               <EmptyTitle>No data</EmptyTitle>
               <EmptyDescription>No data found</EmptyDescription>
             </EmptyHeader>
-            <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+            <EmptyContent></EmptyContent>
           </Empty>
         )}
 
@@ -294,117 +288,6 @@ const ClientsManagement = () => {
                           </div>
                         </div>
                       </div>
-
-                      {/* <Tabs defaultValue="construction" className="w-full">
-                          <TabsList className="grid w-full grid-cols-4">
-                            <TabsTrigger value="construction">
-                              <HammerIcon className="mr-2 size-4" />
-                              Construction
-                            </TabsTrigger>
-                            <TabsTrigger value="sales">
-                              <DollarSign className="mr-2 size-4" />
-                              Sales
-                            </TabsTrigger>
-                            <TabsTrigger value="storage">
-                              <Box className="mr-2 size-4" />
-                              Storage
-                            </TabsTrigger>
-                            <TabsTrigger value="standards">
-                              <Settings className="mr-2 size-4" />
-                              Standards
-                            </TabsTrigger>
-                          </TabsList>
-
-                          {project.departments.map((department) => (
-                          <TabsContent
-                            key={department.id}
-                            value={department.name}
-                            className="mt-4"
-                          >
-                            <div className="rounded-lg border bg-white p-4">
-                              <div className="mb-3 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                  {React.createElement(
-                                    getDepartmentIcon(department.name),
-                                    {
-                                      className: "size-5 text-gray-600",
-                                    },
-                                  )}
-                                  <h6 className="font-medium text-gray-900">
-                                    {department.name.charAt(0).toUpperCase() +
-                                      department.name.slice(1)}
-                                    &nbsp;Department
-                                  </h6>
-                                </div>
-                                <Badge
-                                  className={getDepartmentColor(
-                                    department.name,
-                                  )}
-                                >
-                                  {department.name.charAt(0).toUpperCase() +
-                                    department.name.slice(1)}
-                                </Badge>
-                              </div>
-
-                              <div className="mb-3 grid grid-cols-2 gap-4">
-                                <div>
-                                  <p className="text-sm text-gray-600">
-                                    Manager
-                                  </p>
-                                  <p className="font-medium text-gray-900">
-                                    {department.manager}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-gray-600">
-                                    Budget
-                                  </p>
-                                  <p className="font-medium text-gray-900">
-                                    {formatCurrency(department.budget)}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-gray-600">
-                                    Start Date
-                                  </p>
-                                  <p className="font-medium text-gray-900">
-                                    {formatDate(
-                                      department.startDate,
-                                    )}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-gray-600">
-                                    Progress
-                                  </p>
-                                  <div className="flex items-center gap-2">
-                                    <div className="h-2 min-w-20 flex-1 rounded-full bg-gray-200">
-                                      <div
-                                        className="h-2 rounded-full bg-blue-600 transition-all"
-                                        style={{
-                                          width: `${department.progress}%`,
-                                        }}
-                                      ></div>
-                                    </div>
-                                    <span className="text-sm font-medium text-gray-900">
-                                      {department.progress}%
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <Badge
-                                className={cn(
-                                  "capitalize",
-                                  getProjectStatusColor(department.status),
-                                )}
-                              >
-                                {department.status.replaceAll("_", " ")}
-                              </Badge>
-                            </div>
-                          </TabsContent>
-                        ))}
-                        </Tabs> */}
                     </div>
                   ))}
                 </div>

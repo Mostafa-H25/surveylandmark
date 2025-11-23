@@ -30,7 +30,6 @@ const ContractorProfile = () => {
       return {
         id: data.member.id,
         name: data.member.personalData.fullName,
-        // fullName: data.member.personalData.fullName,
         role: data.member.role,
         email: data.member.personalData.email,
         phone: data.member.personalData.phone,
@@ -71,14 +70,11 @@ const ContractorProfile = () => {
           <EmptyTitle>No data</EmptyTitle>
           <EmptyDescription>No data found</EmptyDescription>
         </EmptyHeader>
-        <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+        <EmptyContent></EmptyContent>
       </Empty>
     );
   }
-  // const [paymentType] = useState("payment");
-  // const filteredPaymentData = contractor.payments.filter(
-  //   (payment) => payment.type === paymentType,
-  // );
+
   return (
     <main className="space-y-6">
       <header className="space-y-2 py-4">
@@ -143,9 +139,7 @@ const ContractorProfile = () => {
                 <p className="font-semibold text-gray-900 capitalize">
                   {contractor.currentProject.name}
                 </p>
-                {/* <p className="text-gray-900">
-                        {contractor.currentProject.location}
-                      </p> */}
+
                 <p className="text-gray-900">
                   {formatDate(contractor.currentProject.startDate)}&nbsp;-&nbsp;
                   {formatDate(contractor.currentProject.endDate)}
@@ -199,102 +193,6 @@ const ContractorProfile = () => {
             </div>
           </CardContent>
         </Card>
-        {/* <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <ListTodo className="size-5 text-blue-600" />
-              Current Project
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-4 space-y-4 text-sm lg:grid-cols-2">
-            <div className="space-y-2">
-              <div>
-                <p className="font-semibold text-gray-900">
-                  {contractor.currentProject.title}
-                </p>
-                <p className="text-gray-900">
-                  {contractor.currentProject.location}
-                </p>
-                <p className="text-gray-900">
-                  {contractor.currentProject.duration}
-                </p>
-                <p className="text-gray-900">
-                  {contractor.currentProject.description}
-                </p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <p className="text-gray-600">Responsibilities</p>
-              {contractor.responsibilities.map((responsibility, index) => (
-                <p key={responsibility} className="font-semibold text-gray-900">
-                  {index + 1}. {responsibility}
-                </p>
-              ))}
-            </div>
-          </CardContent>
-        </Card> */}
-        {/* <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between gap-4 text-lg">
-              <div className="flex items-center gap-2">
-                <ListTodo className="size-5 text-blue-600" />
-                <p>Payments</p>
-              </div>
-              <div>
-                <Tabs>
-                  <TabsList className="grid grid-cols-2">
-                    <TabsTrigger value="payment">Payments</TabsTrigger>
-                    <TabsTrigger value="deduction">Deduction</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Item</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Batch Month</TableHead>
-                  <TableHead>Documents</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredPaymentData.map((payment) => (
-                  <TableRow key={payment.id}>
-                    <TableCell>{payment.item}</TableCell>
-                    <TableCell>{formatCurrency(payment.amount)}</TableCell>
-                    <TableCell>
-                      {formatDate(payment.date)}
-                    </TableCell>
-
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          // onClick={() => handleViewMember(contractor.id)}
-                        >
-                          Download
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          // onClick={() => handleViewMember(contractor.id)}
-                        >
-                          View Document
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card> */}
       </div>
     </main>
   );

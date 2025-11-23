@@ -70,33 +70,17 @@ const StorageTab = ({ selectedDepartment }: Props) => {
                       {selectedDepartment}
                     </DialogTitle>
                   </DialogHeader>
-                  {/* {Section} */}
                 </DialogContent>
               </Dialog>
-              {/* <div>
-                <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
-                  <Download />
-                  Export
-                </Button>
-                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
-                  <ChevronDown />
-                </Button>
-              </div> */}
             </div>
           </div>
         </div>
         <Table>
           <TableHeader>
             <TableRow>
-              {/* <TableHead>Type</TableHead> */}
               <TableHead>Name</TableHead>
               <TableHead>Total Quantity</TableHead>
-              {/* <TableHead>Batch No.</TableHead>
-              <TableHead>Date of Supply</TableHead> */}
-              {/* <TableHead>Supplier</TableHead> */}
               <TableHead>Unit</TableHead>
-              {/* <TableHead>Recipient</TableHead> */}
-              {/* <TableHead>Actions</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -120,36 +104,16 @@ const StorageTab = ({ selectedDepartment }: Props) => {
                       <EmptyTitle>No data</EmptyTitle>
                       <EmptyDescription>No data found</EmptyDescription>
                     </EmptyHeader>
-                    <EmptyContent>
-                      {/* <Button>Add data</Button> */}
-                    </EmptyContent>
+                    <EmptyContent></EmptyContent>
                   </Empty>
                 </TableCell>
               </TableRow>
             )}
             {storage?.map((item) => (
               <TableRow key={item.id}>
-                {/* <TableCell className="font-medium">{item.type}</TableCell> */}
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.totalQuantity}</TableCell>
-                {/* <TableCell>{item.batchNo}</TableCell>
-                <TableCell>
-                  {formatDate(item.dateOfSupply)}
-                </TableCell> */}
-                {/* <TableCell>{item.supplier}</TableCell> */}
                 <TableCell>{item.unit}</TableCell>
-                {/* <TableCell>{item.recipient}</TableCell> */}
-
-                {/* <TableCell>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer"
-                    // onClick={() => handleViewMember(member.id)}
-                  >
-                    View Item
-                  </Button>
-                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

@@ -41,7 +41,7 @@ const ViewMessageDialog = ({ message }: Props) => {
           <DialogTitle>{selectedMessage?.subject}</DialogTitle>
           <DialogDescription>
             From: {selectedMessage?.from}
-            {/* | To: {selectedMessage?.to} */}&nbsp;|&nbsp;
+            &nbsp;|&nbsp;
             {selectedMessage?.createdAt
               ? formatDate(selectedMessage?.createdAt)
               : "-"}

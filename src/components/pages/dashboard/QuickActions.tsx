@@ -62,18 +62,7 @@ const QuickActions = () => {
             </div>
           </Button>
           <AddClientDialogQuickActions />
-          {/* <Button
-            variant="outline"
-            onClick={() => setOpenGenerateDialog(true)}
-            className="h-auto w-full justify-start p-4 text-left"
-          >
-            <div>
-              <div className="font-medium text-gray-900">Generate Report</div>
-              <div className="text-sm text-gray-600">
-                Create project progress reports
-              </div>
-            </div>
-          </Button> */}
+
           {isRequiredRoleOrHigher(UserRolesEnum.ADMIN, user?.role) && (
             <Button
               onClick={handleManageUsers}

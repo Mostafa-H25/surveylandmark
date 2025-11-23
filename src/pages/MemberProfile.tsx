@@ -1,4 +1,3 @@
-// import { memberData } from "@/assets/data";
 import { getMemberByIdApi } from "@/api/projects/get-member-by-id.api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -29,7 +28,6 @@ const MemberProfile = () => {
       return {
         id: data.member.id,
         name: data.member.personalData.fullName,
-        // fullName: data.member.personalData.fullName,
         role: data.member.role,
         email: data.member.personalData.email,
         phone: data.member.personalData.phone,
@@ -70,7 +68,7 @@ const MemberProfile = () => {
           <EmptyTitle>No data</EmptyTitle>
           <EmptyDescription>No data found</EmptyDescription>
         </EmptyHeader>
-        <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+        <EmptyContent></EmptyContent>
       </Empty>
     );
   }
@@ -123,20 +121,6 @@ const MemberProfile = () => {
               <p className="text-gray-600">Phone</p>
               <p className="font-semibold text-gray-900">{member.phone}</p>
             </div>
-            {/* <div className="space-y-2">
-              <p className="text-gray-600">Financial Limit</p>
-              <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  {member.financialLimit.amount}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Authorized by:&nbsp;
-                  <span className="font-semibold">
-                    {member.financialLimit.authorizedBy}
-                  </span>
-                </p>
-              </div>
-            </div> */}
           </CardContent>
         </Card>
         <Card>
@@ -152,9 +136,7 @@ const MemberProfile = () => {
                 <p className="font-semibold text-gray-900 capitalize">
                   {member.currentProject.name}
                 </p>
-                {/* <p className="text-gray-900">
-                  {member.currentProject.location}
-                </p> */}
+
                 <p className="text-gray-900">
                   {formatDate(member.currentProject.startDate)}&nbsp;-&nbsp;
                   {formatDate(member.currentProject.endDate)}

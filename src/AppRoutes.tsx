@@ -10,7 +10,6 @@ import NotFound from "./pages/NotFound";
 import ItemDetails from "./pages/ItemDetails";
 import Payments from "./pages/Payments";
 import Dashboard from "./pages/Dashboard";
-// import Standards from "./pages/Standards";
 import NewProject from "./pages/NewProject";
 import UnitDetails from "./pages/UnitDetails";
 import Registration from "./pages/Registration";

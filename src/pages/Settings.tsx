@@ -4,7 +4,6 @@ import ProfileTab from "@/components/pages/settings/tabs/ProfileTab";
 import CompanyTab from "@/components/pages/settings/tabs/CompanyTab";
 import SecurityTab from "@/components/pages/settings/tabs/SecurityTab";
 import { useSearchParams } from "react-router-dom";
-// import NotificationTab from "@/components/pages/settings/tabs/NotificationTab";
 
 const Settings = () => {
   const [URLSearchParams, setURLSearchParams] = useSearchParams();
@@ -32,13 +31,11 @@ const Settings = () => {
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="profile">Profile Information</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
-          {/* <TabsTrigger value="notification">Notifications</TabsTrigger> */}
           <TabsTrigger value="company">Company Info</TabsTrigger>
         </TabsList>
 
         <ProfileTab />
         <SecurityTab />
-        {/* <NotificationTab /> */}
         <CompanyTab />
       </Tabs>
     </div>

@@ -4,7 +4,6 @@ import { CheckCircle, CircleSlash, Search, Send } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { internalMessages } from "@/assets/data";
 import { TabsContent } from "@/components/ui/tabs";
 import {
   Card,
@@ -85,7 +84,6 @@ const MessagingTab = () => {
       return data.messages.map((message) => ({
         id: message._id,
         from: message.from.name,
-        // to: message.toUsers[0],
         subject: message.subject,
         body: message.body,
         priority: message.priority,
@@ -360,7 +358,6 @@ const MessagingTab = () => {
         </CardContent>
       </Card>
 
-      {/* Messages List */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -386,7 +383,6 @@ const MessagingTab = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>From</TableHead>
-                {/* <TableHead>To</TableHead> */}
                 <TableHead>Subject</TableHead>
                 <TableHead>Priority</TableHead>
                 <TableHead>Timestamp</TableHead>
@@ -415,9 +411,7 @@ const MessagingTab = () => {
                         <EmptyTitle>No data</EmptyTitle>
                         <EmptyDescription>No data found</EmptyDescription>
                       </EmptyHeader>
-                      <EmptyContent>
-                        {/* <Button>Add data</Button> */}
-                      </EmptyContent>
+                      <EmptyContent></EmptyContent>
                     </Empty>
                   </TableCell>
                 </TableRow>
@@ -428,7 +422,6 @@ const MessagingTab = () => {
                   className={message.status === "unread" ? "bg-blue-50" : ""}
                 >
                   <TableCell className="font-medium">{message.from}</TableCell>
-                  {/* <TableCell>{message.to}</TableCell> */}
                   <TableCell>
                     <div>
                       <div className="font-medium">{message.subject}</div>
@@ -504,13 +497,5 @@ type UsersQueryResponse = {
     id: string;
     name: string;
     email: string;
-    // phone: string;
-    // role: string;
-    // permmisions: string;
-    // canEdit: true;
-    // status: string;
-    // title: string;
-    // createdAt: string;
-    // projects: [];
   }[];
 };

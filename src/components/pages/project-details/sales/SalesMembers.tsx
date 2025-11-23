@@ -1,4 +1,3 @@
-// import { salesMembersData } from "@/assets/data";
 import { Button } from "@/components/ui/button";
 import {
   Table,

@@ -88,13 +88,12 @@ const ItemDetails = () => {
           <EmptyTitle>No data</EmptyTitle>
           <EmptyDescription>No data found</EmptyDescription>
         </EmptyHeader>
-        <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+        <EmptyContent></EmptyContent>
       </Empty>
     );
   }
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="border-b border-gray-200 bg-white px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -114,23 +113,6 @@ const ItemDetails = () => {
               <p className="text-sm text-gray-500">Item ID: {itemId}</p>
             </div>
           </div>
-          {/* <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowFilter(true)}
-              className="flex cursor-pointer items-center gap-2"
-            >
-              <Filter className="size-4" />
-              Filter
-            </Button>
-            <Button
-              size="sm"
-              className="cursor-pointer bg-blue-600 hover:bg-blue-700"
-            >
-              Edit Item
-            </Button>
-          </div> */}
         </div>
       </div>
 
@@ -215,7 +197,6 @@ const ItemDetails = () => {
               Confirmations
             </TabsTrigger>
             <TabsTrigger value={ItemTabsEnum.FINANCIAL}>Financial</TabsTrigger>
-            {/* <TabsTrigger value="evaluation">Evaluation</TabsTrigger> */}
           </TabsList>
 
           <TabsContent value={ItemTabsEnum.OVERVIEW} className="space-y-6">
@@ -246,47 +227,9 @@ const ItemDetails = () => {
                       </label>
                       <p className="mt-1 text-gray-900">{item?.contractor}</p>
                     </div>
-                    {/* <div>
-                      <label className="text-sm font-medium text-gray-500">
-                        Start Date
-                      </label>
-                      <div className="mt-1 flex items-center gap-2">
-                        <Calendar className="size-4 text-gray-400" />
-                        <span className="text-gray-900">{item?.startDate}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">
-                        Type
-                      </label>
-                      <p className="mt-1 text-gray-900">{item?.type}</p>
-                    </div> */}
                   </div>
                 </CardContent>
               </Card>
-
-              {/* <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Layers className="size-5" />
-                    Technical Specifications
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">
-                      Material
-                    </label>
-                    <p className="mt-1 text-gray-900">{item?.material}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">
-                      Dimensions
-                    </label>
-                    <p className="mt-1 text-gray-900">{item?.dimensions}</p>
-                  </div>
-                </CardContent>
-              </Card> */}
             </div>
           </TabsContent>
 
@@ -379,39 +322,6 @@ const ItemDetails = () => {
                   </div>
                 </CardContent>
               </Card>
-
-              {/* <Card>
-                <CardHeader>
-                  <CardTitle>Acceptance Details</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">
-                      Date of Acceptance
-                    </label>
-                    <div className="mt-1 flex items-center gap-2">
-                      <Calendar className="size-4 text-gray-400" />
-                      <span className="text-gray-900">
-                        {item?.dateOfAcceptance}
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">
-                      Manufacturer Cost
-                    </label>
-                    <div className="mt-1 flex items-center gap-2">
-                      <Factory className="size-4 text-gray-400" />
-                      <span className="text-gray-900">
-                        {item?.manufacturerCostPerDay
-                          ? formatCurrency(item?.manufacturerCostPerDay)
-                          : ""}
-                        /day
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card> */}
             </div>
 
             <div className="space-y-6">
@@ -447,9 +357,7 @@ const ItemDetails = () => {
                         <EmptyTitle>No data</EmptyTitle>
                         <EmptyDescription>No data found</EmptyDescription>
                       </EmptyHeader>
-                      <EmptyContent>
-                        {/* <Button>Add data</Button> */}
-                      </EmptyContent>
+                      <EmptyContent></EmptyContent>
                     </Empty>
                   )}
                   {item?.confirmations?.map((confirmation, index) => (
@@ -486,13 +394,6 @@ const ItemDetails = () => {
               </CardContent>
             </Card>
           </TabsContent>
-
-          {/* <TabsContent value="evaluation">
-            <EvaluationSection
-              rating={item?.contractorEvaluation}
-              contractor={item?.contractor}
-            />
-          </TabsContent> */}
         </Tabs>
       </div>
 
@@ -515,7 +416,6 @@ type ItemQueryResponse = {
   deductions: number;
   sundries: number;
   workItem: { id: string; name: string };
-  // descriptiveItem: {};
   contractor: {
     id: string;
     name: string;

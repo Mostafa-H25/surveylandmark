@@ -8,12 +8,9 @@ import { useAuthStore } from "@/lib/store/use-auth-store";
 import Projects from "@/components/pages/dashboard/Projects";
 import { roleHierarchy, UserRolesEnum } from "@/constants/defaults";
 import QuickActions from "@/components/pages/dashboard/QuickActions";
-// import RevenueTrendChart from "@/components/charts/RevenueTrendChart";
 import EnhancedStats from "@/components/pages/dashboard/EnhancedStats";
-// import ProjectStatusChart from "@/components/charts/ProjectStatusChart";
 import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
-// import MonthlyProgressChart from "@/components/charts/MonthlyProgressChart";
-// import DepartmentOverviewChart from "@/components/charts/DepartmentOverviewChart";
+
 import {
   Card,
   CardContent,
@@ -103,12 +100,7 @@ const Dashboard = () => {
       </Card>
       <EnhancedStats initialStats={data?.statistics} />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* <MonthlyProgressChart />
-        <ProjectStatusChart /> */}
-        {/* <RevenueTrendChart />
-        <DepartmentOverviewChart /> */}
-      </div>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2"></div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Projects initialProjects={data?.projects} />

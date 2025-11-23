@@ -24,14 +24,6 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className={headerColor}>{title}</CardTitle>
-            {/* <Button
-              variant="outline"
-              size="sm"
-              className="flex cursor-pointer items-center gap-2"
-            >
-              <Upload className="size-4" />
-              Upload Images
-            </Button> */}
           </div>
         </CardHeader>
         <CardContent>
@@ -45,24 +37,6 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
                     className="h-32 w-full cursor-pointer rounded-lg border object-cover transition-opacity hover:opacity-80"
                     onClick={() => setSelectedImage(image)}
                   />
-                  {/* <div className="bg-opacity-0 group-hover:bg-opacity-30 absolute inset-0 flex items-center justify-center rounded-lg bg-black transition-all">
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100">
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => setSelectedImage(image)}
-                      >
-                        <Eye className="size-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="cursor-pointer"
-                      >
-                        <Download className="size-4" />
-                      </Button>
-                    </div>
-                  </div> */}
                 </div>
               ))}
             </div>
@@ -70,15 +44,11 @@ const ImageGallery = ({ title, images, type }: ImageGalleryProps) => {
             <div className="py-8 text-center text-gray-500">
               <Upload className="mx-auto mb-4 size-12 text-gray-300" />
               <p>No images uploaded yet</p>
-              {/* <Button variant="outline" className="mt-4 cursor-pointer">
-                Upload First Image
-              </Button> */}
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Image Preview Dialog */}
       <Dialog
         open={!!selectedImage}
         onOpenChange={() => setSelectedImage(null)}

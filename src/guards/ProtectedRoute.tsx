@@ -50,7 +50,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={ROUTES.SIGN_IN} replace />;
   }
 
-  // Check role permissions
   if (requiredRole) {
     if (!isRequiredRoleOrHigher(requiredRole, user?.role)) {
       return <Navigate to={ROUTES.DASHBOARD} replace />;

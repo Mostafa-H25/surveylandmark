@@ -101,7 +101,7 @@ const UserInvitation = () => {
                   <EmptyTitle>No data</EmptyTitle>
                   <EmptyDescription>No data found</EmptyDescription>
                 </EmptyHeader>
-                <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+                <EmptyContent></EmptyContent>
               </Empty>
             )}
             {users?.map((user) => (

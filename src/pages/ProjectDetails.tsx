@@ -198,7 +198,6 @@ const ProjectDetails = () => {
     navigate(ROUTES.CLIENTS);
   };
 
-  // const handleEdit = () => {};
   if (isFetching && !project) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -216,7 +215,7 @@ const ProjectDetails = () => {
           <EmptyTitle>No data</EmptyTitle>
           <EmptyDescription>No data found</EmptyDescription>
         </EmptyHeader>
-        <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+        <EmptyContent></EmptyContent>
       </Empty>
     );
   }
@@ -234,18 +233,8 @@ const ProjectDetails = () => {
           </Button>
           <div>
             <h1 className="text-3xl font-bold capitalize">{project.name}</h1>
-            {/* <p className="text-muted-foreground mt-2 capitalize">
-              {project.client} • {project.company}
-            </p> */}
           </div>
         </div>
-        {/* <Button
-          onClick={handleEdit}
-          className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
-        >
-          <SquarePen />
-          Edit Project
-        </Button> */}
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -538,12 +527,7 @@ const ProjectDetails = () => {
                         {departments?.construction.costTillNow}
                       </span>
                     </div>
-                    {/* <div className="flex items-center justify-between gap-2 text-sm capitalize">
-                      <span className="text[#4B5563]">Manager</span>
-                      <span className="font-semibold text-[#020817]">
-                        { }
-                      </span>
-                    </div> */}
+
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Building</span>
                       <span className="font-semibold text-[#020817]">
@@ -614,12 +598,7 @@ const ProjectDetails = () => {
                         {departments?.sales.revenues}
                       </span>
                     </div>
-                    {/* <div className="flex items-center justify-between gap-2 text-sm capitalize">
-                      <span className="text[#4B5563]">Manager</span>
-                      <span className="font-semibold text-[#020817]">
-                        {}
-                      </span>
-                    </div> */}
+
                     <div className="flex items-center justify-between gap-2 text-sm capitalize">
                       <span className="text[#4B5563]">Building</span>
                       <span className="font-semibold text-[#020817]">
@@ -683,12 +662,6 @@ const ProjectDetails = () => {
                         {departments?.storage.costTillNow}
                       </span>
                     </div>
-                    {/* <div className="flex items-center justify-between gap-2 text-sm">
-                      <span className="text[#4B5563]">Manager</span>
-                      <span className="font-semibold text-[#020817]">
-                        {departments?.construction.progressPct}
-                      </span>
-                    </div> */}
                   </div>
                 )}
               </CardContent>
@@ -726,16 +699,10 @@ const ProjectDetails = () => {
                 <Box className="mr-2 size-4" />
                 {CategoriesEnum.STORAGE}
               </TabsTrigger>
-              {/* <TabsTrigger value="standards">
-                <Settings className="mr-2 size-4" />
-                Standards
-              </TabsTrigger> */}
             </TabsList>
-
             <ConstructionTab selectedDepartment={selectedDepartment} />
             <SalesTab selectedDepartment={selectedDepartment} />
             <StorageTab selectedDepartment={selectedDepartment} />
-            {/* <StandardsTab /> */}
           </Tabs>
         </CardContent>
       </Card>

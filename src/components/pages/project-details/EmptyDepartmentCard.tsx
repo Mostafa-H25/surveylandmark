@@ -18,7 +18,7 @@ const EmptyDepartmentCard = () => {
         <EmptyTitle>No data</EmptyTitle>
         <EmptyDescription>Please select valid filter data.</EmptyDescription>
       </EmptyHeader>
-      <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+      <EmptyContent></EmptyContent>
     </Empty>
   );
 };

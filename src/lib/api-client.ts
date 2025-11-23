@@ -18,7 +18,6 @@ function createApiInstance(options?: AxiosInstanceOptions) {
   axiosInstance.interceptors.request.use((config) => {
     if (options?.authenticated) {
       config.headers.token = `Bearer ${token}`;
-      // config.withCredentials = true;
     }
     return config;
   });

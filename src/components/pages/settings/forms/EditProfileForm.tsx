@@ -77,38 +77,6 @@ const EditProfileForm = ({ setIsUpdateProfileOpen }: Props) => {
           </div>
         )}
       />
-      {/* <Controller
-        name="email"
-        control={control}
-        rules={{
-          required: "Email field is required.",
-          pattern: {
-            value: emailPattern,
-            message: "This is not a valid email.",
-          },
-          validate: {
-            isEmpty: (value) => validateEmptyAfterTrim(value, "Email"),
-          },
-        }}
-        render={({ field, fieldState: { error } }) => (
-          <div>
-            <div className="space-y-2">
-              <Label htmlFor={field.name}>Email</Label>
-              <Input
-                {...field}
-                id={field.name}
-                type="email"
-                placeholder="Enter your email"
-                className={cn("border", { "border-red-500": error })}
-                required
-              />
-            </div>
-            {error && (
-              <span className="text-sm text-red-500">{error?.message}</span>
-            )}
-          </div>
-        )}
-      /> */}
       <Controller
         name="phone"
         control={control}

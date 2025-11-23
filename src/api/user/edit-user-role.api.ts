@@ -5,7 +5,6 @@ import type { UserRole } from "@/types/default";
 export async function editUserRoleApi(
   data: {
     role: UserRole;
-    // permission: UserPermission;
   },
   userId: string,
 ) {

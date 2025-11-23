@@ -4,7 +4,6 @@ import { getAxiosInstance } from "@/lib/api-client";
 type LoginArgs = {
   email: string;
   password: string;
-  // keepAlive: boolean;
 };
 export async function loginApi(data: LoginArgs) {
   const axiosInstance = getAxiosInstance();

@@ -84,7 +84,6 @@ const GenerateReportDialog = ({
           <Label htmlFor="reportType">Report Type</Label>
 
           <Select
-            // id="reportType"
             defaultValue={currentReportType}
             onValueChange={setCurrentReportType}
           >

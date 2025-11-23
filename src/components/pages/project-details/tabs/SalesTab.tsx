@@ -207,15 +207,6 @@ const SalesTab = ({ selectedDepartment }: Props) => {
                   />
                 </DialogContent>
               </Dialog>
-              {/* <div>
-                <Button className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200">
-                  <Download />
-                  Export
-                </Button>
-                <Button className="cursor-pointer rounded-l-none bg-blue-100 text-blue-700 hover:bg-blue-200">
-                  <ChevronDown />
-                </Button>
-              </div> */}
             </div>
           </div>
         </div>
@@ -233,7 +224,7 @@ const SalesTab = ({ selectedDepartment }: Props) => {
               <EmptyTitle>No data</EmptyTitle>
               <EmptyDescription>No data found</EmptyDescription>
             </EmptyHeader>
-            <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+            <EmptyContent></EmptyContent>
           </Empty>
         )}
         {Section}

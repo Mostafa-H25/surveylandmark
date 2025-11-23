@@ -128,15 +128,6 @@ const Payments = () => {
     mutate({ projectId, paymentId, status });
   };
 
-  // const filteredPayments = payments?.filter((payment) => {
-  //   const matchesSearch =
-  //     payment.client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     payment.project.name.toLowerCase().includes(searchTerm.toLowerCase());
-  //   const matchesStatus =
-  //     statusFilter === "all" || payment.status === statusFilter;
-  //   return matchesSearch && matchesStatus;
-  // });
-
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
       case "received":
@@ -227,9 +218,7 @@ const Payments = () => {
                             <EmptyTitle>No data</EmptyTitle>
                             <EmptyDescription>No data found</EmptyDescription>
                           </EmptyHeader>
-                          <EmptyContent>
-                            {/* <Button>Add data</Button> */}
-                          </EmptyContent>
+                          <EmptyContent></EmptyContent>
                         </Empty>
                       </TableCell>
                     </TableRow>

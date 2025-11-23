@@ -41,7 +41,6 @@ const ConstructionMembers = ({ data }: Props) => {
           <TableHead>Position</TableHead>
           <TableHead>Project</TableHead>
           <TableHead>Salary</TableHead>
-          {/* <TableHead>Sales Department Access</TableHead> */}
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -56,12 +55,6 @@ const ConstructionMembers = ({ data }: Props) => {
             <TableCell className="capitalize">{member.position}</TableCell>
             <TableCell className="capitalize">{member.project}</TableCell>
             <TableCell>{formatCurrency(member.salary)}</TableCell>
-            {/* <TableCell>
-              <Switch
-                id="sales-department-access"
-                checked={member.salesDepartmentAccess}
-              />
-            </TableCell> */}
 
             <TableCell>
               <Button

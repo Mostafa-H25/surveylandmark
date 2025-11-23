@@ -50,7 +50,7 @@ const Projects = ({ initialProjects }: Props) => {
                 <EmptyTitle>No data</EmptyTitle>
                 <EmptyDescription>No data found</EmptyDescription>
               </EmptyHeader>
-              <EmptyContent>{/* <Button>Add data</Button> */}</EmptyContent>
+              <EmptyContent></EmptyContent>
             </Empty>
           )}
           {projects?.map((project) => (
@@ -66,9 +66,6 @@ const Projects = ({ initialProjects }: Props) => {
                   {project.client} - {project.company}
                 </p>
                 <div className="mt-2 flex items-center gap-2">
-                  {/* <span className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700">
-                    {project.company}
-                  </span> */}
                   <span
                     className={`rounded px-2 py-1 text-xs ${
                       project.status === "Completed"

@@ -34,9 +34,6 @@ const ConstructionItems = ({ data }: Props) => {
     processes: item.processings.map((process) => ({
       id: process.id,
       name: process.name,
-      // status: process.status,
-      // quantity: process.quantity,
-      // executedQuantity: process.executedQuantity,
     })),
   }));
 
@@ -51,12 +48,6 @@ const ConstructionItems = ({ data }: Props) => {
           <TableHead>Name</TableHead>
           <TableHead>Type</TableHead>
           <TableHead>Progress</TableHead>
-          {/* <TableHead>Start Date</TableHead> */}
-          {/* <TableHead>Contractor</TableHead> */}
-          {/* <TableHead>Status</TableHead> */}
-          {/* <TableHead>Site Engineer</TableHead> */}
-          {/* <TableHead>Material</TableHead> */}
-          {/* <TableHead>Cost/m</TableHead> */}
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -80,28 +71,6 @@ const ConstructionItems = ({ data }: Props) => {
                 <div className="font-medium">{item.progress}%</div>
               </div>
             </TableCell>
-            {/* <TableCell>
-              {formatDate(item.startDate)}
-            </TableCell>
-            <TableCell>{item.contractor}</TableCell> */}
-            {/* <TableCell>
-              {item.status ? (
-                <Badge
-                  className={cn(
-                    "whitespace-nowrap",
-                    getProjectStatusColor(item.status),
-                  )}
-                >
-                  {item.status.replaceAll("_", " ").toUpperCase()}
-                </Badge>
-              ) : (
-                "-"
-              )}
-            </TableCell> */}
-            {/* <TableCell>{item.siteEngineer}</TableCell> */}
-            {/* <TableCell>{item.material}</TableCell> */}
-
-            {/* <TableCell>{formatCurrency(item.costPerMeter)}</TableCell> */}
 
             <TableCell>
               <DropdownMenu>

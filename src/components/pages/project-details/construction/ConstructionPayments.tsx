@@ -74,7 +74,6 @@ const Payments = ({ data }: PaymentProps) => {
           <TableHead>Amount</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Batch Month</TableHead>
-          {/* <TableHead>Documents</TableHead> */}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -101,27 +100,6 @@ const Payments = ({ data }: PaymentProps) => {
               )}
             </TableCell>
             <TableCell className="capitalize">{payment.batchMonth}</TableCell>
-
-            {/* <TableCell>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="cursor-pointer"
-                  // onClick={() => handleViewMember(member.id)}
-                >
-                  Download
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="cursor-pointer"
-                  // onClick={() => handleViewMember(member.id)}
-                >
-                  View Document
-                </Button>
-              </div>
-            </TableCell> */}
           </TableRow>
         ))}
       </TableBody>
@@ -156,7 +134,6 @@ const Deductions = ({ data }: PaymentProps) => {
           <TableHead>Date</TableHead>
           <TableHead>Item</TableHead>
           <TableHead>Amount</TableHead>
-          {/* <TableHead>Documents</TableHead> */}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -168,25 +145,6 @@ const Deductions = ({ data }: PaymentProps) => {
             <TableCell>{formatDate(deduction.date)}</TableCell>
             <TableCell className="capitalize">{deduction.item}</TableCell>
             <TableCell>{formatCurrency(deduction.amount)}</TableCell>
-            {/* <TableCell>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  // onClick={() => handleViewMember(member.id)}
-                >
-                  Download
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="cursor-pointer"
-                  // onClick={() => handleViewMember(member.id)}
-                >
-                  View Document
-                </Button>
-              </div>
-            </TableCell> */}
           </TableRow>
         ))}
       </TableBody>
