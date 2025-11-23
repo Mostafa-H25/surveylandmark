@@ -130,7 +130,7 @@ const Reports = () => {
             <div className="relative flex-1">
               <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 transform text-gray-400" />
               <Input
-                placeholder="Search by client or project..."
+                placeholder="Search by reports..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
