@@ -120,9 +120,9 @@ const MessagingTab = () => {
   const { mutate: sendMessage, isPending: IsPendingSubmit } = useMutation({
     mutationFn: (data: typeof defaultValues) => sendMessageApi(data),
     scope: { id: SEND_MESSAGE_MUTATION_KEY },
-    onSuccess: (data) => {
+    onSuccess: (_, variables) => {
       toast.success("Message Sent", {
-        description: `${data.subject} to ${data.to} has been sent successfully.`,
+        description: `${variables.subject} to ${variables.to} has been sent successfully.`,
         richColors: true,
       });
       queryClient.invalidateQueries({ queryKey: [MESSAGES_QUERY_KEY] });

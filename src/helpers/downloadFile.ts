@@ -1,6 +1,6 @@
-export const downloadReport = (fileName: string, reportUrl: string) => {
+export const downloadFile = (fileName: string, fileUrl: string) => {
   const a = document.createElement("a");
-  const url = import.meta.env.BASE_URL + reportUrl;
+  const url = import.meta.env.BASE_URL + fileUrl;
   const encodedURI = encodeURIComponent(url);
   a.setAttribute("href", encodedURI);
   a.setAttribute("download", fileName);

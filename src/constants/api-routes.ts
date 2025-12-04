@@ -34,7 +34,7 @@ export const API_PATHS = {
   CLIENTS: {
     ADD: "/client/add",
     GET_ALL: "/dash/clients/all",
-    GET_ALL_FILTERED: "/dash/search/clients",
+    GET_ALL_FILTERED: "/dash/clients/all",
   },
   PROJECTS: {
     ADD: "/project/excel",
@@ -56,6 +56,7 @@ export const API_PATHS = {
       `/dash/processing/${projectId}/${itemId}`,
     GET_UNIT: (projectId: string, unitId: string) =>
       `/dash/unitDetails/projectId/${projectId}/unitId/${unitId}`,
+    EXPORT: (projectId: string) => `project/${projectId}/export-excel`,
   },
   REPORTS: {
     ADD: (projectId: string) => `reports/project/${projectId}/generate`,

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,8 +11,7 @@ import {
 } from "@/components/ui/card";
 
 import { isRequiredRoleOrHigher } from "@/helpers/isRequiredRoleOrHigher";
-import { ReportTypesEnum, UserRolesEnum } from "@/constants/defaults";
-import GenerateReportDialog from "@/components/shared/dialogs/GenerateReportDialog";
+import { UserRolesEnum } from "@/constants/defaults";
 import { useAuthStore } from "@/lib/store/use-auth-store";
 import AddClientDialogQuickActions from "../clients/dialogs/add-client/AddClientDialogQuickActions";
 import { ROUTES } from "@/constants/routes";
@@ -23,11 +20,6 @@ const QuickActions = () => {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const isMember = user?.role === UserRolesEnum.MEMBER;
-
-  const [currentReportType, setCurrentReportType] = useState<string>(
-    ReportTypesEnum.PROJECTS.value,
-  );
-  const [openGenerateDialog, setOpenGenerateDialog] = useState(false);
 
   const handleNewProject = () => {
     navigate(ROUTES.NEW_PROJECT);
@@ -79,13 +71,6 @@ const QuickActions = () => {
           )}
         </div>
       </CardContent>
-
-      <GenerateReportDialog
-        currentReportType={currentReportType}
-        setCurrentReportType={setCurrentReportType}
-        openGenerateDialog={openGenerateDialog}
-        setOpenGenerateDialog={setOpenGenerateDialog}
-      />
     </Card>
   );
 };

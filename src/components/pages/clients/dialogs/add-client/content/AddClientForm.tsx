@@ -34,9 +34,9 @@ const AddClientForm = ({ setIsAddClientOpen }: Props) => {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: typeof defaultValues) => addClientApi(data),
     scope: { id: ADD_CLIENT_MUTATION_SCOPE },
-    onSuccess: (data) => {
+    onSuccess: (_, variable) => {
       toast.success("Client Added", {
-        description: `${data.name} from ${data.company} has been added successfully.`,
+        description: `${variable.name} from ${variable.company} has been added successfully.`,
         richColors: true,
       });
       reset();

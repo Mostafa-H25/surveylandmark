@@ -16,8 +16,6 @@ import {
   MessageSquare,
   Banknote,
   FileText,
-  DollarSign,
-  Package,
   AlertTriangle,
   Calendar,
   type LucideProps,
@@ -32,8 +30,6 @@ type TUserManagementTabs =
   | "system_settings";
 
 type TAlert = "deadline" | "payment" | "inventory";
-
-type TReportTypes = "project" | "financial" | "sales" | "inventory";
 
 export const KILOBYTE = 1024 as const;
 export const SIZES = ["Bytes", "KB", "MB", "GB"] as const;
@@ -111,22 +107,6 @@ export const UserManagementTabsEnum: Record<string, TUserManagementTabs> = {
 };
 
 export const userManagementTabs = Object.values(UserManagementTabsEnum);
-
-export const ReportTypesEnum: Record<
-  string,
-  { value: TReportTypes; label: string; icon: React.ComponentType<any> }
-> = {
-  PROJECTS: { value: "project", label: "projects progress", icon: Building2 },
-  FINANCIAL: {
-    value: "financial",
-    label: "financial summary",
-    icon: DollarSign,
-  },
-  SALES: { value: "sales", label: "sales reports", icon: FileText },
-  INVENTORY: { value: "inventory", label: "inventory status", icon: Package },
-};
-
-export const reportTypes = Object.values(ReportTypesEnum);
 
 const AlertsEnum: Record<
   string,

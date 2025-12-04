@@ -29,7 +29,7 @@ import { getAllReportsApi } from "@/api/reports/get-all-reports.api";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/helpers/formatDate";
 import { CircleSlash, Download, Search } from "lucide-react";
-import { downloadReport } from "@/helpers/downloadFile";
+import { downloadFile } from "@/helpers/downloadFile";
 import Paginator from "@/components/shared/Paginator";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Input } from "@/components/ui/input";
@@ -178,7 +178,7 @@ const Reports = () => {
                         variant="outline"
                         size="sm"
                         onClick={() =>
-                          downloadReport(report.name, report.downloadUrl)
+                          downloadFile(report.name, report.downloadUrl)
                         }
                         className="cursor-pointer"
                       >
@@ -197,7 +197,7 @@ const Reports = () => {
         selectedReport={selectedReport}
         openViewDialog={openViewDialog}
         setOpenViewDialog={setOpenViewDialog}
-        handleDownloadReport={downloadReport}
+        handleDownloadReport={downloadFile}
       />
     </div>
   );

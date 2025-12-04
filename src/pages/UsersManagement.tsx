@@ -13,7 +13,7 @@ import {
 import DeleteUserDialog from "@/components/pages/users-management/dialogs/DeleteUserDialog";
 import AssignProjectToUserDialog from "@/components/pages/users-management/dialogs/AssignProjectToUserDialog";
 import AddUserDialog from "@/components/shared/dialogs/AddUserDialog";
-import { getAllUsersApi } from "@/api/user/get-all-users.api";
+import { getAllUsersWithMetaApi } from "@/api/user/get-all-users-with-meta.api";
 import {
   Card,
   CardContent,
@@ -93,8 +93,7 @@ const UsersManagement = () => {
   });
   const debouncedSearchTerm = useDebounce(searchTerm);
   const debouncedRole = useDebounce(selectedRole);
-
-  const { data: users, isFetching } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: [
       USERS_QUERY_KEY,
       paginator.page,
@@ -102,7 +101,7 @@ const UsersManagement = () => {
       debouncedRole,
     ],
     queryFn: () =>
-      getAllUsersApi({
+      getAllUsersWithMetaApi({
         pagination: { page: paginator.page, limit: paginator.limit },
         filters: {
           search: debouncedSearchTerm,
@@ -110,27 +109,40 @@ const UsersManagement = () => {
         },
       }),
     select: useCallback((data: UsersQueryResponse) => {
-      return data.users.map((user) => ({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        permissions: user.permmisions,
-        canEdit: user.canEdit,
-        status: user.status,
-        title: user.title,
-        createdAt: user.createdAt,
-        projects: user.projects,
-      }));
+      return {
+        count: data.count,
+        meta: {
+          page: data.pagination.currentPage,
+          total: data.pagination.totalResults,
+        },
+        users: data.results.map((user) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          role: user.role,
+          permissions: user.permmisions,
+          canEdit: user.canEdit,
+          status: user.status,
+          title: user.title,
+          createdAt: user.createdAt,
+          projects: user.projects,
+        })),
+      };
     }, []),
   });
+  const users = data?.users;
 
   useEffect(() => {
-    if (users) {
-      setUserCount(users.length);
+    if (data?.meta.page) {
+      setUserCount(data?.count ?? data?.meta.total);
+      setPaginator((prev) => ({
+        ...prev,
+        page: data?.meta.page ?? 1,
+        total: data?.meta.total ?? 0,
+      }));
     }
-  }, [users]);
+  }, [data]);
 
   const handleAssignProject = (userId: string) => {
     if (!users) return;
@@ -420,8 +432,15 @@ const UsersManagement = () => {
 export default UsersManagement;
 
 type UsersQueryResponse = {
-  total: number;
-  users: {
+  success: boolean;
+  pagination: {
+    totalResults: number;
+    totalPages: number;
+    currentPage: number;
+    limit: number;
+  };
+  count: number;
+  results: {
     id: string;
     name: string;
     email: string;

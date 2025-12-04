@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 
 export const useDebounce = (dependable: string) => {
-  const [debouncedValue, setDebouncedValue] = useState<string | undefined>(
-    undefined,
-  );
+  const [debouncedValue, setDebouncedValue] = useState<string | undefined>("");
   useEffect(() => {
-    if (!dependable) return;
+    if (dependable === debouncedValue) return;
 
     const timeout = setTimeout(() => {
       setDebouncedValue(dependable);

@@ -33,9 +33,9 @@ const NewProject = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: typeof defaultValues) => addProjectApi(data),
     scope: { id: PROJECT_MUTATION_SCOPE },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       toast.success("Project Added", {
-        description: `${data.name} has been added successfully.`,
+        description: `${variables.name} has been added successfully.`,
         richColors: true,
       });
       reset();

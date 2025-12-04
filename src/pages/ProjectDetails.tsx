@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Card,
@@ -34,6 +34,7 @@ import {
   CircleSlash,
   DollarSignIcon,
   BoxIcon,
+  Download,
 } from "lucide-react";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import { getProjectStatusColor } from "@/helpers/getStatusColor";
@@ -42,7 +43,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ConstructionTab from "@/components/pages/project-details/tabs/ConstructionTab";
 import StorageTab from "@/components/pages/project-details/tabs/StorageTab";
 import SalesTab from "@/components/pages/project-details/tabs/SalesTab";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProjectByIdApi } from "@/api/projects/get-project-by-id.api";
 import {
   Empty,
@@ -62,14 +63,32 @@ import { getBuildingsByProjectIdApi } from "@/api/projects/get-buildings-by-proj
 import { getFloorsByBuildingIdApi } from "@/api/projects/get-floors-by-building-id.api";
 import { getUnitsByFloorIdApi } from "@/api/projects/get-units-by-floors-id.api";
 import { ROUTES } from "@/constants/routes";
+import { defaultErrorToast } from "@/helpers/defaultErrorToast";
+import { exportProjectByIdApi } from "@/api/projects/export-project.api";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import FileUploadSection from "@/components/pages/new-project/FileUploadSection";
+import { addProjectApi } from "@/api/projects/add-project.api";
+import { toast } from "sonner";
+import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { downloadFile } from "@/helpers/downloadFile";
 
 const PROJECT_QUERY_KEY = "project";
 const DEPARTMENTS_QUERY_KEY = "departments";
 const BUILDINGS_QUERY_KEY = "buildings";
 const FLOORS_QUERY_KEY = "floors";
 const UNITS_QUERY_KEY = "units";
+const PROJECT_MUTATION_SCOPE = "project_update";
 
 const ProjectDetails = () => {
+  const queryClient = useQueryClient();
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [URLSearchParams, setURLSearchParams] = useSearchParams();
@@ -82,6 +101,21 @@ const ProjectDetails = () => {
   const [selectedBuilding, setSelectedBuilding] = useState<string>("");
   const [selectedFloor, setSelectedFloor] = useState<string>("");
   const [selectedUnit, setSelectedUnit] = useState<string>("");
+  const [isUploadProjectFileOpen, setIsUploadProjectFileOpen] = useState(false);
+
+  const defaultValues = {
+    name: "",
+    client: "",
+    status: "",
+    description: "",
+    totalBudget: 0,
+    startDate: "",
+    endDate: "",
+    file: null as File | null,
+  };
+
+  const form = useForm({ defaultValues, mode: "onBlur" });
+  const { handleSubmit, setValue, reset } = form;
 
   const { data: project, isFetching } = useQuery({
     queryKey: [PROJECT_QUERY_KEY, projectId],
@@ -188,6 +222,38 @@ const ProjectDetails = () => {
     }, []),
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: typeof defaultValues) => addProjectApi(data),
+    scope: { id: PROJECT_MUTATION_SCOPE },
+    onSuccess: (_, variables) => {
+      toast.success("Project Updated", {
+        description: `${variables.name} has been updated successfully.`,
+        richColors: true,
+      });
+      reset();
+      queryClient.invalidateQueries({ queryKey: [PROJECT_QUERY_KEY] });
+      setIsUploadProjectFileOpen(false);
+    },
+    onError: (error) => {
+      console.error(error);
+      defaultErrorToast(error.message);
+    },
+  });
+
+  useEffect(() => {
+    if (!project) return;
+    setValue("name", project.name);
+    setValue("status", project.status);
+    setValue("description", project.description);
+    setValue("totalBudget", project.totalBudget);
+    setValue("startDate", project.startDate ?? "");
+    setValue("endDate", project.endDate ?? "");
+  }, [project]);
+
+  const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
+    mutate(data);
+  };
+
   const clearFilters = () => {
     setSelectedBuilding("");
     setSelectedFloor("");
@@ -196,6 +262,19 @@ const ProjectDetails = () => {
 
   const handleBack = () => {
     navigate(ROUTES.CLIENTS);
+  };
+
+  const handleExport = async (id: string) => {
+    try {
+      const response = await exportProjectByIdApi(id);
+      downloadFile(response.fileName, response.relativePath);
+    } catch (error) {
+      console.error(error);
+      toast.error("Export Project File Failed", {
+        description: `Project file failed to export, please try again.`,
+        richColors: true,
+      });
+    }
   };
 
   if (isFetching && !project) {
@@ -234,6 +313,63 @@ const ProjectDetails = () => {
           <div>
             <h1 className="text-3xl font-bold capitalize">{project.name}</h1>
           </div>
+        </div>
+        <div className="flex items-center justify-end gap-4">
+          <Dialog
+            open={isUploadProjectFileOpen}
+            onOpenChange={setIsUploadProjectFileOpen}
+          >
+            <DialogTrigger asChild>
+              <Button
+                onClick={() => setIsUploadProjectFileOpen(true)}
+                className="cursor-pointer border border-blue-100 bg-transparent text-blue-700 hover:border-blue-700 hover:bg-transparent hover:shadow-md"
+              >
+                Upload Project File
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Upload Project File</DialogTitle>
+                <DialogDescription>
+                  Upload an updated project excel file to update the project
+                  progress.
+                </DialogDescription>
+              </DialogHeader>
+              <FormProvider {...form}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <FileUploadSection />
+                  <DialogFooter>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="cursor-pointer"
+                      onClick={() => setIsUploadProjectFileOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={isPending}
+                      className="w-32 cursor-pointer bg-blue-600 hover:bg-blue-700"
+                    >
+                      {isPending ? (
+                        <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+                      ) : (
+                        <span>Upload File</span>
+                      )}
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </FormProvider>
+            </DialogContent>
+          </Dialog>
+          <Button
+            onClick={() => handleExport(project.id)}
+            className="cursor-pointer bg-blue-100 text-blue-700 hover:bg-blue-200"
+          >
+            <Download />
+            Export
+          </Button>
         </div>
       </div>
 
@@ -487,8 +623,8 @@ const ProjectDetails = () => {
             </Popover>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-stretch gap-4">
+        <CardContent className="w-full space-y-4">
+          <div className="flex w-full items-stretch gap-4 overflow-x-auto">
             <Card className="flex-1">
               <CardHeader>
                 <div className="space-y-2">

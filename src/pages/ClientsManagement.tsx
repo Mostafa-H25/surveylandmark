@@ -32,13 +32,13 @@ import { getProjectStatusColor } from "@/helpers/getStatusColor";
 import { cn } from "@/lib/utils";
 import AddClientDialog from "@/components/pages/clients/dialogs/add-client/AddClientDialog";
 import { useQuery } from "@tanstack/react-query";
-import { getAllClientsApi } from "@/api/clients/get-all-clients.api";
 import { formatDate } from "@/helpers/formatDate";
 import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import Paginator from "@/components/shared/Paginator";
 import { useDebounce } from "@/hooks/use-debounce";
 import { ROUTES } from "@/constants/routes";
+import { getAllClientsWithMetaApi } from "@/api/clients/get-all-clients-with-meta.api";
 
 const CLIENTS_QUERY_KEY = "clients";
 
@@ -52,7 +52,7 @@ const ClientsManagement = () => {
   const { data, isFetching } = useQuery({
     queryKey: [CLIENTS_QUERY_KEY, paginator.page, debouncedSearchTerm],
     queryFn: () =>
-      getAllClientsApi({
+      getAllClientsWithMetaApi({
         pagination: { page: paginator.page, limit: paginator.limit },
         filters: { search: debouncedSearchTerm },
       }),
