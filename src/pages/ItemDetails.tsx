@@ -49,6 +49,7 @@ const ItemDetails = () => {
         name: data?.name,
         status: data?.status,
         totalQuantity: data?.quantity,
+        executedQuantity: data?.progress?.executedQuantity,
         implementedQuantity: data?.executedQuantity,
         contractor: data?.contractor?.name,
         siteEngineer: data?.assignedTo?.name,
@@ -62,7 +63,9 @@ const ItemDetails = () => {
         confirmations: [
           ...(data?.confirmation?.accepted ?? []),
           ...(data?.confirmation?.rejected ?? []),
-        ],
+        ].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        ),
       };
     }, []),
   });
@@ -322,17 +325,38 @@ const ItemDetails = () => {
                   </div>
                 </CardContent>
               </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Accepted Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <div className="mb-2 flex flex-col justify-between text-sm">
+                      <span>Total Quantity</span>
+                      <span>{item?.totalQuantity}</span>
+                    </div>
+                    <div className="mb-2 flex flex-col justify-between text-sm">
+                      <span>Executed Quantity</span>
+                      <span>{item?.executedQuantity}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             <div className="space-y-6">
               <ImageGallery
                 title="Accepted Item Images"
-                images={item?.acceptedImages}
+                images={item?.acceptedImages?.flatMap(
+                  (images) => images.attachments,
+                )}
                 type="accepted"
               />
               <ImageGallery
                 title="Refused Item Images"
-                images={item?.refusedImages}
+                images={item?.refusedImages?.flatMap(
+                  (images) => images.attachments,
+                )}
                 type="refused"
               />
             </div>
@@ -368,26 +392,24 @@ const ItemDetails = () => {
                       <div className="flex items-center gap-3">
                         <CheckCircle className="size-5 text-green-600" />
                         <div>
-                          <p className="font-semibold text-gray-900">
-                            {confirmation?.name}
+                          <p className="font-semibold text-gray-900 capitalize">
+                            {confirmation?.recipients[0].name}
                           </p>
-                          <p className="text-sm text-gray-600">
-                            {confirmation?.role}
+                          <p className="text-sm text-gray-600 capitalize">
+                            {confirmation?.recipients[0].title}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-gray-900">
-                          {confirmation?.date
-                            ? formatDate(confirmation.date)
-                            : ""}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {confirmation?.time
-                            ? formatTime(confirmation.time)
-                            : ""}
-                        </p>
-                      </div>
+                      {confirmation?.date && (
+                        <div className="text-right">
+                          <p className="text-sm font-medium text-gray-900">
+                            {formatDate(confirmation.date)}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {formatTime(confirmation.date)}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -435,14 +457,44 @@ type ItemQueryResponse = {
     totalFinancial: number;
   };
   confirmation: {
-    accepted: { name: string; role: string; date: string; time: string }[];
-    rejected: { name: string; role: string; date: string; time: string }[];
+    accepted: {
+      recipients: {
+        email: string;
+        id: string;
+        name: string;
+        title: string;
+      }[];
+      // name: string;
+      // role: string;
+      date: string;
+      // time: string;
+    }[];
+    rejected: {
+      recipients: {
+        email: string;
+        id: string;
+        name: string;
+        title: string;
+      }[];
+      // name: string;
+      // role: string;
+      date: string;
+      // time: string;
+    }[];
   };
   progress: {
     totalQuantity: number;
     executedQuantity: number;
     progressPercentage: number;
-    acceptedSubmissions: [];
-    rejectedSubmissions: [];
+    acceptedSubmissions: {
+      attachments: [];
+      date: string;
+      rating: number;
+    }[];
+    rejectedSubmissions: {
+      attachments: [];
+      date: string;
+      rating: number;
+    }[];
   };
 };

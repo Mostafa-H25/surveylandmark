@@ -71,29 +71,27 @@ const SalesTab = ({ selectedDepartment }: Props) => {
     from: new Date(Date.now()),
     to: undefined,
   });
-
-  const [selectedOption, setSelectedOption] = useState<SalesView>(
+  const [selectedSection, setSelectedSection] = useState<SalesView>(
     urlSection ?? SalesSectionsEnum.OVERVIEW,
   );
   const isSalesSelected = selectedDepartment === CategoriesEnum.SALES;
-  const isIncomesView = SalesSectionsEnum.INCOMES === selectedOption;
+  const isIncomesView = SalesSectionsEnum.INCOMES === selectedSection;
 
   const { data, isFetching } = useQuery({
     queryKey: [
       DEPARTMENTS_QUERY_KEY,
       selectedDepartment,
-      selectedOption,
+      selectedSection,
       paginator.page,
       range?.from && range?.to ? range : undefined,
     ],
-    enabled: isSalesSelected && !!selectedOption,
+    enabled: isSalesSelected && !!selectedSection,
     queryFn: () =>
-      getSalesByProjectIdApi(projectId!, selectedDepartment, selectedOption, {
+      getSalesByProjectIdApi(projectId!, selectedDepartment, selectedSection, {
         pagination: { page: paginator.page, limit: paginator.limit },
         range,
       }),
   });
-
   useEffect(() => {
     if (data?.page) {
       setPaginator((prev) => ({
@@ -106,7 +104,7 @@ const SalesTab = ({ selectedDepartment }: Props) => {
 
   const Section = useMemo(() => {
     if (!data) return <></>;
-    switch (selectedOption) {
+    switch (selectedSection) {
       case SalesSectionsEnum.OVERVIEW:
         return <SalesOverview data={data as OverviewQueryResponse} />;
       case SalesSectionsEnum.MEMBERS:
@@ -119,16 +117,16 @@ const SalesTab = ({ selectedDepartment }: Props) => {
       default:
         return <></>;
     }
-  }, [selectedOption, data]);
+  }, [selectedSection, data]);
 
   return (
     <TabsContent key={CategoriesEnum.SALES} value={CategoriesEnum.SALES}>
       <div className="space-y-4 rounded-lg border bg-white p-4">
         <div className="flex w-full items-center justify-between gap-4">
           <Select
-            value={selectedOption}
+            value={selectedSection}
             onValueChange={(value) => {
-              setSelectedOption(value as SalesView);
+              setSelectedSection(value as SalesView);
               setURLSearchParams((prev) => {
                 prev.set("section", value);
                 return prev;
@@ -197,7 +195,7 @@ const SalesTab = ({ selectedDepartment }: Props) => {
                 <DialogContent className="!w-4xl max-w-screen px-4">
                   <DialogHeader>
                     <DialogTitle className="capitalize">
-                      {selectedDepartment} - {selectedOption}
+                      {selectedDepartment} - {selectedSection}
                     </DialogTitle>
                   </DialogHeader>
                   {Section}

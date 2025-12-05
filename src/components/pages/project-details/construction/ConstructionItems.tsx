@@ -25,11 +25,11 @@ const ConstructionItems = ({ data }: Props) => {
   const { projectId } = useParams();
   const items = data.data.map((item) => ({
     id: item.id,
-    name: item.name,
-    type: item.workItems[0].name,
-    progress: item.progress.percentage,
+    name: item?.name,
+    type: item?.workItems[0]?.name,
+    progress: item.progress?.percentage,
     workItem: {
-      id: item.workItems[0].id,
+      id: item?.workItems[0]?.id,
     },
     processes: item.processings.map((process) => ({
       id: process.id,
@@ -38,7 +38,7 @@ const ConstructionItems = ({ data }: Props) => {
   }));
 
   const handleViewItem = (unitId: string) => {
-    navigate(ROUTES.UNIT(projectId, unitId));
+    navigate(ROUTES.ITEM(projectId, unitId));
   };
 
   return (

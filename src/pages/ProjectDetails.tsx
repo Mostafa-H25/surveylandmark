@@ -836,9 +836,18 @@ const ProjectDetails = () => {
                 {CategoriesEnum.STORAGE}
               </TabsTrigger>
             </TabsList>
-            <ConstructionTab selectedDepartment={selectedDepartment} />
-            <SalesTab selectedDepartment={selectedDepartment} />
-            <StorageTab selectedDepartment={selectedDepartment} />
+            <ConstructionTab
+              key={CategoriesEnum.Construction}
+              selectedDepartment={selectedDepartment}
+            />
+            <SalesTab
+              key={CategoriesEnum.Sales}
+              selectedDepartment={selectedDepartment}
+            />
+            <StorageTab
+              key={CategoriesEnum.Storage}
+              selectedDepartment={selectedDepartment}
+            />
           </Tabs>
         </CardContent>
       </Card>
