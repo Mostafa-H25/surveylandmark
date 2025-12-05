@@ -235,6 +235,7 @@ const ProjectDetails = () => {
       setIsUploadProjectFileOpen(false);
     },
     onError: (error) => {
+      setValue("file", null);
       console.error(error);
       defaultErrorToast(error.message);
     },
@@ -343,7 +344,10 @@ const ProjectDetails = () => {
                       type="button"
                       variant="outline"
                       className="cursor-pointer"
-                      onClick={() => setIsUploadProjectFileOpen(false)}
+                      onClick={() => {
+                        reset();
+                        setIsUploadProjectFileOpen(false);
+                      }}
                     >
                       Cancel
                     </Button>
