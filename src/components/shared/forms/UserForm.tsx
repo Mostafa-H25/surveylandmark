@@ -19,6 +19,7 @@ import { emailPattern } from "@/constants/regex";
 import { useMutation } from "@tanstack/react-query";
 import { inviteUserApi } from "@/api/user/invite-user.api";
 import { toast } from "sonner";
+import { formatCamelCaseToText } from "@/helpers/formatCamelCaseToText";
 
 const USER_MUTATION_SCOPE = "user_invitation";
 
@@ -136,7 +137,11 @@ const UserForm = ({ setUserInvitationDialogOpen }: Props) => {
           <div>
             <div>
               <Label htmlFor={field.name}>Role</Label>
-              <Select {...field}>
+              <Select
+                name={field.name}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
                 <SelectTrigger className="capitalize">
                   <SelectValue />
                 </SelectTrigger>
@@ -154,7 +159,7 @@ const UserForm = ({ setUserInvitationDialogOpen }: Props) => {
                         value={role}
                         className="capitalize"
                       >
-                        {role.replaceAll("_", " ")}
+                        {formatCamelCaseToText(role)}
                       </SelectItem>
                     );
                   })}
@@ -181,7 +186,7 @@ const UserForm = ({ setUserInvitationDialogOpen }: Props) => {
         <Button
           type="submit"
           disabled={isPending}
-          className={`${setUserInvitationDialogOpen ? "w-18" : "w-full"} cursor-pointer`}
+          className={`${setUserInvitationDialogOpen ? "w-32" : "w-full"} cursor-pointer`}
         >
           {isPending ? (
             <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>

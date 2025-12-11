@@ -23,12 +23,6 @@ import {
 import { ROUTES } from "./routes";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 
-type TUserManagementTabs =
-  | "users"
-  | "roles_&_projects"
-  | "permissions"
-  | "system_settings";
-
 type TAlert = "deadline" | "payment" | "inventory";
 
 export const KILOBYTE = 1024 as const;
@@ -101,12 +95,6 @@ export const PROJECT_STATUS_ENUM: Record<string, Status> = {
 };
 
 export const projectStatus = Object.values(PROJECT_STATUS_ENUM);
-
-export const UserManagementTabsEnum: Record<string, TUserManagementTabs> = {
-  USERS: "users",
-};
-
-export const userManagementTabs = Object.values(UserManagementTabsEnum);
 
 const AlertsEnum: Record<
   string,
