@@ -1,5 +1,5 @@
 import { Eye, EyeClosed } from "lucide-react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -91,8 +91,8 @@ const Login = () => {
             Enter your credentials to access the management system
           </CardDescription>
         </CardHeader>
-        <CardContent className="px-8">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <CardContent className="flex w-full flex-col items-center gap-4 px-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
             <Controller
               name="email"
               control={control}
@@ -168,9 +168,19 @@ const Login = () => {
               className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700"
               disabled={isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? (
+                <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              ) : (
+                <span>Sign In</span>
+              )}
             </Button>
           </form>
+          <Link
+            to={ROUTES.FORGOT_PASSWORD}
+            className="w-full text-center text-sm text-blue-600"
+          >
+            Forgot Password?
+          </Link>
         </CardContent>
       </Card>
     </div>

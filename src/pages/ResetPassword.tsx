@@ -1,129 +1,83 @@
-import { useState } from "react";
-
-import { Eye, EyeClosed } from "lucide-react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { resetPasswordApi } from "@/api/auth/reset-password.api";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/lib/store/use-auth-store";
-import { emailPattern, phonePattern } from "@/constants/regex";
-import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { emailPattern } from "@/constants/regex";
+import { validateEmptyAfterTrim } from "@/helpers/formValidators";
+import { cn } from "@/lib/utils";
+import { Eye, EyeClosed } from "lucide-react";
+import { useState } from "react";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-import { signupApi } from "@/api/user/sign-up.ts.api";
-import { defaultErrorToast } from "@/helpers/defaultErrorToast";
-import { ROUTES } from "@/constants/routes";
 
-const Registration = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const token = useAuthStore((state) => state.token);
+const ResetPassword = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setPasswordIsVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues = {
-    username: "",
     email: "",
-    phone: "",
     password: "",
     confirmPassword: "",
   };
 
   const form = useForm({ defaultValues, mode: "onBlur" });
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, reset } = form;
 
   const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
-    if (!id) return;
-    setIsSubmitting(true);
+    setIsLoading(true);
     try {
-      await signupApi(data, id);
-      toast.success("User Created", {
-        description: `User account has been created successfully.`,
+      await resetPasswordApi({
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+        forgetCode: "",
+      });
+      reset();
+      toast.success("Password Updated", {
+        description: "Password updated successfully!",
         richColors: true,
       });
-      navigate(ROUTES.SIGN_IN);
     } catch (error) {
       console.error(error);
-      defaultErrorToast((error as Error).message);
+      toast.error("Reset Password Failed", {
+        description: (error as Error)?.message || "Invalid email or password",
+        richColors: true,
+      });
     }
-    setIsSubmitting(false);
+
+    setIsLoading(false);
   };
-
-  if (token) return <Navigate to={ROUTES.DASHBOARD} replace />;
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 px-4">
       <Card className="w-full max-w-xl">
         <CardHeader className="space-y-4 px-8 text-center">
-          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-600">
-            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-blue-600/20">
-              <img
-                src="/landmark-icon.jpg"
-                alt="logo"
-                className="size-full rounded-full object-cover"
-              />
-            </div>
+          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-blue-600/20">
+            <img
+              src="/landmark-icon.jpg"
+              alt="logo"
+              className="size-full rounded-full object-cover"
+            />
           </div>
           <div>
-            <CardTitle className="text-3xl text-gray-900">Welcome To</CardTitle>
-            <div className="mt-2">
-              <h1 className="flex items-center justify-center gap-2 text-2xl text-blue-600">
-                <span className="font-bold">LANDMARK</span>
-                <span>Projects</span>
-              </h1>
-              <p className="text-base text-gray-600">
-                Precision Surveys, Building tomorrow
-              </p>
-            </div>
+            <CardTitle className="text-3xl text-gray-900">
+              Forgot Password
+            </CardTitle>
           </div>
           <CardDescription>
-            Enter your credentials to access the management system
+            Enter your email to reset your password
           </CardDescription>
         </CardHeader>
         <CardContent className="px-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <Controller
-              name="username"
-              control={control}
-              rules={{
-                required: "Username field is required.",
-                validate: {
-                  isEmpty: (value) => validateEmptyAfterTrim(value, "Email"),
-                },
-              }}
-              render={({ field, fieldState: { error } }) => (
-                <div>
-                  <div className="space-y-4">
-                    <Label htmlFor={field.name}>Username</Label>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="text"
-                      placeholder="Enter your username"
-                      className={cn("border", { "border-red-500": error })}
-                      required
-                    />
-                  </div>
-                  {error && (
-                    <span className="text-sm text-red-500">
-                      {error?.message}
-                    </span>
-                  )}
-                </div>
-              )}
-            />
             <Controller
               name="email"
               control={control}
@@ -158,42 +112,6 @@ const Registration = () => {
                 </div>
               )}
             />
-            <Controller
-              name="phone"
-              control={control}
-              rules={{
-                required: "Phone Number field is required.",
-                pattern: {
-                  value: phonePattern,
-                  message: "This is not a valid phone number.",
-                },
-                validate: {
-                  isEmpty: (value) =>
-                    validateEmptyAfterTrim(value, "Phone Number"),
-                },
-              }}
-              render={({ field, fieldState: { error } }) => (
-                <div>
-                  <div className="space-y-4">
-                    <Label htmlFor={field.name}>Phone</Label>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="text"
-                      placeholder="Enter your phone number"
-                      className={cn("border", { "border-red-500": error })}
-                      required
-                    />
-                  </div>
-                  {error && (
-                    <span className="text-sm text-red-500">
-                      {error?.message}
-                    </span>
-                  )}
-                </div>
-              )}
-            />
-
             <Controller
               name="password"
               control={control}
@@ -284,26 +202,19 @@ const Registration = () => {
             <Button
               type="submit"
               className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700"
-              disabled={isSubmitting}
+              disabled={isLoading}
             >
-              {isSubmitting ? "Loading..." : "Sign Up"}
+              {isLoading ? (
+                <div className="aspect-square h-full max-h-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              ) : (
+                <span>Reset</span>
+              )}
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex-col px-8">
-          <p className="w-full text-center text-base text-gray-600">
-            <span>Already have an account?&nbsp;</span>
-            <Link
-              to={ROUTES.SIGN_IN}
-              className="text-blue-600 underline-offset-2 hover:underline"
-            >
-              Sign in
-            </Link>
-          </p>
-        </CardFooter>
       </Card>
     </div>
   );
 };
 
-export default Registration;
+export default ResetPassword;

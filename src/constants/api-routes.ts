@@ -12,6 +12,8 @@ export const API_PATHS = {
     LOGOUT: "/user/logout",
     SIGN_UP: (token: string) => `/user/invitations/${token}/accept`,
     ME: "/user/me",
+    FORGOT_PASSWORD: "/user/forget",
+    RESET_PASSWORD: "/user/reset",
     INVITATION: {
       ADD: "/user/invitations",
       GET_ALL: "/user/invitations/mine",

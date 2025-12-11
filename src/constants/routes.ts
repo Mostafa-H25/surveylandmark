@@ -23,6 +23,7 @@ export const ROUTES = {
   PAYMENTS: "/payments",
   SETTINGS: "/settings",
   INVITE: "/invite-team-members",
-  FORGOT_PASSWORD: "",
+  FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password",
   GENERAL: {},
 };

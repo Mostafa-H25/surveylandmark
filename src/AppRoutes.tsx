@@ -23,6 +23,8 @@ import { ProtectedRoute } from "./guards/ProtectedRoute";
 import UserInvitation from "./pages/UserInvitation";
 import { ROUTES } from "./constants/routes";
 import { UserRolesEnum } from "./constants/defaults";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 let previousUrl = "";
 let currentUrl = "";
@@ -46,6 +48,8 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path={ROUTES.SIGN_UP} element={<Registration />} />
+      <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
+      <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
       <Route path={ROUTES.SIGN_IN} element={<Login />} />
       <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
       <Route
