@@ -131,13 +131,13 @@ const Payments = () => {
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
       case "received":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 hover:bg-green-50 text-green-800";
       case "pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 hover:bg-yellow-50 text-yellow-800";
       case "overdue":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 hover:bg-red-50 text-red-800";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 hover:bg-gray-50 text-gray-800";
     }
   };
 
@@ -223,107 +223,108 @@ const Payments = () => {
                       </TableCell>
                     </TableRow>
                   )}
-                  {payments?.map((payment) => (
-                    <TableRow key={payment.id} className="hover:bg-gray-50">
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100">
-                            <span className="text-sm font-medium text-blue-600">
-                              {payment.client.name
-                                .split(" ")
-                                .map((n) => n[0])
-                                .join("")}
+                  {payments?.map((payment) => {
+                    const isDeactivated = payment.status === "deactivated";
+                    return (
+                      <TableRow key={payment.id} className="hover:bg-gray-50">
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <div className="flex size-8 items-center justify-center rounded-full bg-blue-100">
+                              <span className="text-sm font-medium text-blue-600">
+                                {payment.client.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </span>
+                            </div>
+                            <span className="font-medium text-gray-900">
+                              {payment.client.name}
                             </span>
                           </div>
-                          <span className="font-medium text-gray-900">
-                            {payment.client.name}
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-gray-700">
+                            {payment.project.name}
                           </span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-gray-700">
-                          {payment.project.name}
-                        </span>
-                        {!payment.isActive && (
-                          <Badge variant="secondary" className="ml-2 text-xs">
-                            Inactive
+                          {!payment.isActive && (
+                            <Badge variant="secondary" className="ml-2 text-xs">
+                              Inactive
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <span className="font-semibold text-gray-900">
+                            {formatCurrency(payment.amount)}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-gray-700">
+                            {formatDate(payment.dueDate)}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            className={`${getPaymentStatusColor(payment.status)} border-0`}
+                          >
+                            {payment.status?.toUpperCase()}
                           </Badge>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <span className="font-semibold text-gray-900">
-                          {formatCurrency(payment.amount)}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-gray-700">
-                          {formatDate(payment.dueDate)}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          className={`${getPaymentStatusColor(payment.status)} border-0`}
-                        >
-                          {payment.status?.toUpperCase()}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            disabled={
-                              payment.status === "received" || isPending
-                            }
-                            onClick={() =>
-                              handleUpdatePaymentStatus(
-                                payment.project.id,
-                                payment.id,
-                                "received",
-                              )
-                            }
-                            className="w-32 cursor-pointer border-green-200 text-green-600 hover:bg-green-50"
-                          >
-                            {isPending ? (
-                              <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
-                            ) : (
-                              <>
-                                <Check className="mr-1 size-4" />
-                                <span>Received</span>
-                              </>
-                            )}
-                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={
+                                payment.status === "received" || isPending
+                              }
+                              onClick={() =>
+                                handleUpdatePaymentStatus(
+                                  payment.project.id,
+                                  payment.id,
+                                  "received",
+                                )
+                              }
+                              className="w-32 cursor-pointer border-green-200 text-green-600 hover:bg-green-50"
+                            >
+                              {isPending ? (
+                                <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
+                              ) : (
+                                <>
+                                  <Check className="mr-1 size-4" />
+                                  <span>Received</span>
+                                </>
+                              )}
+                            </Button>
 
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            disabled={
-                              payment.status === "deactivated" ||
-                              !payment.isActive ||
-                              isPending
-                            }
-                            onClick={() =>
-                              handleUpdatePaymentStatus(
-                                payment.project.id,
-                                payment.id,
-                                "deactivated",
-                              )
-                            }
-                            className="col-start-2 w-32 cursor-pointer border-red-200 text-red-600 hover:bg-red-50"
-                          >
-                            {isPending ? (
-                              <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
-                            ) : (
-                              <>
-                                <X className="mr-1 size-4" />
-                                <span>Deactivate</span>
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={
+                                isDeactivated || !payment.isActive || isPending
+                              }
+                              onClick={() =>
+                                handleUpdatePaymentStatus(
+                                  payment.project.id,
+                                  payment.id,
+                                  "deactivated",
+                                )
+                              }
+                              className="col-start-2 w-32 cursor-pointer border-red-200 text-red-600 hover:bg-red-50"
+                            >
+                              {isPending ? (
+                                <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
+                              ) : (
+                                <>
+                                  <X className="mr-1 size-4" />
+                                  <span>Deactivate</span>
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
               <Paginator paginator={paginator} setPaginator={setPaginator} />

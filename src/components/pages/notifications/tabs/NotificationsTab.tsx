@@ -150,7 +150,9 @@ const NotificationsTab = () => {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Icon className="size-4" />
-                        <span className="capitalize">{notification.type}</span>
+                        <span className="capitalize">
+                          {notification.type.replaceAll("_", " ")}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -172,6 +174,7 @@ const NotificationsTab = () => {
                             ? "default"
                             : "secondary"
                         }
+                        className="capitalize"
                       >
                         {notification.status}
                       </Badge>
