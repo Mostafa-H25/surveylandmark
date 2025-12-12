@@ -225,6 +225,7 @@ const Payments = () => {
                   )}
                   {payments?.map((payment) => {
                     const isDeactivated = payment.status === "deactivated";
+                    const isReceived = payment.status === "received";
                     return (
                       <TableRow key={payment.id} className="hover:bg-gray-50">
                         <TableCell>
@@ -274,9 +275,7 @@ const Payments = () => {
                             <Button
                               size="sm"
                               variant="outline"
-                              disabled={
-                                payment.status === "received" || isPending
-                              }
+                              disabled={isReceived}
                               onClick={() =>
                                 handleUpdatePaymentStatus(
                                   payment.project.id,
@@ -299,9 +298,7 @@ const Payments = () => {
                             <Button
                               size="sm"
                               variant="outline"
-                              disabled={
-                                isDeactivated || !payment.isActive || isPending
-                              }
+                              disabled={isDeactivated}
                               onClick={() =>
                                 handleUpdatePaymentStatus(
                                   payment.project.id,

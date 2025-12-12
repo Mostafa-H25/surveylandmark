@@ -365,7 +365,7 @@ const MessagingTab = () => {
               <CardTitle>Messages</CardTitle>
               <CardDescription>Internal team communications</CardDescription>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <div className="relative">
                 <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 transform text-gray-400" />
                 <Input
@@ -375,7 +375,7 @@ const MessagingTab = () => {
                   className="w-64 pl-10"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
         </CardHeader>
         <CardContent>
