@@ -34,7 +34,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (isError) {
     console.error(error);
-    if (error?.code === "ERR_CANCELED") return;
+    // if (error?.code === "ERR_CANCELED") return;
     removeToken();
   }
 

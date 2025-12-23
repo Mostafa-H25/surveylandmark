@@ -28,11 +28,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllReportsApi } from "@/api/reports/get-all-reports.api";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/helpers/formatDate";
-import { CircleSlash, Download, Search } from "lucide-react";
+import { CircleSlash, Download } from "lucide-react";
 import { downloadFile } from "@/helpers/downloadFile";
 import Paginator from "@/components/shared/Paginator";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Input } from "@/components/ui/input";
 
 const PROJECT_REPORTS_QUERY_KEY = "project_reports";
 
@@ -42,7 +41,7 @@ const Reports = () => {
     limit: 10,
     total: 0,
   });
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm);
 
   const [openViewDialog, setOpenViewDialog] = useState(false);

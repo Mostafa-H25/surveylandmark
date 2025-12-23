@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { CheckCircle, CircleSlash, Search, Send } from "lucide-react";
+import { CheckCircle, CircleSlash, Send } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -71,7 +71,7 @@ const MessagingTab = () => {
     limit: 10,
     total: 0,
   });
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm);
   const { data: messages, isFetching: isFetchingMessages } = useQuery({
     queryKey: [MESSAGES_QUERY_KEY, paginator.page, debouncedSearchTerm],

@@ -1,4 +1,4 @@
-import { AlertTriangle, CircleSlash, Search } from "lucide-react";
+import { AlertTriangle, CircleSlash } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Alerts } from "@/constants/defaults";
@@ -32,7 +32,6 @@ import {
 import Paginator from "@/components/shared/Paginator";
 import { formatDate } from "@/helpers/formatDate";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Input } from "@/components/ui/input";
 
 const NOTIFICATIONS_QUERY_KEY = "notifications";
 
@@ -42,7 +41,7 @@ const NotificationsTab = () => {
     limit: 10,
     total: 0,
   });
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm] = useState("");
 
   const debouncedSearchTerm = useDebounce(searchTerm);
 
