@@ -10,20 +10,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { emailPattern } from "@/constants/regex";
+import { ROUTES } from "@/constants/routes";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
-import { Eye, EyeClosed } from "lucide-react";
+import { Eye, EyeClosed, MessageCircleQuestion } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setPasswordIsVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
 
   const defaultValues = {
+    forgetCode: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -46,6 +50,7 @@ const ResetPassword = () => {
         description: "Password updated successfully!",
         richColors: true,
       });
+      navigate(ROUTES.SIGN_IN);
     } catch (error) {
       console.error(error);
       toast.error("Reset Password Failed", {
@@ -78,6 +83,45 @@ const ResetPassword = () => {
         </CardHeader>
         <CardContent className="px-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <Controller
+              name="forgetCode"
+              control={control}
+              rules={{
+                required: "Code field is required.",
+
+                validate: {
+                  isEmpty: (value) => validateEmptyAfterTrim(value, "Code"),
+                },
+              }}
+              render={({ field, fieldState: { error } }) => (
+                <div>
+                  <div className="space-y-4">
+                    <Label htmlFor={field.name}>
+                      <span>Code&nbsp;</span>
+                      <sup>
+                        <MessageCircleQuestion className="peer inline-flex size-3 cursor-pointer text-gray-500" />
+                        <span className="invisible rounded bg-black/5 px-2 py-1 text-xs italic peer-hover:visible">
+                          * Check email for reset code.
+                        </span>
+                      </sup>
+                    </Label>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      type="text"
+                      placeholder="Enter sent code"
+                      className={cn("border", { "border-red-500": error })}
+                      required
+                    />
+                  </div>
+                  {error && (
+                    <span className="text-sm text-red-500">
+                      {error?.message}
+                    </span>
+                  )}
+                </div>
+              )}
+            />
             <Controller
               name="email"
               control={control}

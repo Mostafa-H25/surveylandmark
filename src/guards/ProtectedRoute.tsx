@@ -23,7 +23,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const token = useAuthStore((state) => state.token);
   const setUser = useAuthStore((state) => state.setUser);
   const removeToken = useAuthStore((state) => state.removeToken);
-
   const { data, error, isFetching, isSuccess, isError } = useQuery({
     queryKey: [ME_QUERY_KEY],
     queryFn: () => meApi(),
@@ -35,6 +34,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (isError) {
     console.error(error);
+    if (error?.code === "ERR_CANCELED") return;
     removeToken();
   }
 

@@ -124,6 +124,7 @@ const ProjectDetails = () => {
     select: useCallback((data: ProjectQueryResponse) => {
       return {
         id: data.project.id,
+        clientId: data.project.clientId,
         name: data.project.name,
         startDate: data.project.startDate,
         endDate: data.project.endDate,
@@ -244,6 +245,7 @@ const ProjectDetails = () => {
   useEffect(() => {
     if (!project) return;
     setValue("name", project.name);
+    setValue("client", project.clientId);
     setValue("status", project.status);
     setValue("description", project.description);
     setValue("totalBudget", project.totalBudget);
@@ -866,6 +868,7 @@ type ProjectQueryResponse = {
   success: boolean;
   project: {
     id: string;
+    clientId: string;
     name: string;
     startDate: string | null;
     endDate: string | null;

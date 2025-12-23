@@ -10,13 +10,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { emailPattern } from "@/constants/regex";
+import { ROUTES } from "@/constants/routes";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const defaultValues = {
@@ -35,6 +38,7 @@ const ForgotPassword = () => {
         description: "Please check your email to reset your password!",
         richColors: true,
       });
+      navigate(ROUTES.RESET_PASSWORD);
     } catch (error) {
       console.error(error);
       toast.error("Reset Failed", {

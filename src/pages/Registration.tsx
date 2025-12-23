@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Eye, EyeClosed } from "lucide-react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -26,7 +26,7 @@ import { ROUTES } from "@/constants/routes";
 
 const Registration = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const [URLSearchParams] = useSearchParams();
   const token = useAuthStore((state) => state.token);
   const [isPasswordVisible, setPasswordIsVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
@@ -45,10 +45,11 @@ const Registration = () => {
   const { control, handleSubmit } = form;
 
   const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
-    if (!id) return;
+    const registrationToken = URLSearchParams.get("token");
+    if (!registrationToken) return;
     setIsSubmitting(true);
     try {
-      await signupApi(data, id);
+      await signupApi(data, registrationToken);
       toast.success("User Created", {
         description: `User account has been created successfully.`,
         richColors: true,
@@ -98,15 +99,15 @@ const Registration = () => {
               name="username"
               control={control}
               rules={{
-                required: "Username field is required.",
+                required: "Name field is required.",
                 validate: {
-                  isEmpty: (value) => validateEmptyAfterTrim(value, "Email"),
+                  isEmpty: (value) => validateEmptyAfterTrim(value, "Name"),
                 },
               }}
               render={({ field, fieldState: { error } }) => (
                 <div>
                   <div className="space-y-4">
-                    <Label htmlFor={field.name}>Username</Label>
+                    <Label htmlFor={field.name}>Name</Label>
                     <Input
                       {...field}
                       id={field.name}

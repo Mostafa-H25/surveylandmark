@@ -21,9 +21,13 @@ import {
 import { loginApi } from "@/api/auth/login.api";
 import { useState } from "react";
 import { ROUTES } from "@/constants/routes";
+import { useQueryClient } from "@tanstack/react-query";
+
+const ME_QUERY_KEY = "me";
 
 const Login = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { token, isLoading, setToken, setIsLoading } = useAuthStore();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -36,7 +40,6 @@ const Login = () => {
 
   const form = useForm({ defaultValues, mode: "onBlur" });
   const { control, handleSubmit, reset } = form;
-
   const onSubmit: SubmitHandler<typeof defaultValues> = async (data) => {
     setIsLoading(true);
     try {
@@ -50,6 +53,7 @@ const Login = () => {
         description: "Welcome back!",
         richColors: true,
       });
+      queryClient.invalidateQueries({ queryKey: [ME_QUERY_KEY] });
       navigate(ROUTES.DASHBOARD);
     } catch (error) {
       console.error(error);

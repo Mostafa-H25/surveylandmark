@@ -309,7 +309,9 @@ const UsersManagement = () => {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>{formatPhoneNumber(user.phone)}</TableCell>
+                  <TableCell>
+                    {user?.phone && formatPhoneNumber(user.phone)}
+                  </TableCell>
                   <TableCell>
                     <Badge
                       className={cn(
@@ -318,7 +320,8 @@ const UsersManagement = () => {
                           : "bg-gray-500 text-gray-700",
                       )}
                     >
-                      {formatCamelCaseToText(user.role).toUpperCase()}
+                      {user?.role &&
+                        formatCamelCaseToText(user.role).toUpperCase()}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -333,7 +336,7 @@ const UsersManagement = () => {
                           : "secondary"
                       }
                     >
-                      {user.status.toUpperCase()}
+                      {user?.status?.toUpperCase()}
                     </Badge>
                   </TableCell>
                   <TableCell>

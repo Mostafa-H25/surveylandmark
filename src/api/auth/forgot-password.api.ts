@@ -6,7 +6,7 @@ type ForgotPasswordArgs = {
 };
 export async function forgotPasswordApi(data: ForgotPasswordArgs) {
   const axiosInstance = getAxiosInstance();
-  const response = await axiosInstance.post(
+  const response = await axiosInstance.patch(
     API_PATHS.USER.FORGOT_PASSWORD,
     data,
     { headers: { "Content-Type": "application/json" } },

@@ -9,7 +9,7 @@ type ResetPasswordArgs = {
 };
 export async function resetPasswordApi(data: ResetPasswordArgs) {
   const axiosInstance = getAxiosInstance();
-  const response = await axiosInstance.post(
+  const response = await axiosInstance.patch(
     API_PATHS.USER.RESET_PASSWORD,
     data,
     { headers: { "Content-Type": "application/json" } },

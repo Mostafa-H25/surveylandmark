@@ -121,7 +121,8 @@ const UserInvitation = () => {
                         : "bg-gray-500 text-gray-700",
                     )}
                   >
-                    {formatCamelCaseToText(user.role).toUpperCase()}
+                    {user?.role &&
+                      formatCamelCaseToText(user.role).toUpperCase()}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between gap-4">
@@ -129,7 +130,9 @@ const UserInvitation = () => {
                   <span className="px-3 capitalize">{user.status}</span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-xs">{formatDate(user.date)}</span>
+                  <span className="text-xs">
+                    {user?.date && formatDate(user.date)}
+                  </span>
                 </div>
               </div>
             ))}
