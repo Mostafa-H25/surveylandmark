@@ -106,7 +106,7 @@ const UserInvitation = () => {
             )}
             {users?.map((user) => (
               <div
-                key={user.email}
+                key={user.date}
                 className="w-full space-y-1 rounded-md border border-[#E2E8F0] px-6 py-4 shadow-md"
               >
                 <div className="flex items-center justify-between gap-4">

@@ -22,7 +22,6 @@ import ClientsManagement from "./pages/ClientsManagement";
 import { ProtectedRoute } from "./guards/ProtectedRoute";
 import UserInvitation from "./pages/UserInvitation";
 import { ROUTES } from "./constants/routes";
-import { UserRolesEnum } from "./constants/defaults";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -45,6 +44,7 @@ const AppRoutes = () => {
       abortAxiosInstance(previousUrl);
     }
   }, [pathname]);
+  // debugger;
   return (
     <Routes>
       <Route path={ROUTES.SIGN_UP} element={<Registration />} />
@@ -71,7 +71,7 @@ const AppRoutes = () => {
       <Route
         path={ROUTES.USERS}
         element={
-          <ProtectedRoute requiredRole={UserRolesEnum.SUPER_ADMIN}>
+          <ProtectedRoute>
             <UsersManagement />
           </ProtectedRoute>
         }

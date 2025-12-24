@@ -43,7 +43,7 @@ const ResetPassword = () => {
         email: data.email,
         password: data.password,
         confirmPassword: data.confirmPassword,
-        forgetCode: "",
+        forgetCode: data.forgetCode,
       });
       reset();
       toast.success("Password Updated", {

@@ -46,9 +46,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     );
   }
 
-  if (!token) {
-    return <Navigate to={ROUTES.SIGN_IN} replace />;
-  }
+  if (!token) return <Navigate to={ROUTES.SIGN_IN} replace />;
 
   if (requiredRole) {
     if (!isRequiredRoleOrHigher(requiredRole, user?.role)) {
