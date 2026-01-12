@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import FileUploadSection from "@/components/pages/new-project/FileUploadSection";
@@ -16,9 +16,11 @@ const PROJECT_MUTATION_SCOPE = "project_creation";
 
 const NewProject = () => {
   const navigate = useNavigate();
+  const [urlSearchParams] = useSearchParams();
+  const clientIdFromUrl = urlSearchParams.get("client") || "";
   const defaultValues = {
     name: "",
-    client: "",
+    client: clientIdFromUrl,
     status: PROJECT_STATUS_ENUM.PLANNING,
     description: "",
     totalBudget: 0,

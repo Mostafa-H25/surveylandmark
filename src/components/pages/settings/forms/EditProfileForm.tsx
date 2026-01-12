@@ -40,7 +40,7 @@ const EditProfileForm = ({ setIsUpdateProfileOpen }: Props) => {
     } catch (error) {
       console.error(error);
       toast.error("Profile Update Failed", {
-        description: "User invitation failed, please try again.",
+        description: "Profile update failed, please try again.",
         richColors: true,
       });
     }
