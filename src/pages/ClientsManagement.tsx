@@ -101,7 +101,7 @@ const ClientsManagement = () => {
   };
 
   const handleAddNewProject = (clientId: string) => {
-    navigate(`/project/new?client=${clientId}`);
+    navigate(`${ROUTES.NEW_PROJECT}?client=${clientId}`);
   };
 
   const handleExploreProject = (projectId: string) => {
