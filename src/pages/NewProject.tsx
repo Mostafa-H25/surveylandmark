@@ -41,7 +41,7 @@ const NewProject = () => {
         richColors: true,
       });
       reset();
-      navigate(ROUTES.PROJECT(data.project._id));
+      navigate(ROUTES.PROJECT(data.projectId));
     },
     onError: (error) => {
       console.error(error);

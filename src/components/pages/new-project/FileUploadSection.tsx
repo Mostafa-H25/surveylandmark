@@ -7,8 +7,9 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 
 const FileUploadSection = () => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
   const [isDragOver, setIsDragOver] = useState(false);
+  const watchedFile = watch("file");
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -72,6 +73,7 @@ const FileUploadSection = () => {
               >
                 browse
                 <input
+                  key={watchedFile ? watchedFile.name : "file-upload"}
                   id={field.name}
                   name={field.name}
                   ref={field.ref}
