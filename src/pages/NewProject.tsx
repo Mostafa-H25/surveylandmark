@@ -69,7 +69,7 @@ const NewProject = () => {
             </h1>
           </div>
         </header>
-        <FileUploadSection />
+        <FileUploadSection isLoading={isPending} />
         <ProjectInformation />
 
         <div className="flex justify-end space-x-3">

@@ -340,7 +340,7 @@ const ProjectDetails = () => {
               </DialogHeader>
               <FormProvider {...form}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <FileUploadSection />
+                  <FileUploadSection isLoading={isPending} />
                   <DialogFooter>
                     <Button
                       type="button"

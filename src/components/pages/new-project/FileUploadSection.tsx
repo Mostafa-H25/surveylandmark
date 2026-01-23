@@ -6,7 +6,11 @@ import { KILOBYTE, SIZES } from "@/constants/defaults";
 import { Controller, useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 
-const FileUploadSection = () => {
+type Props = {
+  isLoading: boolean
+}
+
+const FileUploadSection = ({ isLoading }: Props) => {
   const { control, setValue, watch } = useFormContext();
   const [isDragOver, setIsDragOver] = useState(false);
   const watchedFile = watch("file");
@@ -55,15 +59,20 @@ const FileUploadSection = () => {
             </p>
           </div>
           <div
-            className={`rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
-              isDragOver
+            className={`relative rounded-lg border-2 border-dashed p-8 text-center transition-colors ${isLoading
+              ? "cursor-wait border-gray-300"
+              : isDragOver
                 ? "border-blue-400 bg-blue-50"
                 : "border-gray-300 hover:border-blue-400"
-            }`}
+              }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
           >
+            {isLoading && <div className="z-10 rounded-lg bg-black/70 absolute inset-0 w-full h-full left-0 top-0 flex items-center justify-center h-28 ">
+              <div className="size-12 animate-spin rounded-full border-r-2 border-blue-300" />
+            </div>}
+
             <Upload className="mx-auto mb-4 size-12 text-blue-500" />
             <p className="mb-2 text-gray-600">
               <span className="font-medium">Drag & drop files here, or </span>

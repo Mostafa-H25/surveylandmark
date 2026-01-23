@@ -4,7 +4,7 @@ export type UserStatus = "active" | "inactive";
 export type DepartmentType = "construction" | "sales" | "storage";
 export type Priority = "urgent" | "normal" | "high";
 
-export type Status = "planning" | "inProgress" | "completed" | "onHold";
+export type Status = "planning" | "in progress" | "completed" | "onHold";
 export type UnitType = "residential" | "administrative" | "commercial";
 export type PaymentAction = "delivered" | "pending" | "overdue";
 export type PaymentType = "payment" | "deduction" | "sundry";

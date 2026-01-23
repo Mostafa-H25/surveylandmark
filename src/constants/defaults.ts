@@ -89,9 +89,9 @@ export const CategoriesEnum: Record<string, DepartmentType> = {
 
 export const PROJECT_STATUS_ENUM: Record<string, Status> = {
   PLANNING: "planning",
-  IN_PROGRESS: "inProgress",
+  IN_PROGRESS: "in progress",
   COMPLETED: "completed",
-  ON_HOLDING: "onHold",
+  // ON_HOLDING: "onHold",
 };
 
 export const projectStatus = Object.values(PROJECT_STATUS_ENUM);
