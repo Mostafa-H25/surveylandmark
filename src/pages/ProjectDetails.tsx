@@ -79,6 +79,7 @@ import { addProjectApi } from "@/api/projects/add-project.api";
 import { toast } from "sonner";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { downloadFile } from "@/helpers/downloadFile";
+import axios from "axios";
 
 const PROJECT_QUERY_KEY = "project";
 const DEPARTMENTS_QUERY_KEY = "departments";
@@ -238,7 +239,11 @@ const ProjectDetails = () => {
     onError: (error) => {
       setValue("file", null);
       console.error(error);
-      defaultErrorToast(error.message);
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : error.message,
+      );
     },
   });
 

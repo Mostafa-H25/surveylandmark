@@ -1,7 +1,6 @@
 import { AlertTriangle, CircleSlash } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Alerts } from "@/constants/defaults";
 import { TabsContent } from "@/components/ui/tabs";
 import {
   Card,
@@ -93,17 +92,6 @@ const NotificationsTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* <div className="border-b border-gray-200 pb-6">
-            <div className="relative flex-1">
-              <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 transform text-gray-400" />
-              <Input
-                placeholder="Search notifications..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-          </div> */}
           <Table>
             <TableHeader>
               <TableRow>
@@ -141,9 +129,7 @@ const NotificationsTab = () => {
                 </TableRow>
               )}
               {notifications?.map((notification) => {
-                const Icon =
-                  Alerts.find((a) => a.value === notification.type)?.icon ||
-                  AlertTriangle;
+                const Icon = AlertTriangle;
                 return (
                   <TableRow key={notification.id}>
                     <TableCell>

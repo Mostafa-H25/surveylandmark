@@ -11,6 +11,7 @@ import { addProjectApi } from "@/api/projects/add-project.api";
 import { PROJECT_STATUS_ENUM } from "@/constants/defaults";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 import { ROUTES } from "@/constants/routes";
+import axios from "axios";
 
 const PROJECT_MUTATION_SCOPE = "project_creation";
 
@@ -45,7 +46,12 @@ const NewProject = () => {
     },
     onError: (error) => {
       console.error(error);
-      defaultErrorToast(error.message);
+
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : error.message,
+      );
     },
   });
 

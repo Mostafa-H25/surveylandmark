@@ -331,7 +331,7 @@ const UsersManagement = () => {
                   <TableCell>
                     <Badge
                       variant={
-                        user.status === UserStatusEnum.ACTIVE
+                        user.status === UserStatusEnum.ACTIVE.toUpperCase()
                           ? "outline"
                           : "secondary"
                       }

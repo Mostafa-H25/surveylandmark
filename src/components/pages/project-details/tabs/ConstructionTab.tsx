@@ -39,7 +39,6 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {} from "@radix-ui/react-dialog";
 import Paginator from "@/components/shared/Paginator";
 import {
   Empty,
@@ -180,7 +179,7 @@ const ConstructionTab = ({ selectedDepartment }: Props) => {
                   Payments
                 </TabsTrigger>
                 <TabsTrigger value={PaymentsSectionsEnum.DEDUCTION}>
-                  Deduction
+                  Deductions
                 </TabsTrigger>
                 <TabsTrigger value={PaymentsSectionsEnum.SUNDRIES}>
                   Sundries

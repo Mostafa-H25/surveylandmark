@@ -13,6 +13,7 @@ import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 import { validateEmptyAfterTrim } from "@/helpers/formValidators";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { type Dispatch, type SetStateAction } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
@@ -44,7 +45,11 @@ const AddClientForm = ({ setIsAddClientOpen }: Props) => {
     },
     onError: (error) => {
       console.error(error);
-      defaultErrorToast(error.message);
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : error.message,
+      );
     },
   });
 

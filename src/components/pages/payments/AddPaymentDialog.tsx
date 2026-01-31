@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { addPaymentApi } from "@/api/payments/add-payment.api";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
+import axios from "axios";
 
 const CLIENTS_QUERY_KEY = "clients";
 const PAYMENTS_QUERY_KEY = "payments";
@@ -89,7 +90,11 @@ export function AddPaymentDialog() {
     },
     onError: (error) => {
       console.error(error);
-      defaultErrorToast(error.message);
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : error.message,
+      );
     },
   });
 

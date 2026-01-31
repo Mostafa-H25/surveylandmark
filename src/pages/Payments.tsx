@@ -42,6 +42,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import axios from "axios";
 
 const PAYMENTS_QUERY_KEY = "payments";
 const UPDATE_PAYMENT_MUTATION_SCOPE = "update-payment-status";
@@ -116,7 +117,11 @@ const Payments = () => {
     },
     onError: (error) => {
       console.error(error);
-      defaultErrorToast(error.message);
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : error.message,
+      );
     },
   });
 

@@ -16,14 +16,8 @@ import {
   MessageSquare,
   Banknote,
   FileText,
-  AlertTriangle,
-  Calendar,
-  type LucideProps,
 } from "lucide-react";
 import { ROUTES } from "./routes";
-import type { ForwardRefExoticComponent, RefAttributes } from "react";
-
-type TAlert = "deadline" | "payment" | "inventory";
 
 export const KILOBYTE = 1024 as const;
 export const SIZES = ["Bytes", "KB", "MB", "GB"] as const;
@@ -91,25 +85,9 @@ export const PROJECT_STATUS_ENUM: Record<string, Status> = {
   PLANNING: "planning",
   IN_PROGRESS: "in progress",
   COMPLETED: "completed",
-  // ON_HOLDING: "onHold",
 };
 
 export const projectStatus = Object.values(PROJECT_STATUS_ENUM);
-
-const AlertsEnum: Record<
-  string,
-  {
-    value: TAlert;
-    icon: ForwardRefExoticComponent<
-      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-    >;
-  }
-> = {
-  DEADLINE: { value: "deadline", icon: Calendar },
-  PAYMENT: { value: "payment", icon: AlertTriangle },
-  INVENTORY: { value: "inventory", icon: AlertTriangle },
-};
-export const Alerts = Object.values(AlertsEnum);
 
 export const ConstructionSectionsEnum: Record<string, ConstructionView> = {
   OVERVIEW: "overview",

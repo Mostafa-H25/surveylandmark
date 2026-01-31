@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { signupApi } from "@/api/user/sign-up.ts.api";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 import { ROUTES } from "@/constants/routes";
+import axios from "axios";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -55,9 +56,13 @@ const Registration = () => {
         richColors: true,
       });
       navigate(ROUTES.SIGN_IN);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
-      defaultErrorToast((error as Error).message);
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : (error as Error).message,
+      );
     }
     setIsSubmitting(false);
   };

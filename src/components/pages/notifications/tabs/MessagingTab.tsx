@@ -57,6 +57,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { defaultErrorToast } from "@/helpers/defaultErrorToast";
 import { useDebounce } from "@/hooks/use-debounce";
 import Paginator from "@/components/shared/Paginator";
+import axios from "axios";
 
 const USERS_QUERY_KEY = "users";
 const MESSAGES_QUERY_KEY = "messages";
@@ -130,7 +131,11 @@ const MessagingTab = () => {
     },
     onError: (error) => {
       console.error(error);
-      defaultErrorToast(error.message);
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : error.message,
+      );
     },
   });
   const { mutate: markAsRead } = useMutation({
@@ -146,7 +151,11 @@ const MessagingTab = () => {
     },
     onError: (error) => {
       console.error(error);
-      defaultErrorToast(error.message);
+      defaultErrorToast(
+        axios.isAxiosError(error)
+          ? error?.response?.data?.error
+          : error.message,
+      );
     },
   });
 
