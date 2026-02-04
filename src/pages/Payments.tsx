@@ -43,6 +43,8 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import axios from "axios";
+import { PaymentsStatusEnum } from "@/constants/defaults";
+import type { PaymentStatus } from "@/types/default";
 
 const PAYMENTS_QUERY_KEY = "payments";
 const UPDATE_PAYMENT_MUTATION_SCOPE = "update-payment-status";
@@ -135,12 +137,14 @@ const Payments = () => {
 
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
-      case "received":
+      case PaymentsStatusEnum.RECEIVED:
         return "bg-green-100 hover:bg-green-50 text-green-800";
-      case "pending":
+      case PaymentsStatusEnum.PENDING:
         return "bg-yellow-100 hover:bg-yellow-50 text-yellow-800";
-      case "overdue":
+      case PaymentsStatusEnum.OVERDUE:
         return "bg-red-100 hover:bg-red-50 text-red-800";
+      case PaymentsStatusEnum.DEACTIVATED:
+        return "bg-gray-100 hover:bg-gray-50 text-gray-800";
       default:
         return "bg-gray-100 hover:bg-gray-50 text-gray-800";
     }
@@ -285,7 +289,7 @@ const Payments = () => {
                                 handleUpdatePaymentStatus(
                                   payment.project.id,
                                   payment.id,
-                                  "received",
+                                  PaymentsStatusEnum.RECEIVED,
                                 )
                               }
                               className="w-32 cursor-pointer border-green-200 text-green-600 hover:bg-green-50"
@@ -299,7 +303,6 @@ const Payments = () => {
                                 </>
                               )}
                             </Button>
-
                             <Button
                               size="sm"
                               variant="outline"
@@ -308,7 +311,7 @@ const Payments = () => {
                                 handleUpdatePaymentStatus(
                                   payment.project.id,
                                   payment.id,
-                                  "deactivated",
+                                  PaymentsStatusEnum.DEACTIVATED,
                                 )
                               }
                               className="col-start-2 w-32 cursor-pointer border-red-200 text-red-600 hover:bg-red-50"
@@ -382,7 +385,7 @@ type PaymentsQueryResponse = {
     id: string;
     amount: number;
     dueDate: string;
-    statusStored: string;
+    statusStored: PaymentStatus;
     effectiveStatus: string;
     statusHistory: string[];
     daysOverdue: number;

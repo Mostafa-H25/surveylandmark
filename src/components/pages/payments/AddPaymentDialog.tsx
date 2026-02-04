@@ -152,7 +152,7 @@ export function AddPaymentDialog() {
                       <SelectTrigger id={field.name} className="capitalize">
                         <SelectValue placeholder="Select client" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="max-h-80">
                         {isFetching && !clients && (
                           <div className="flex h-full w-full items-center justify-center">
                             <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
@@ -164,7 +164,11 @@ export function AddPaymentDialog() {
                             value={client.id.toString()}
                             className="capitalize"
                           >
-                            {client.name}
+                            <span>{client.name}</span>
+                            <br />
+                            <span className="text-xs text-slate-600 lowercase italic">
+                              &nbsp;&#60;{client.email}&#62;
+                            </span>
                           </SelectItem>
                         ))}
                       </SelectContent>

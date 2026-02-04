@@ -6,7 +6,7 @@ import type {
   UserRole,
   UserStatus,
   PaymentType,
-  PaymentAction,
+  PaymentStatus,
   ContractorType,
   Priority,
 } from "./default";
@@ -93,7 +93,7 @@ interface ConstructionPayment {
   amount: number;
   batchNo?: number;
   contractor?: ConstructionContractor;
-  status: PaymentAction;
+  status: PaymentStatus;
 }
 
 interface Department {

@@ -155,9 +155,9 @@ const NotificationsTab = () => {
                     <TableCell>
                       <Badge
                         variant={
-                          notification.status === "active"
-                            ? "default"
-                            : "secondary"
+                          notification?.status
+                            ? notificationStatusColors[notification.status]
+                            : "default"
                         }
                         className="capitalize"
                       >
@@ -174,6 +174,15 @@ const NotificationsTab = () => {
       </Card>
     </TabsContent>
   );
+};
+
+const notificationStatusColors: Record<
+  string,
+  "secondary" | "outline" | "destructive" | "default" | null | undefined
+> = {
+  approved: "secondary",
+  pending: "outline",
+  rejected: "destructive",
 };
 
 export default NotificationsTab;
@@ -206,6 +215,7 @@ type NotificationsQueryResponse = {
     meta: {
       projectId: string;
       role: string;
+      status: string;
       units: {
         building: string;
         floor: string;

@@ -47,7 +47,7 @@ const AssignProjectToUserDialog = ({
     queryKey: [CLIENTS_QUERY_KEY],
     queryFn: () => getAllClientsApi(),
     select: useCallback((data: ClientQueryResponse) => {
-      return data.data.flatMap((option) =>
+      return data.data.clients.flatMap((option) =>
         option.projects.details?.map((project) => ({
           id: project.id,
           name: project.name,
@@ -145,23 +145,38 @@ type ClientQueryResponse = {
   message: string;
   success: boolean;
   data: {
-    projects: {
-      count: number;
-      totalBudget: number;
-      details: {
+    totalClients: number;
+    currentPage: number;
+    totalPages: number;
+    pageLimit: number;
+    count: number;
+    clients: {
+      client: {
         id: string;
         name: string;
-        budget: number;
-        status: string;
-        startDate: string | null;
-        endDate: string | null;
-        projectManager: {
+        email: string;
+        phone: string;
+        company: string;
+        joinDate: string | null;
+      };
+      projects: {
+        count: number;
+        totalBudget: number;
+        details: {
           id: string;
           name: string;
-          title: string;
-        };
-        progressPercentage: number;
-      }[];
-    };
-  }[];
+          budget: number;
+          status: string;
+          startDate: string | null;
+          endDate: string | null;
+          projectManager: {
+            id: string;
+            name: string;
+            title: string;
+          };
+          progressPercentage: number;
+        }[];
+      };
+    }[];
+  };
 };

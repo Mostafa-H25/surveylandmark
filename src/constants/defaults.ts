@@ -1,6 +1,7 @@
 import type {
   ConstructionView,
   DepartmentType,
+  PaymentStatus,
   PaymentType,
   Priority,
   SalesView,
@@ -122,10 +123,18 @@ export const ItemTabsEnum: Record<string, string> = {
   CONFIRMATION: "confirmation",
 };
 
-const MESSAGE_PRIORITY_ENUM: Record<string, Priority> = {
+export const MESSAGE_PRIORITY_ENUM: Record<string, Priority> = {
+  LOW: "low",
   NORMAL: "normal",
   HIGH: "high",
-  URGENT: "urgent",
+  CRITICAL: "critical",
 };
 
 export const messagePriority = Object.values(MESSAGE_PRIORITY_ENUM);
+
+export const PaymentsStatusEnum: Record<string, PaymentStatus> = {
+  RECEIVED: "received",
+  PENDING: "pending",
+  OVERDUE: "overdue",
+  DEACTIVATED: "deactivated",
+};

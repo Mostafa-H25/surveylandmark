@@ -32,6 +32,7 @@ const ProjectInformation = () => {
       return data.data.clients.map((option) => ({
         id: option.client.id,
         name: option.client.name,
+        email: option.client.email,
       }));
     }, []),
   });
@@ -78,7 +79,7 @@ const ProjectInformation = () => {
                     <SelectTrigger id={field.name} className="capitalize">
                       <SelectValue placeholder="Select client" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="max-h-80">
                       {isFetching && !clients && (
                         <div className="flex h-full w-full items-center justify-center">
                           <div className="size-4 animate-spin rounded-full border-r-2 border-blue-300" />
@@ -90,7 +91,11 @@ const ProjectInformation = () => {
                           value={client.id.toString()}
                           className="capitalize"
                         >
-                          {client.name}
+                          <span>{client.name}</span>
+                          <br />
+                          <span className="text-xs text-slate-600 lowercase italic">
+                            &nbsp;&#60;{client.email}&#62;
+                          </span>
                         </SelectItem>
                       ))}
                     </SelectContent>
