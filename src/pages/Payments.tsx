@@ -45,6 +45,7 @@ import {
 import axios from "axios";
 import { PaymentsStatusEnum } from "@/constants/defaults";
 import type { PaymentStatus } from "@/types/default";
+import { isNullOrUndefined } from "@/helpers/isNullOrUndefined";
 
 const PAYMENTS_QUERY_KEY = "payments";
 const UPDATE_PAYMENT_MUTATION_SCOPE = "update-payment-status";
@@ -256,11 +257,15 @@ const Payments = () => {
                           <span className="text-gray-700">
                             {payment.project.name}
                           </span>
-                          {!payment.isActive && (
-                            <Badge variant="secondary" className="ml-2 text-xs">
-                              Inactive
-                            </Badge>
-                          )}
+                          {!isNullOrUndefined(payment.isActive) &&
+                            !payment.isActive && (
+                              <Badge
+                                variant="secondary"
+                                className="ml-2 text-xs"
+                              >
+                                Inactive
+                              </Badge>
+                            )}
                         </TableCell>
                         <TableCell>
                           <span className="font-semibold text-gray-900">
