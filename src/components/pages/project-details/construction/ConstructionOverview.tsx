@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDate } from "@/helpers/formatDate";
 import type { ConstructionView, DepartmentType } from "@/types/default";
 
 type Props = {
@@ -34,7 +35,10 @@ const ConstructionOverview = ({ data }: Props) => {
       label: "progress",
       value: data.data.progressPercent,
     },
-    { label: "delivery date", value: data.data.deliveryDate },
+    {
+      label: "delivery date",
+      value: data.data?.deliveryDate && formatDate(data.data.deliveryDate),
+    },
   ];
 
   return (

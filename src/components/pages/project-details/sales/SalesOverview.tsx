@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDate } from "@/helpers/formatDate";
 
 type Props = {
   data: OverviewQueryResponse;
@@ -27,7 +28,7 @@ const SalesOverview = ({ data }: Props) => {
       value: data.data.serviceFacilitiesArea,
     },
     { label: "Green Area Percentage", value: data.data.greenAreasPercentage },
-    { label: "Delivery Date", value: data.data.deliveryDate },
+    { label: "Delivery Date", value: formatDate(data.data.deliveryDate) },
     {
       label: "No. Of Residential Units",
       value: data.data.counts.residentialUnits,
