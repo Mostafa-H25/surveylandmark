@@ -34,7 +34,10 @@ const RevenueTrendChart = () => {
             <XAxis dataKey="month" />
             <YAxis />
             <Tooltip
-              formatter={(value) => [`$${value.toLocaleString()}`, "Revenue"]}
+              formatter={(value) => [
+                `$${(value ?? 0).toLocaleString()}`,
+                "Revenue",
+              ]}
             />
             <Area
               type="monotone"

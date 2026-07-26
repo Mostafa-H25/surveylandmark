@@ -35,7 +35,7 @@ const DepartmentOverviewChart = () => {
             <YAxis dataKey="department" type="category" width={80} />
             <Tooltip
               formatter={(value, name) => [
-                name === "budget" ? `$${value.toLocaleString()}` : value,
+                name === "budget" ? `$${(value ?? 0).toLocaleString()}` : value,
                 name === "budget" ? "Budget" : "Projects",
               ]}
             />
